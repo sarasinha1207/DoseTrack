@@ -1,7 +1,7 @@
 """
-Family Data Models and Persistence for DoseGuard AI.
-Stores all profiles, medication schedules, and daily intake logs locally in JSON.
-100% private, zero cloud telemetry.
+Family Data Layer for DoseGuard AI.
+Persists profiles, medication regimens, and daily confirmation logs in a local JSON vault.
+Strictly free of emojis. Clean professional medical data structure.
 """
 
 import json
@@ -14,178 +14,178 @@ DATA_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file_
 DEFAULT_FAMILY_DATA = {
     "profiles": [
         {
-            "id": "mom",
-            "name": "Mom (Sunita)",
+            "id": "mother",
+            "name": "Sunita",
             "role": "Mother",
-            "avatar": "👩",
+            "initials": "MO",
             "age": 54,
-            "badge_color": "#FF758C",
-            "notes": "Hypothyroidism & Mild Osteopenia. Keep thyroid and calcium 4 hrs apart.",
+            "badge_color": "#0284c7",
+            "notes": "Primary Hypothyroidism and mild Osteopenia. Maintain 4-hour gap between thyroid medication and calcium.",
             "medications": [
                 {
-                    "id": "mom_med_1",
+                    "id": "med_mo_1",
                     "name": "Levothyroxine Sodium",
                     "dosage": "50 mcg",
                     "timing": "Morning",
-                    "food_instruction": "Empty stomach with water (wait 45 mins before tea/breakfast)",
-                    "purpose": "Thyroid hormone support",
-                    "caution": "Do not take at the same time as calcium",
+                    "food_instruction": "Empty stomach with plain water (wait 45-60 mins before morning breakfast or tea)",
+                    "purpose": "Thyroid Hormone Balance",
+                    "caution": "Keep at least 4 hours apart from calcium supplements",
                     "active": True
                 },
                 {
-                    "id": "mom_med_2",
+                    "id": "med_mo_2",
                     "name": "Shelcal 500 (Calcium + D3)",
                     "dosage": "500 mg",
                     "timing": "Afternoon",
-                    "food_instruction": "After lunch with a full glass of water",
-                    "purpose": "Bone density & joint support",
-                    "caution": "Do not skip lunch when taking",
+                    "food_instruction": "Strictly after lunch with a full glass of water",
+                    "purpose": "Bone Density and Joint Health",
+                    "caution": "Do not take concurrently with morning thyroid pill",
                     "active": True
                 },
                 {
-                    "id": "mom_med_3",
-                    "name": "Multivitamin + Omega 3",
-                    "dosage": "1 Capsule",
+                    "id": "med_mo_3",
+                    "name": "Omega-3 Fish Oil",
+                    "dosage": "1000 mg",
                     "timing": "Night",
-                    "food_instruction": "With or right after dinner",
-                    "purpose": "General vitality & heart health",
-                    "caution": "Take with warm water",
+                    "food_instruction": "With evening dinner",
+                    "purpose": "Cardiovascular and Lipid Support",
+                    "caution": "Take with meal for optimal bioavailability",
                     "active": True
                 }
             ],
             "logs": {}
         },
         {
-            "id": "dad",
-            "name": "Dad (Rajesh)",
+            "id": "father",
+            "name": "Rajesh",
             "role": "Father",
-            "avatar": "👨",
+            "initials": "FA",
             "age": 59,
-            "badge_color": "#4E73DF",
-            "notes": "Blood pressure and borderline blood sugar. Monitor BP weekly.",
+            "badge_color": "#2563eb",
+            "notes": "Essential Hypertension and Type 2 Diabetes. Routine blood pressure and fasting glucose monitoring required.",
             "medications": [
                 {
-                    "id": "dad_med_1",
-                    "name": "Telmikind-40 (Telmisartan)",
+                    "id": "med_fa_1",
+                    "name": "Telmisartan",
                     "dosage": "40 mg",
                     "timing": "Morning",
                     "food_instruction": "After morning breakfast",
-                    "purpose": "Blood pressure control",
-                    "caution": "Do not skip even if feeling healthy",
+                    "purpose": "Blood Pressure Regulation",
+                    "caution": "Do not skip or discontinue without physician consent",
                     "active": True
                 },
                 {
-                    "id": "dad_med_2",
-                    "name": "Glycomet-SR (Metformin)",
+                    "id": "med_fa_2",
+                    "name": "Metformin ER",
                     "dosage": "500 mg",
                     "timing": "Morning",
-                    "food_instruction": "With breakfast",
-                    "purpose": "Blood sugar regulation",
-                    "caution": "Always take with food",
+                    "food_instruction": "With morning breakfast",
+                    "purpose": "Glycemic Control",
+                    "caution": "Always administer with meals to minimize gastric distress",
                     "active": True
                 },
                 {
-                    "id": "dad_med_3",
-                    "name": "Glycomet-SR (Metformin)",
+                    "id": "med_fa_3",
+                    "name": "Metformin ER",
                     "dosage": "500 mg",
                     "timing": "Night",
-                    "food_instruction": "With dinner",
-                    "purpose": "Blood sugar regulation",
-                    "caution": "Always take with food",
+                    "food_instruction": "With evening dinner",
+                    "purpose": "Glycemic Control",
+                    "caution": "Always administer with meals to minimize gastric distress",
                     "active": True
                 },
                 {
-                    "id": "dad_med_4",
-                    "name": "Atorva (Atorvastatin)",
+                    "id": "med_fa_4",
+                    "name": "Atorvastatin",
                     "dosage": "10 mg",
                     "timing": "Night",
-                    "food_instruction": "Bedtime with water",
-                    "purpose": "Cholesterol & lipid control",
-                    "caution": "Avoid grapefruit or grapefruit juice",
+                    "food_instruction": "At bedtime with plain water",
+                    "purpose": "Lipid and Cholesterol Regulation",
+                    "caution": "Strictly avoid grapefruit and grapefruit juice",
                     "active": True
                 }
             ],
             "logs": {}
         },
         {
-            "id": "grandpa",
-            "name": "Grandpa (Ramesh)",
+            "id": "grandfather",
+            "name": "Ramesh",
             "role": "Grandfather",
-            "avatar": "👴",
+            "initials": "GF",
             "age": 82,
-            "badge_color": "#1CC88A",
-            "notes": "Gentle assistance required. Needs large font reminders & warm water.",
+            "badge_color": "#0d9488",
+            "notes": "Geriatric care protocol. Requires clear schedule, assistance with ambulation, and warm fluids with doses.",
             "medications": [
                 {
-                    "id": "grandpa_med_1",
-                    "name": "Amlodipine",
+                    "id": "med_gf_1",
+                    "name": "Amlodipine Besylate",
                     "dosage": "5 mg",
                     "timing": "Morning",
                     "food_instruction": "After breakfast around 8:30 AM",
-                    "purpose": "Gentle blood pressure control",
-                    "caution": "Help grandpa stand up slowly",
+                    "purpose": "Hypertension Control",
+                    "caution": "Instruct patient to stand up slowly from seated position",
                     "active": True
                 },
                 {
-                    "id": "grandpa_med_2",
-                    "name": "Glucosamine Joint Support",
+                    "id": "med_gf_2",
+                    "name": "Glucosamine + Chondroitin",
                     "dosage": "750 mg",
                     "timing": "Afternoon",
                     "food_instruction": "After lunch with warm water",
-                    "purpose": "Knee flexibility & pain relief",
-                    "caution": "Give with easy-to-swallow warm drink",
+                    "purpose": "Osteoarthritis Cartilage Support",
+                    "caution": "Administer with warm fluid for swallowing ease",
                     "active": True
                 },
                 {
-                    "id": "grandpa_med_3",
+                    "id": "med_gf_3",
                     "name": "Tears Naturale Eye Drops",
-                    "dosage": "1 drop each eye",
-                    "timing": "Night",
-                    "food_instruction": "Directly into eyes before sleep",
-                    "purpose": "Soothe cataract dryness & irritation",
-                    "caution": "Clean hands before administering",
+                    "dosage": "1 Drop each eye",
+                    "timing": "Morning",
+                    "food_instruction": "Ophthalmic instillation",
+                    "purpose": "Corneal Lubrication and Dry Eye Relief",
+                    "caution": "Ensure proper hand hygiene before instilling drops",
                     "active": True
                 },
                 {
-                    "id": "grandpa_med_4",
-                    "name": "Melatonin (Low Dose)",
+                    "id": "med_gf_4",
+                    "name": "Melatonin",
                     "dosage": "3 mg",
                     "timing": "Night",
-                    "food_instruction": "30 mins before sleep with warm milk",
-                    "purpose": "Restful sleep cycle",
-                    "caution": "Ensure dim bedroom lights",
+                    "food_instruction": "30 minutes before sleep with warm water or milk",
+                    "purpose": "Circadian Sleep Stabilization",
+                    "caution": "Ensure low ambient lighting after administration",
                     "active": True
                 }
             ],
             "logs": {}
         },
         {
-            "id": "grandma",
-            "name": "Grandma (Kamla)",
+            "id": "grandmother",
+            "name": "Kamla",
             "role": "Grandmother",
-            "avatar": "👵",
+            "initials": "GM",
             "age": 78,
-            "badge_color": "#F6C23E",
-            "notes": "Arthritis and digestive care. Prefers natural herbal teas alongside meds.",
+            "badge_color": "#d97706",
+            "notes": "Peripheral joint stiffness and vitamin deficiency. Prefers mid-morning doses.",
             "medications": [
                 {
-                    "id": "grandma_med_1",
-                    "name": "Vitamin D3 + Calcium Cholecalciferol",
-                    "dosage": "60,000 IU (Weekly) / Daily 500mg",
+                    "id": "med_gm_1",
+                    "name": "Cholecalciferol + Calcium",
+                    "dosage": "500 mg",
                     "timing": "Morning",
-                    "food_instruction": "After breakfast with milk",
-                    "purpose": "Bone strength & back support",
-                    "caution": "Take regularly with morning meal",
+                    "food_instruction": "After morning meal with milk or water",
+                    "purpose": "Bone Mineralization and Density Support",
+                    "caution": "Maintain regular daily timing",
                     "active": True
                 },
                 {
-                    "id": "grandma_med_2",
-                    "name": "Neurobion Forte (B-Complex)",
+                    "id": "med_gm_2",
+                    "name": "Vitamin B-Complex (Neurobion)",
                     "dosage": "1 Tablet",
                     "timing": "Afternoon",
-                    "food_instruction": "After lunch with warm water",
-                    "purpose": "Nerve health & tingling relief",
-                    "caution": "Drink plenty of water",
+                    "food_instruction": "After midday lunch with water",
+                    "purpose": "Neuropathy and Nerve Health",
+                    "caution": "Take following food intake",
                     "active": True
                 }
             ],
@@ -205,8 +205,8 @@ class FamilyVault:
             try:
                 with open(self.filepath, "r", encoding="utf-8") as f:
                     return json.load(f)
-            except Exception as e:
-                print(f"Error loading vault, resetting to defaults: {e}")
+            except Exception as exc:
+                print(f"Error loading vault, falling back to default structure: {exc}")
                 return DEFAULT_FAMILY_DATA
         else:
             self._save_raw(DEFAULT_FAMILY_DATA)
@@ -228,15 +228,16 @@ class FamilyVault:
                 return p
         return None
 
-    def add_profile(self, name: str, role: str, avatar: str = "👤", age: int = 60, notes: str = "") -> Dict[str, Any]:
-        new_id = role.lower().replace(" ", "_") + "_" + str(int(datetime.now().timestamp()))
+    def add_profile(self, name: str, role: str, age: int = 60, notes: str = "") -> Dict[str, Any]:
+        profile_id = role.lower().replace(" ", "_") + "_" + str(int(datetime.now().timestamp()))
+        initials = (role[:2] if len(role) >= 2 else "FM").upper()
         new_profile = {
-            "id": new_id,
-            "name": f"{role} ({name})",
+            "id": profile_id,
+            "name": name,
             "role": role,
-            "avatar": avatar,
+            "initials": initials,
             "age": age,
-            "badge_color": "#36B9CC",
+            "badge_color": "#0284c7",
             "notes": notes,
             "medications": [],
             "logs": {}
@@ -248,11 +249,11 @@ class FamilyVault:
     def get_today_str(self) -> str:
         return date.today().isoformat()
 
-    def mark_taken(self, profile_id: str, med_id: str, taken_by: str = "Caregiver") -> bool:
+    def mark_taken(self, profile_id: str, med_id: str, taken_by: str = "Family Caregiver") -> bool:
         profile = self.get_profile(profile_id)
         if not profile:
             return False
-        
+
         today = self.get_today_str()
         if "logs" not in profile:
             profile["logs"] = {}
@@ -272,7 +273,7 @@ class FamilyVault:
         profile = self.get_profile(profile_id)
         if not profile:
             return False
-        
+
         today = self.get_today_str()
         if today in profile.get("logs", {}) and med_id in profile["logs"][today]:
             del profile["logs"][today][med_id]
@@ -292,12 +293,12 @@ class FamilyVault:
         profile = self.get_profile(profile_id)
         if not profile:
             return {"total": 0, "taken": 0, "percentage": 0}
-        
+
         active_meds = [m for m in profile.get("medications", []) if m.get("active", True)]
         total = len(active_meds)
         if total == 0:
             return {"total": 0, "taken": 0, "percentage": 100}
-        
+
         today = self.get_today_str()
         today_logs = profile.get("logs", {}).get(today, {})
         taken = sum(1 for m in active_meds if m["id"] in today_logs and today_logs[m["id"]].get("taken"))
@@ -312,16 +313,16 @@ class FamilyVault:
         profile = self.get_profile(profile_id)
         if not profile:
             return False
-        
-        med_id = f"{profile_id}_med_{int(datetime.now().timestamp())}_{len(profile.get('medications', []))}"
+
+        med_id = f"med_{profile_id}_{int(datetime.now().timestamp())}_{len(profile.get('medications', []))}"
         med_entry = {
             "id": med_id,
-            "name": med_data.get("name", "Unknown Medicine"),
-            "dosage": med_data.get("dosage", "As prescribed"),
+            "name": med_data.get("name", "Prescribed Item"),
+            "dosage": med_data.get("dosage", "1 Unit"),
             "timing": med_data.get("timing", "Morning"),
-            "food_instruction": med_data.get("food_instruction", "With water"),
-            "purpose": med_data.get("purpose", "Prescribed treatment"),
-            "caution": med_data.get("caution", "Consult doctor if unusual symptoms occur"),
+            "food_instruction": med_data.get("food_instruction", "Take with water"),
+            "purpose": med_data.get("purpose", "Prescribed Clinical Regimen"),
+            "caution": med_data.get("caution", "Consult physician if unusual symptoms emerge"),
             "active": True
         }
         profile["medications"].append(med_entry)
@@ -344,12 +345,12 @@ class FamilyVault:
                 "id": p["id"],
                 "name": p["name"],
                 "role": p["role"],
-                "avatar": p["avatar"],
+                "initials": p.get("initials", p["role"][:2].upper()),
                 "total": adh["total"],
                 "taken": adh["taken"],
                 "percentage": adh["percentage"],
-                "status": "All Done ✅" if adh["taken"] == adh["total"] and adh["total"] > 0 else (
-                    f"{adh['taken']}/{adh['total']} Taken" if adh["total"] > 0 else "No Meds"
+                "status": "Completed" if adh["taken"] == adh["total"] and adh["total"] > 0 else (
+                    f"{adh['taken']}/{adh['total']} Taken" if adh["total"] > 0 else "No Medications"
                 )
             })
         return summary

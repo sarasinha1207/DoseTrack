@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DoseGuard AI - Family Medication Management</title>
+  <meta name="description" content="Professional, privacy-first family medication management and caregiver verification platform powered by open-source AI.">
+  <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+
+  <div class="app-container">
+
+    <!-- Header -->
+    <header class="site-header">
+      <div class="brand-wrapper">
+        <div class="brand-icon">
+          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <path d="M12 2v20M2 12h20"></path>
+          </svg>
+        </div>
+        <div>
+          <h1 class="brand-title">DoseGuard AI</h1>
+          <p class="brand-subtitle">Family Medication Protocol &amp; Caregiver Verification Platform</p>
+        </div>
+      </div>
+      <div>
+        <span class="badge-tag privacy">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          </svg>
+          100% Private Local Vault • Zero Cloud Health Leakage
+        </span>
+      </div>
+    </header>
+
+    <!-- Family Member Profiles Bar -->
+    <section>
+      <div class="profiles-bar" id="profiles-list-container">
+        <!-- Rendered dynamically by JavaScript -->
+      </div>
+    </section>
+
+    <!-- Adherence Summary Banner -->
+    <section class="adherence-bar-wrapper">
+      <div>
+        <div class="adherence-headline" id="adherence-profile-name">Selected Profile</div>
+        <div class="adherence-sub" id="adherence-profile-sub">Clinical Care Profile</div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
+        <div>
+          <div class="adherence-sub" style="margin-bottom: 6px;">Today's Adherence Status</div>
+          <div class="progress-track">
+            <div class="progress-fill" id="adherence-progress-fill" style="width: 0%;"></div>
+          </div>
+        </div>
+        <div>
+          <div class="adherence-stat" id="adherence-pct-text">0%</div>
+          <div class="adherence-sub" id="adherence-ratio-text">0 of 0 Doses Confirmed</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Navigation Tabs -->
+    <nav class="tabs-nav">
+      <button class="tab-btn active" data-tab="routine">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <polyline points="9 11 12 14 22 4"></polyline>
+          <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+        </svg>
+        Today's Schedule &amp; Intake
+      </button>
+
+      <button class="tab-btn" data-tab="ingest">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+        </svg>
+        Prescription &amp; Bill AI Ingestion
+      </button>
+
+      <button class="tab-btn" data-tab="companion">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+        Clinical Health Companion
+      </button>
+
+      <button class="tab-btn" data-tab="caregiver">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+          <circle cx="9" cy="7" r="4"></circle>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+        </svg>
+        Caregiver Oversight Hub
+      </button>
+    </nav>
+
+
+    <!-- ================================================================= -->
+    <!-- TAB 1: TODAY'S SCHEDULE & VERIFICATION -->
+    <!-- ================================================================= -->
+    <main class="tab-content active" id="tab-routine">
+      <div class="panel-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <h2 class="panel-title">Today's Medication Protocol</h2>
+            <p class="panel-description" style="margin-bottom: 0;">
+              Record each administration with a single click. Every confirmation logs an exact verifiable timestamp.
+            </p>
+          </div>
+          <button class="btn btn-secondary" id="btn-open-add-med">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M12 5v14M5 12h14"></path>
+            </svg>
+            Add Single Medication
+          </button>
+        </div>
+
+        <div id="routine-schedule-container">
+          <!-- Rendered dynamically by JavaScript -->
+        </div>
+      </div>
+    </main>
+
+
+    <!-- ================================================================= -->
+    <!-- TAB 2: PRESCRIPTION & BILL AI INGESTION -->
+    <!-- ================================================================= -->
+    <main class="tab-content" id="tab-ingest">
+      <div class="panel-card">
+        <h2 class="panel-title">Open-Source AI Prescription &amp; Invoice Ingestion</h2>
+        <p class="panel-description">
+          Extract medications, dosages, dietary instructions, and safety warnings from clinical scripts or pharmacy bills.
+          Select a verified scenario below for instant testing without physical documents.
+        </p>
+
+        <!-- Sample Prescriptions Grid -->
+        <div style="margin-bottom: 20px;">
+          <label class="form-label">Pre-Configured Family Clinical Test Prescriptions:</label>
+          <div class="sample-grid" id="sample-prescriptions-grid">
+            <!-- Rendered dynamically by JavaScript -->
+          </div>
+        </div>
+
+        <!-- Input Area (Text or Upload) -->
+        <input type="hidden" id="loaded-sample-key" value="">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 20px;">
+          
+          <div>
+            <label class="form-label" for="prescription-raw-textarea">Doctor Prescription Script or Pharmacy Cash Invoice Text:</label>
+            <textarea id="prescription-raw-textarea" class="form-textarea" placeholder="Paste doctor's clinical notes, prescription slip text, or invoice details..."></textarea>
+          </div>
+
+          <div>
+            <label class="form-label">Or Upload Document / Scan (PNG, JPG, PDF):</label>
+            <div style="border: 2px dashed var(--slate-300); border-radius: var(--radius-md); padding: 30px 20px; text-align: center; background: var(--slate-50);">
+              <svg width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" style="color: var(--slate-400); margin-bottom: 8px;">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="17 8 12 3 7 8"></polyline>
+                <line x1="12" y1="3" x2="12" y2="15"></line>
+              </svg>
+              <div style="font-weight: 600; color: var(--slate-700); margin-bottom: 4px;">Select Clinical Scan or Bill</div>
+              <div style="font-size: 0.8rem; color: var(--slate-500); margin-bottom: 12px;">Standard outpatient slips and pharmacy cash memos</div>
+              <input type="file" id="file-prescription-upload" accept="image/*,.pdf" style="display: none;">
+              <button type="button" class="btn btn-secondary" onclick="document.getElementById('file-prescription-upload').click()">
+                Browse File
+              </button>
+              <div id="upload-file-status" style="font-size: 0.82rem; color: var(--primary); margin-top: 8px; font-weight: 600;"></div>
+            </div>
+          </div>
+
+        </div>
+
+        <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+          <button class="btn btn-primary" id="btn-parse-text">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+            </svg>
+            Extract Medications with Open-Source AI
+          </button>
+          <button class="btn btn-success" id="btn-save-extracted" style="display: none;">
+            Save Extracted Items to Schedule
+          </button>
+        </div>
+
+        <!-- Extracted Items Container -->
+        <div id="extracted-results-container" style="margin-top: 24px;"></div>
+      </div>
+    </main>
+
+
+    <!-- ================================================================= -->
+    <!-- TAB 3: CLINICAL HEALTH COMPANION -->
+    <!-- ================================================================= -->
+    <main class="tab-content" id="tab-companion">
+      <div class="panel-card">
+        <h2 class="panel-title">Clinical Health Consultation Companion</h2>
+        <p class="panel-description">
+          Consult grounded clinical guidelines regarding missed dose triage, food interactions, and administration timing.
+          All queries execute deterministically and privately on local logic.
+        </p>
+
+        <!-- Suggested Queries -->
+        <label class="form-label">Frequently Referenced Clinical Scenarios:</label>
+        <div class="chat-suggestions" id="chat-suggestions-container">
+          <!-- Rendered dynamically by JavaScript -->
+        </div>
+
+        <!-- Query Form -->
+        <div class="form-group">
+          <label class="form-label" for="input-chat-question">Clinical Inquiry or Symptom Guidance:</label>
+          <div style="display: flex; gap: 10px;">
+            <input type="text" id="input-chat-question" class="form-input" placeholder="e.g. What is the clinical procedure if a morning blood pressure dose was missed?">
+            <button class="btn btn-primary" id="btn-ask-companion" style="white-space: nowrap;">
+              Submit Inquiry
+            </button>
+          </div>
+        </div>
+
+        <!-- Response Container -->
+        <div id="chat-response-box" class="chat-response-card" style="display: none;"></div>
+      </div>
+    </main>
+
+
+    <!-- ================================================================= -->
+    <!-- TAB 4: CAREGIVER OVERSIGHT HUB -->
+    <!-- ================================================================= -->
+    <main class="tab-content" id="tab-caregiver">
+      <div class="panel-card">
+        <h2 class="panel-title">Family Caregiver Oversight Hub</h2>
+        <p class="panel-description">
+          Holistic adherence monitoring across all family members. Track daily protocol completion and generate caregiver notices.
+        </p>
+
+        <!-- Family Overview Cards Grid -->
+        <div class="caregiver-grid" id="caregiver-cards-container">
+          <!-- Rendered dynamically by JavaScript -->
+        </div>
+
+        <hr style="border: 0; border-top: 1px solid var(--slate-200); margin: 24px 0;">
+
+        <!-- Caregiver SMS / Reminder Generator -->
+        <div style="margin-bottom: 24px;">
+          <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--slate-900); margin-bottom: 6px;">
+            Daily Family Care Message Generator
+          </h3>
+          <p style="font-size: 0.85rem; color: var(--slate-500); margin-bottom: 12px;">
+            Auto-generate a clear, warm message tailored to the current family member's remaining schedule:
+          </p>
+          <textarea id="caregiver-sms-textarea" class="form-textarea" style="min-height: 90px;" readonly></textarea>
+          <div style="margin-top: 10px; display: flex; gap: 10px;">
+            <button class="btn btn-primary" id="btn-copy-caregiver-msg">
+              <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy Message Text
+            </button>
+            <button class="btn btn-secondary" id="btn-export-vault">
+              <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              Export Complete Clinical Health Vault (JSON)
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <div>DoseGuard AI • Built for Family Care and Adherence Verification</div>
+      <div style="margin-top: 4px;">Open-Source AI Foundation • Pure Python and Web Standards • Zero Cloud Data Retention</div>
+    </footer>
+
+  </div>
+
+
+  <!-- ================================================================= -->
+  <!-- MODAL: ADD MEDICATION -->
+  <!-- ================================================================= -->
+  <div class="modal-overlay" id="modal-add-med">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title">Add Medication to Regimen</h3>
+        <button class="modal-close-btn">&times;</button>
+      </div>
+      <form id="form-add-med">
+        <div class="form-group">
+          <label class="form-label" for="input-med-name">Medication Name</label>
+          <input type="text" id="input-med-name" class="form-input" placeholder="e.g. Amlodipine Besylate" required>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="form-group">
+            <label class="form-label" for="input-med-dosage">Dosage / Strength</label>
+            <input type="text" id="input-med-dosage" class="form-input" placeholder="e.g. 5 mg or 1 Tablet" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="select-med-timing">Daily Timing</label>
+            <select id="select-med-timing" class="form-select">
+              <option value="Morning">Morning</option>
+              <option value="Afternoon">Afternoon</option>
+              <option value="Evening">Evening</option>
+              <option value="Night">Night</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="input-med-food">Administration Instructions</label>
+          <input type="text" id="input-med-food" class="form-input" placeholder="e.g. After breakfast with warm water">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="input-med-purpose">Therapeutic Purpose</label>
+          <input type="text" id="input-med-purpose" class="form-input" placeholder="e.g. Hypertension Regulation">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="input-med-caution">Safety Precaution / Warning</label>
+          <input type="text" id="input-med-caution" class="form-input" placeholder="e.g. Stand up gradually to prevent dizziness">
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+          <button type="button" class="btn btn-secondary modal-cancel-btn">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Medication</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- ================================================================= -->
+  <!-- MODAL: ADD FAMILY MEMBER -->
+  <!-- ================================================================= -->
+  <div class="modal-overlay" id="modal-add-member">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title">Add Family Member Profile</h3>
+        <button class="modal-close-btn">&times;</button>
+      </div>
+      <form id="form-add-member">
+        <div class="form-group">
+          <label class="form-label" for="input-member-name">First Name</label>
+          <input type="text" id="input-member-name" class="form-input" placeholder="e.g. Sunita" required>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="form-group">
+            <label class="form-label" for="select-member-role">Family Relationship</label>
+            <select id="select-member-role" class="form-select">
+              <option value="Mother">Mother</option>
+              <option value="Father">Father</option>
+              <option value="Grandmother">Grandmother</option>
+              <option value="Grandfather">Grandfather</option>
+              <option value="Aunt">Aunt</option>
+              <option value="Uncle">Uncle</option>
+              <option value="Family Member">Family Member</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="input-member-age">Age (Years)</label>
+            <input type="number" id="input-member-age" class="form-input" value="65" min="1" max="120" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="input-member-notes">Clinical Notes / Conditions</label>
+          <input type="text" id="input-member-notes" class="form-input" placeholder="e.g. Hypertension, Osteoarthritis">
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+          <button type="button" class="btn btn-secondary modal-cancel-btn">Cancel</button>
+          <button type="submit" class="btn btn-primary">Create Profile</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="/static/js/api.js"></script>
+  <script src="/static/js/app.js"></script>
+
+</body>
+</html>
