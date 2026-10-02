@@ -1,0 +1,182 @@
+{
+  "profiles": [
+    {
+      "id": "mom",
+      "name": "Mom (Sunita)",
+      "role": "Mother",
+      "avatar": "👩",
+      "age": 54,
+      "badge_color": "#FF758C",
+      "notes": "Hypothyroidism & Mild Osteopenia. Keep thyroid and calcium 4 hrs apart.",
+      "medications": [
+        {
+          "id": "mom_med_1",
+          "name": "Levothyroxine Sodium",
+          "dosage": "50 mcg",
+          "timing": "Morning",
+          "food_instruction": "Empty stomach with water (wait 45 mins before tea/breakfast)",
+          "purpose": "Thyroid hormone support",
+          "caution": "Do not take at the same time as calcium",
+          "active": true
+        },
+        {
+          "id": "mom_med_2",
+          "name": "Shelcal 500 (Calcium + D3)",
+          "dosage": "500 mg",
+          "timing": "Afternoon",
+          "food_instruction": "After lunch with a full glass of water",
+          "purpose": "Bone density & joint support",
+          "caution": "Do not skip lunch when taking",
+          "active": true
+        },
+        {
+          "id": "mom_med_3",
+          "name": "Multivitamin + Omega 3",
+          "dosage": "1 Capsule",
+          "timing": "Night",
+          "food_instruction": "With or right after dinner",
+          "purpose": "General vitality & heart health",
+          "caution": "Take with warm water",
+          "active": true
+        }
+      ],
+      "logs": {}
+    },
+    {
+      "id": "dad",
+      "name": "Dad (Rajesh)",
+      "role": "Father",
+      "avatar": "👨",
+      "age": 59,
+      "badge_color": "#4E73DF",
+      "notes": "Blood pressure and borderline blood sugar. Monitor BP weekly.",
+      "medications": [
+        {
+          "id": "dad_med_1",
+          "name": "Telmikind-40 (Telmisartan)",
+          "dosage": "40 mg",
+          "timing": "Morning",
+          "food_instruction": "After morning breakfast",
+          "purpose": "Blood pressure control",
+          "caution": "Do not skip even if feeling healthy",
+          "active": true
+        },
+        {
+          "id": "dad_med_2",
+          "name": "Glycomet-SR (Metformin)",
+          "dosage": "500 mg",
+          "timing": "Morning",
+          "food_instruction": "With breakfast",
+          "purpose": "Blood sugar regulation",
+          "caution": "Always take with food",
+          "active": true
+        },
+        {
+          "id": "dad_med_3",
+          "name": "Glycomet-SR (Metformin)",
+          "dosage": "500 mg",
+          "timing": "Night",
+          "food_instruction": "With dinner",
+          "purpose": "Blood sugar regulation",
+          "caution": "Always take with food",
+          "active": true
+        },
+        {
+          "id": "dad_med_4",
+          "name": "Atorva (Atorvastatin)",
+          "dosage": "10 mg",
+          "timing": "Night",
+          "food_instruction": "Bedtime with water",
+          "purpose": "Cholesterol & lipid control",
+          "caution": "Avoid grapefruit or grapefruit juice",
+          "active": true
+        }
+      ],
+      "logs": {}
+    },
+    {
+      "id": "grandpa",
+      "name": "Grandpa (Ramesh)",
+      "role": "Grandfather",
+      "avatar": "👴",
+      "age": 82,
+      "badge_color": "#1CC88A",
+      "notes": "Gentle assistance required. Needs large font reminders & warm water.",
+      "medications": [
+        {
+          "id": "grandpa_med_1",
+          "name": "Amlodipine",
+          "dosage": "5 mg",
+          "timing": "Morning",
+          "food_instruction": "After breakfast around 8:30 AM",
+          "purpose": "Gentle blood pressure control",
+          "caution": "Help grandpa stand up slowly",
+          "active": true
+        },
+        {
+          "id": "grandpa_med_2",
+          "name": "Glucosamine Joint Support",
+          "dosage": "750 mg",
+          "timing": "Afternoon",
+          "food_instruction": "After lunch with warm water",
+          "purpose": "Knee flexibility & pain relief",
+          "caution": "Give with easy-to-swallow warm drink",
+          "active": true
+        },
+        {
+          "id": "grandpa_med_3",
+          "name": "Tears Naturale Eye Drops",
+          "dosage": "1 drop each eye",
+          "timing": "Night",
+          "food_instruction": "Directly into eyes before sleep",
+          "purpose": "Soothe cataract dryness & irritation",
+          "caution": "Clean hands before administering",
+          "active": true
+        },
+        {
+          "id": "grandpa_med_4",
+          "name": "Melatonin (Low Dose)",
+          "dosage": "3 mg",
+          "timing": "Night",
+          "food_instruction": "30 mins before sleep with warm milk",
+          "purpose": "Restful sleep cycle",
+          "caution": "Ensure dim bedroom lights",
+          "active": true
+        }
+      ],
+      "logs": {}
+    },
+    {
+      "id": "grandma",
+      "name": "Grandma (Kamla)",
+      "role": "Grandmother",
+      "avatar": "👵",
+      "age": 78,
+      "badge_color": "#F6C23E",
+      "notes": "Arthritis and digestive care. Prefers natural herbal teas alongside meds.",
+      "medications": [
+        {
+          "id": "grandma_med_1",
+          "name": "Vitamin D3 + Calcium Cholecalciferol",
+          "dosage": "60,000 IU (Weekly) / Daily 500mg",
+          "timing": "Morning",
+          "food_instruction": "After breakfast with milk",
+          "purpose": "Bone strength & back support",
+          "caution": "Take regularly with morning meal",
+          "active": true
+        },
+        {
+          "id": "grandma_med_2",
+          "name": "Neurobion Forte (B-Complex)",
+          "dosage": "1 Tablet",
+          "timing": "Afternoon",
+          "food_instruction": "After lunch with warm water",
+          "purpose": "Nerve health & tingling relief",
+          "caution": "Drink plenty of water",
+          "active": true
+        }
+      ],
+      "logs": {}
+    }
+  ]
+}
