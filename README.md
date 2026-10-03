@@ -1,5 +1,5 @@
 # DoseGuard AI - Family Medication Protocol & Caregiver Verification Platform
-Built for Parents and Grandparents.
+Built for Parents, Grandparents, and Family Caregivers.
 Powered by Local Open-Source Clinical Intelligence. Zero Cloud Health Telemetry.
 
 Submission for the Hacktoberfest Weekend Challenge: Build for a Friend or Loved One.
@@ -8,14 +8,14 @@ Submission for the Hacktoberfest Weekend Challenge: Build for a Friend or Loved 
 
 ## 1. Clinical Context and Motivation: Why This Was Built
 
-For aging parents and grandparents, managing chronic multi-drug regimens is a frequent source of severe anxiety and adverse medical events:
+For families with aging parents, grandparents, and busy members, managing chronic multi-drug regimens is a frequent source of severe anxiety and adverse medical events:
 
 1. Ambiguity of Administration: Loved ones regularly struggle with the uncertainty of whether a morning dose was ingested or merely contemplated. This leads to either dangerous omission (precipitating clinical relapse) or accidental double-dosing of cardiovascular agents, hypoglycemics, or thyroid hormones.
 2. Contradictory Timing Rules: Regimens often involve strict physiological intervals. For instance, levothyroxine must be administered in a fasting state 45 to 60 minutes prior to food or caffeine, while calcium formulations must be taken post-meal and separated by at least 4 full hours to prevent binding and malabsorption.
 3. Caregiver Uncertainty: Children and family caregivers living in separate rooms or residences often experience persistent anxiety, resorting to daily verification calls: "Did you take your blood pressure medication today?"
-4. Cognitive Friction of Existing Tools: Commercial mobile applications often require complex registration, 15-field data entry forms, subscription paywalls, and persistent cloud tracking.
+4. Alarm Fatigue: Traditional alarm apps are reflexively snoozed or dismissed without the patient actually getting out of bed or ingesting their prescribed dose.
 
-DoseGuard AI was engineered specifically for family members (Mother, Father, Grandparents) to provide an accessible, high-contrast, one-click verification system coupled with local AI prescription parsing and clinical guidance.
+DoseGuard AI was engineered specifically for a 5-member family (Mother, Father, Grandfather, Grandmother, Daughter) to provide individual PIN-secured dashboards, cross-family medication transparency, and an interactive audio alarm requiring two math puzzles to stop.
 
 ---
 
@@ -25,7 +25,8 @@ The platform is built using a lightweight, performant stack without heavy fronte
 
 - Backend: Python 3 with FastAPI and Uvicorn. Lightweight, asynchronous REST API.
 - Frontend: Semantic HTML5, CSS3 with responsive custom design system, and Vanilla JavaScript (ES6+).
-- Local Data Layer: Persistent JSON vault maintaining profiles, active prescriptions, and daily verification timestamps.
+- Audio System: Web Audio API synthesis generating non-blocking clinical alarm tones without external media files.
+- Local Data Layer: Persistent JSON vault maintaining profiles, credentials, active prescriptions, and daily verification timestamps.
 - Clinical AI Engine: Local deterministic entity extractor and safety triage model executing directly on device CPU. Zero cloud API dependencies.
 
 ### Directory Structure
@@ -34,7 +35,7 @@ Challenge-1/
 ├── main.py                     # FastAPI application entrypoint and REST endpoints
 ├── core/
 │   ├── __init__.py
-│   ├── models.py               # Local health vault persistence and adherence logic
+│   ├── models.py               # Local health vault persistence, PIN auth, and adherence logic
 │   ├── ai_engine.py            # Local open-source clinical entity extractor and Q&A engine
 │   └── sample_data.py          # Pre-configured clinical prescriptions and pharmacy invoices
 ├── static/
@@ -42,9 +43,9 @@ Challenge-1/
 │   │   └── styles.css          # Design system, accessible cards, and responsive layout
 │   └── js/
 │       ├── api.js              # Asynchronous HTTP client layer
-│       └── app.js              # State controller, DOM handlers, and modal managers
+│       └── app.js              # State controller, PIN keypad, alarm audio, and math puzzles
 ├── templates/
-│   └── index.html              # Accessible single-page web interface with SVG indicators
+│   └── index.html              # Public landing, PIN login, and member dashboards
 ├── requirements.txt            # Minimal Python dependencies
 ├── Procfile                    # Render process specification
 ├── render.yaml                 # Render infrastructure-as-code deployment manifest
@@ -56,46 +57,46 @@ Challenge-1/
 
 ## 3. Key Functional Modules
 
-### 3.1. One-Click Intake Verification ("Did They Take It?")
-- Organized by discrete clinical time blocks: Morning, Afternoon, Evening, and Night.
-- Accessible, high-contrast action triggers designed for senior vision.
-- Single-click confirmation records an exact timestamp (e.g., "Confirmed taken at 08:35 AM by Family Caregiver"), definitively resolving double-dose uncertainty.
-- Real-time adherence ratio and visual progress indicator.
+### 3.1. Public Website & Number PIN Login
+- Welcoming landing view presenting platform capabilities ("We take care of your regular medication").
+- Individual 4-digit number PIN authentication for each family member:
+  - Mother (Sunita): PIN `1111`
+  - Father (Rajesh): PIN `2222`
+  - Grandfather (Ramesh): PIN `3333`
+  - Grandmother (Kamla): PIN `4444`
+  - Daughter (Alina): PIN `5555`
+- Onscreen numeric keypad supporting tactile touch and keyboard input.
 
-### 3.2. Prescription and Pharmacy Bill Ingestion
-- Ingestion of outpatient doctor slips, discharge notes, and pharmacy cash receipts.
-- Entity extraction parses drug name, strength/dosage, daily timing, dietary conditions (fasting vs. fed state), and physiological precautions.
-- Pre-Configured Test Scenarios: Immediate demonstration without paper documents:
-  - Mother: Endocrine consultation script (Levothyroxine, Calcium + D3, Omega-3).
-  - Father: Cardiology and glycemic dispensing invoice (Telmisartan, Metformin ER, Atorvastatin).
-  - Grandfather: Geriatric routine (Amlodipine, Glucosamine, Lubricant eye drops, Melatonin).
+### 3.2. Personal Member Dashboard
+- Greeting card with member name and calendar day ribbon (M T W T F S S with active date pill).
+- Personal timeline listing scheduled doses with exact administration times (e.g. 06:30 AM, 08:00 AM, 12:30 PM, 10:30 PM).
+- Single-click verification logging exact timestamps (e.g. "Confirmed taken at 08:35 AM").
+- Member controls to add new medicines or remove obsolete prescriptions.
 
-### 3.3. Grounded Clinical Companion
+### 3.3. Family-Wide Medication Transparency ("All Members on One Page")
+- Dedicated cross-family dashboard allowing any member to inspect the medications, timing, and today's status across all 5 family members.
+- Enables adult children to monitor if elderly parents took their medication, or verify what pills grandparents need at night.
+
+### 3.4. Alarm with Math Puzzle Verification to Stop
+- Active reminder system with synthesized clinical alarm sound via Web Audio API.
+- The alarm modal forces mental alertness by requiring the user to accurately solve two dynamic math puzzles (e.g., 2-digit addition and multiplication) before the sound can be silenced.
+- Prevents absent-minded dismissal while half-asleep.
+
+### 3.5. Grounded Clinical Health Companion
 - Deterministic medical triage for common elder medication scenarios:
-  - Missed Dose Protocol: Enforces the critical clinical rule that double doses must never be ingested to compensate for an omitted tablet.
+  - Missed Dose Protocol: Enforces the clinical rule that double doses must never be ingested.
   - Dietary Interactions: Alerts against irreversible CYP3A4 inhibition by grapefruit juice when taking statins or calcium channel blockers.
-  - Interval Rules: Enforces the 4-hour spacing requirement between multivalent cations (calcium/iron) and thyroid hormone absorption.
-
-### 3.4. Caregiver Oversight Hub
-- Consolidated family dashboard displaying daily adherence percentages across all profiles.
-- Automated daily message generator creating clear, caring SMS or messaging updates tailored to remaining doses.
-- One-click export of complete clinical records in JSON format for physician review.
+  - Interval Rules: Enforces the 4-hour spacing requirement between multivalent cations (calcium/iron) and thyroid hormone.
 
 ---
 
 ## 4. Why Open Innovation Matters
 
-In health technologies and family care, open-source architecture represents a fundamental ethical necessity rather than merely an implementation detail:
+In health technologies and family care, open-source architecture represents a fundamental ethical necessity:
 
-### 4.1. Absolute Health Privacy and Zero Telemetry
-Prescription regimens disclose intimate physiological conditions, including cardiovascular disease, psychiatric therapies, neurological decline, and metabolic illness. Forwarding parent health records to closed commercial cloud endpoints exposes private family data to server-side retention, corporate logging, model training, and potential commercial profiling.
-DoseGuard executes all data persistence and clinical parsing 100% locally on the host device. Zero patient data is ever transmitted across external cloud boundaries.
-
-### 4.2. Offline Continuity of Care
-Elderly family members in rural communities or suburban environments frequently encounter unstable internet access. Cloud-dependent healthcare tools fail when network connectivity drops. DoseGuard's open-source architecture operates uninterrupted without requiring an active internet connection.
-
-### 4.3. Universal Access Without Paywalls
-Commercial health applications routinely gate multi-profile management, interaction warnings, and caregiver sharing behind recurring monthly subscriptions. Open innovation ensures that essential adherence tools remain accessible to every family at zero software cost.
+1. Absolute Health Privacy: Prescription regimens disclose intimate physiological conditions. Forwarding family health records to closed cloud APIs exposes sensitive data to server-side retention, corporate logging, model training, and commercial tracking. DoseGuard executes all data persistence and clinical parsing 100% locally on the host device.
+2. Offline Continuity of Care: Elderly family members in rural communities or suburban environments frequently encounter unstable internet access. DoseGuard operates uninterrupted without requiring an active internet connection.
+3. Universal Access Without Paywalls: Commercial health applications routinely gate multi-profile management, interaction warnings, and caregiver sharing behind recurring monthly subscriptions. Open innovation ensures that essential adherence tools remain accessible to every family at zero software cost.
 
 ---
 

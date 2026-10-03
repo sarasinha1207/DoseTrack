@@ -11,23 +11,32 @@ const API = {
     return await res.json();
   },
 
+  async login(profileId, pin) {
+    const res = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ profile_id: profileId, pin: pin })
+    });
+    if (!res.ok) {
+      const errData = await res.json().catch(() => ({}));
+      throw new Error(errData.detail || "Invalid PIN credential");
+    }
+    return await res.json();
+  },
+
   async getProfile(profileId) {
     const res = await fetch(`/api/profiles/${profileId}`);
     if (!res.ok) throw new Error("Failed to load profile details");
     return await res.json();
   },
 
-  async createProfile(data) {
-    const res = await fetch("/api/profiles", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data)
-    });
-    if (!res.ok) throw new Error("Failed to create profile");
+  async getAllFamilyMedications() {
+    const res = await fetch("/api/family/all-medications");
+    if (!res.ok) throw new Error("Failed to load family medications");
     return await res.json();
   },
 
-  async markTaken(profileId, medId, takenBy = "Family Caregiver") {
+  async markTaken(profileId, medId, takenBy = "Self") {
     const res = await fetch("/api/medications/mark-taken", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -88,15 +97,6 @@ const API = {
       body: JSON.stringify({ text: text, sample_key: sampleKey })
     });
     if (!res.ok) throw new Error("Failed to parse prescription text");
-    return await res.json();
-  },
-
-  async uploadPrescription(formData) {
-    const res = await fetch("/api/prescription/upload", {
-      method: "POST",
-      body: formData
-    });
-    if (!res.ok) throw new Error("Failed to upload document");
     return await res.json();
   },
 

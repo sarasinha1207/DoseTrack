@@ -1,13 +1,15 @@
 """
 DoseGuard AI - FastAPI Application Server
 Provides RESTful API and serves the professional web interface.
+Features public landing, PIN authentication, personal member dashboards,
+family-wide medication transparency, and audio alarms with math puzzle verification.
 Ready for deployment on Render.
 Strictly free of emojis.
 """
 
 import os
 from typing import Dict, Any, List, Optional
-from fastapi import FastAPI, HTTPException, UploadFile, File, Form
+from fastapi import FastAPI, HTTPException, UploadFile, File, Form, status
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, JSONResponse
 from pydantic import BaseModel
@@ -17,23 +19,19 @@ from core.models import FamilyVault
 from core.ai_engine import DoseGuardAIEngine
 from core.sample_data import SAMPLE_PRESCRIPTIONS
 
-# Initialize FastAPI App
 app = FastAPI(
     title="DoseGuard AI API",
     description="Privacy-focused family medication management platform",
-    version="2.4.0"
+    version="3.0.0"
 )
 
-# Initialize Core Services
 vault = FamilyVault()
 ai_engine = DoseGuardAIEngine()
 
-# Static directories
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_DIR = os.path.join(BASE_DIR, "static")
 TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
 
-# Mount Static Files
 os.makedirs(STATIC_DIR, exist_ok=True)
 os.makedirs(os.path.join(STATIC_DIR, "css"), exist_ok=True)
 os.makedirs(os.path.join(STATIC_DIR, "js"), exist_ok=True)
@@ -42,11 +40,16 @@ os.makedirs(TEMPLATES_DIR, exist_ok=True)
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
 
-# Pydantic Request Models
+# Pydantic Schemas
+class LoginRequest(BaseModel):
+    profile_id: str
+    pin: str
+
+
 class MarkTakenRequest(BaseModel):
     profile_id: str
     med_id: str
-    taken_by: Optional[str] = "Family Caregiver"
+    taken_by: Optional[str] = "Self"
 
 
 class UnmarkTakenRequest(BaseModel):
@@ -58,17 +61,11 @@ class AddMedicationRequest(BaseModel):
     profile_id: str
     name: str
     dosage: str
-    timing: str
-    food_instruction: str
-    purpose: str
-    caution: str
-
-
-class AddProfileRequest(BaseModel):
-    name: str
-    role: str
-    age: int = 60
-    notes: str = ""
+    time: Optional[str] = "08:00 AM"
+    timing: str = "Morning"
+    food_instruction: str = "Take with water"
+    purpose: str = "Prescribed Regimen"
+    caution: str = "Follow physician instructions"
 
 
 class ParseTextRequest(BaseModel):
@@ -86,7 +83,7 @@ class ChatRequest(BaseModel):
     question: str
 
 
-# Root and Health Routes
+# Root and Health
 @app.get("/")
 def get_index():
     index_path = os.path.join(TEMPLATES_DIR, "index.html")
@@ -100,14 +97,56 @@ def healthcheck():
     return {"status": "healthy", "engine": ai_engine.engine_version}
 
 
-# API Endpoints
-@app.get("/api/profiles")
-def get_all_profiles():
-    profiles = vault.get_profiles()
-    summary = vault.get_family_caregiver_summary()
+# Authentication
+@app.post("/api/auth/login")
+def login_with_pin(req: LoginRequest):
+    profile = vault.get_profile(req.profile_id)
+    if not profile:
+        raise HTTPException(status_code=404, detail="Family member profile not found")
+
+    is_valid = vault.verify_pin(req.profile_id, req.pin)
+    if not is_valid:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect PIN. Please re-enter your 4-digit number PIN."
+        )
+
+    adherence = vault.calculate_today_adherence(req.profile_id)
+    # Strip pin before returning profile object
+    safe_profile = {k: v for k, v in profile.items() if k != "pin"}
     return {
-        "profiles": profiles,
-        "caregiver_summary": summary,
+        "status": "success",
+        "profile": safe_profile,
+        "adherence": adherence
+    }
+
+
+# Family Profiles & Cross-Member Visibility
+@app.get("/api/profiles")
+def get_profiles_list():
+    profiles = vault.get_profiles()
+    safe_list = []
+    for p in profiles:
+        safe_list.append({
+            "id": p["id"],
+            "name": p["name"],
+            "role": p["role"],
+            "initials": p.get("initials", p["role"][:2].upper()),
+            "age": p.get("age", 50),
+            "badge_color": p.get("badge_color", "#0284c7"),
+            "med_count": len([m for m in p.get("medications", []) if m.get("active", True)])
+        })
+    return {"profiles": safe_list}
+
+
+@app.get("/api/family/all-medications")
+def get_all_family_medications():
+    """
+    Returns full medication transparency across all 5 family members on a single page.
+    """
+    overview = vault.get_all_family_overview()
+    return {
+        "family_overview": overview,
         "today": vault.get_today_str()
     }
 
@@ -118,18 +157,14 @@ def get_profile_detail(profile_id: str):
     if not profile:
         raise HTTPException(status_code=404, detail="Profile not found")
     adherence = vault.calculate_today_adherence(profile_id)
+    safe_profile = {k: v for k, v in profile.items() if k != "pin"}
     return {
-        "profile": profile,
+        "profile": safe_profile,
         "adherence": adherence
     }
 
 
-@app.post("/api/profiles")
-def create_profile(req: AddProfileRequest):
-    new_profile = vault.add_profile(req.name, req.role, req.age, req.notes)
-    return {"status": "success", "profile": new_profile}
-
-
+# Medication CRUD
 @app.post("/api/medications/mark-taken")
 def mark_medication_taken(req: MarkTakenRequest):
     success = vault.mark_taken(req.profile_id, req.med_id, req.taken_by)
@@ -153,6 +188,7 @@ def add_single_medication(req: AddMedicationRequest):
     success = vault.add_medication(req.profile_id, {
         "name": req.name,
         "dosage": req.dosage,
+        "time": req.time,
         "timing": req.timing,
         "food_instruction": req.food_instruction,
         "purpose": req.purpose,
@@ -178,6 +214,7 @@ def batch_add_medications(req: BatchAddMedicationsRequest):
     return {"status": "success", "count": len(req.medications)}
 
 
+# AI Prescription & Invoice Ingestion
 @app.get("/api/samples")
 def get_sample_prescriptions():
     return SAMPLE_PRESCRIPTIONS
@@ -191,7 +228,7 @@ def parse_prescription(req: ParseTextRequest):
             "source": sample["title"],
             "medications": sample["parsed_items"]
         }
-    
+
     parsed = ai_engine.parse_prescription_text(req.text)
     return {
         "source": "Custom Input Document",
@@ -201,7 +238,6 @@ def parse_prescription(req: ParseTextRequest):
 
 @app.post("/api/prescription/upload")
 async def upload_prescription_document(file: UploadFile = File(...)):
-    # Simulates OCR ingestion for image documents
     filename = file.filename or "uploaded_document"
     contents = await file.read()
     demo_script = """
@@ -220,12 +256,13 @@ Prescribed Items:
     }
 
 
+# Health Companion
 @app.post("/api/chat/ask")
 def ask_clinical_companion(req: ChatRequest):
     profile = vault.get_profile(req.profile_id)
     if not profile:
         raise HTTPException(status_code=404, detail="Profile not found")
-    
+
     answer = ai_engine.answer_family_question(
         question=req.question,
         profile_name=f"{profile['role']} ({profile['name']})",
@@ -242,7 +279,6 @@ def export_health_vault():
     return vault.data
 
 
-# Application Entrypoint
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8000))
     uvicorn.run("main:app", host="0.0.0.0", port=port, reload=False)

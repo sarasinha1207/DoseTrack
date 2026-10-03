@@ -1,20 +1,23 @@
 /**
  * DoseGuard AI - Frontend Controller
- * Coordinates UI rendering, profile switching, checklist updates, and AI workflows.
- * Strictly no emojis. Clean professional clinical interaction.
+ * Public landing, PIN-based member login, personal dashboards,
+ * cross-family medication overview, and audio alarm with math puzzle verification.
+ * Strictly no emojis.
  */
 
 let appState = {
   profiles: [],
-  currentProfileId: null,
+  selectedLoginMemberId: "daughter",
+  currentUser: null,
   currentProfileData: null,
   adherence: { total: 0, taken: 0, percentage: 0 },
-  samples: {},
-  extractedMedsCache: [],
-  activeTab: "routine"
+  activeTab: "personal",
+  alarmAudioContext: null,
+  alarmInterval: null,
+  currentMathPuzzles: { p1: null, p2: null },
+  pendingAlarmMedId: null
 };
 
-// DOM Content Loaded
 document.addEventListener("DOMContentLoaded", () => {
   initApp();
   setupEventListeners();
@@ -24,41 +27,103 @@ async function initApp() {
   try {
     const data = await API.getProfiles();
     appState.profiles = data.profiles;
-    if (appState.profiles.length > 0) {
-      appState.currentProfileId = appState.profiles[0].id;
+    renderLoginMemberCards();
+
+    // Check if user session exists in sessionStorage
+    const savedUser = sessionStorage.getItem("doseguard_active_user");
+    if (savedUser) {
+      try {
+        const userObj = JSON.parse(savedUser);
+        appState.currentUser = userObj;
+        showDashboardView();
+        await loadPersonalDashboard(userObj.id);
+      } catch (e) {
+        showLandingView();
+      }
+    } else {
+      showLandingView();
     }
-    renderProfilesBar();
-    await loadCurrentProfile();
-    await loadSamples();
-    renderCaregiverHub(data.caregiver_summary);
   } catch (err) {
-    showToast("Error loading family vault data.");
+    showToast("Error initializing application.");
     console.error(err);
   }
 }
 
 function setupEventListeners() {
-  // Tab Switching
-  document.querySelectorAll(".tab-btn").forEach(btn => {
+  // Brand Home Click
+  const brandBlock = document.getElementById("brand-home-btn");
+  if (brandBlock) {
+    brandBlock.addEventListener("click", () => {
+      if (appState.currentUser) {
+        showDashboardView();
+      } else {
+        showLandingView();
+      }
+    });
+  }
+
+  // Landing "Get Started" Button
+  const btnGetStarted = document.getElementById("btn-landing-get-started");
+  if (btnGetStarted) {
+    btnGetStarted.addEventListener("click", () => {
+      document.getElementById("section-login").scrollIntoView({ behavior: "smooth" });
+    });
+  }
+
+  // Keypad Buttons
+  document.querySelectorAll(".keypad-btn").forEach(btn => {
     btn.addEventListener("click", () => {
-      const tabId = btn.getAttribute("data-tab");
-      switchTab(tabId);
+      const val = btn.getAttribute("data-val");
+      handleKeypadInput(val);
     });
   });
 
-  // Add Medication Modal
-  const openAddMedBtn = document.getElementById("btn-open-add-med");
-  if (openAddMedBtn) {
-    openAddMedBtn.addEventListener("click", () => openModal("modal-add-med"));
+  // PIN Form Submit
+  const formLogin = document.getElementById("form-pin-login");
+  if (formLogin) {
+    formLogin.addEventListener("submit", handlePinLoginSubmit);
   }
 
-  // Add Member Modal
-  const openAddMemberBtn = document.getElementById("btn-open-add-member");
-  if (openAddMemberBtn) {
-    openAddMemberBtn.addEventListener("click", () => openModal("modal-add-member"));
+  // Logout / Switch Member Button
+  const btnLogout = document.getElementById("btn-logout-session");
+  if (btnLogout) {
+    btnLogout.addEventListener("click", handleLogout);
   }
 
-  // Close Modal Buttons
+  // Dashboard Tabs
+  document.querySelectorAll(".dash-tab-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const tabId = btn.getAttribute("data-tab");
+      switchDashboardTab(tabId);
+    });
+  });
+
+  // Open Add Med Modal
+  const btnStartSchedule = document.getElementById("btn-start-schedule");
+  if (btnStartSchedule) {
+    btnStartSchedule.addEventListener("click", () => openModal("modal-add-med"));
+  }
+
+  const btnOpenAddMed = document.getElementById("btn-open-add-med");
+  if (btnOpenAddMed) {
+    btnOpenAddMed.addEventListener("click", () => openModal("modal-add-med"));
+  }
+
+  // Test Alarm Button
+  const btnTriggerAlarm = document.getElementById("btn-test-alarm-trigger");
+  if (btnTriggerAlarm) {
+    btnTriggerAlarm.addEventListener("click", () => {
+      triggerMedicationAlarm("Scheduled Dose Verification", "Now");
+    });
+  }
+
+  // Submit Math Challenge Button
+  const btnVerifyAlarm = document.getElementById("btn-verify-alarm-math");
+  if (btnVerifyAlarm) {
+    btnVerifyAlarm.addEventListener("click", handleVerifyAlarmMath);
+  }
+
+  // Modal Closers
   document.querySelectorAll(".modal-close-btn, .modal-cancel-btn").forEach(btn => {
     btn.addEventListener("click", () => {
       const modal = btn.closest(".modal-overlay");
@@ -66,225 +131,237 @@ function setupEventListeners() {
     });
   });
 
-  // Submit Add Medication Form
+  // Submit Add Medication
   const formAddMed = document.getElementById("form-add-med");
   if (formAddMed) {
     formAddMed.addEventListener("submit", handleAddMedicationSubmit);
   }
 
-  // Submit Add Profile Form
-  const formAddMember = document.getElementById("form-add-member");
-  if (formAddMember) {
-    formAddMember.addEventListener("submit", handleAddMemberSubmit);
-  }
-
-  // Parse Prescription Text Button
-  const btnParseText = document.getElementById("btn-parse-text");
-  if (btnParseText) {
-    btnParseText.addEventListener("click", handleParsePrescription);
-  }
-
-  // Batch Save Extracted Meds Button
-  const btnSaveExtracted = document.getElementById("btn-save-extracted");
-  if (btnSaveExtracted) {
-    btnSaveExtracted.addEventListener("click", handleSaveExtractedMeds);
-  }
-
-  // Prescription File Upload
-  const fileInput = document.getElementById("file-prescription-upload");
-  if (fileInput) {
-    fileInput.addEventListener("change", handleFileUpload);
-  }
-
-  // Companion Chat Submit
+  // Companion Chat
   const btnAskCompanion = document.getElementById("btn-ask-companion");
   if (btnAskCompanion) {
     btnAskCompanion.addEventListener("click", handleAskCompanion);
   }
 
-  // Export Vault Button
+  // Export Vault
   const btnExport = document.getElementById("btn-export-vault");
   if (btnExport) {
     btnExport.addEventListener("click", handleExportVault);
   }
+}
 
-  // Copy Caregiver Message Button
-  const btnCopyMessage = document.getElementById("btn-copy-caregiver-msg");
-  if (btnCopyMessage) {
-    btnCopyMessage.addEventListener("click", handleCopyCaregiverMessage);
+// View Switches
+function showLandingView() {
+  document.getElementById("view-landing").classList.add("active");
+  document.getElementById("view-dashboard").classList.remove("active");
+  document.getElementById("user-nav-block").style.display = "none";
+}
+
+function showDashboardView() {
+  document.getElementById("view-landing").classList.remove("active");
+  document.getElementById("view-dashboard").classList.add("active");
+  document.getElementById("user-nav-block").style.display = "flex";
+
+  if (appState.currentUser) {
+    document.getElementById("nav-user-initials").textContent = appState.currentUser.initials;
+    document.getElementById("nav-user-name").textContent = `${appState.currentUser.role} (${appState.currentUser.name})`;
   }
 }
 
-function switchTab(tabId) {
-  appState.activeTab = tabId;
-  document.querySelectorAll(".tab-btn").forEach(btn => {
-    btn.classList.toggle("active", btn.getAttribute("data-tab") === tabId);
-  });
-  document.querySelectorAll(".tab-content").forEach(panel => {
-    panel.classList.toggle("active", panel.id === `tab-${tabId}`);
-  });
-}
-
-function renderProfilesBar() {
-  const container = document.getElementById("profiles-list-container");
+// Login Member Selection & Keypad
+function renderLoginMemberCards() {
+  const container = document.getElementById("login-members-container");
   if (!container) return;
 
   container.innerHTML = "";
   appState.profiles.forEach(p => {
-    const btn = document.createElement("button");
-    btn.className = `profile-card-btn ${p.id === appState.currentProfileId ? "active" : ""}`;
-    btn.innerHTML = `
-      <div class="profile-avatar">${p.initials || p.role.substring(0, 2).toUpperCase()}</div>
-      <div>
-        <div class="profile-info-name">${escapeHtml(p.name)}</div>
-        <div class="profile-info-role">${escapeHtml(p.role)} (${p.age} yrs)</div>
-      </div>
+    const card = document.createElement("div");
+    card.className = `member-select-card ${p.id === appState.selectedLoginMemberId ? "active" : ""}`;
+    card.innerHTML = `
+      <div class="member-select-avatar">${p.initials}</div>
+      <div class="member-select-name">${escapeHtml(p.name)}</div>
+      <div class="member-select-role">${escapeHtml(p.role)}</div>
     `;
-    btn.addEventListener("click", () => selectProfile(p.id));
-    container.appendChild(btn);
+    card.addEventListener("click", () => {
+      appState.selectedLoginMemberId = p.id;
+      renderLoginMemberCards();
+      const pinInput = document.getElementById("input-member-pin");
+      if (pinInput) pinInput.value = "";
+    });
+    container.appendChild(card);
   });
-
-  const addBtn = document.createElement("button");
-  addBtn.className = "add-profile-btn";
-  addBtn.id = "btn-open-add-member";
-  addBtn.innerHTML = `
-    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-      <path d="M12 5v14M5 12h14"></path>
-    </svg>
-    Add Family Member
-  `;
-  addBtn.addEventListener("click", () => openModal("modal-add-member"));
-  container.appendChild(addBtn);
 }
 
-async function selectProfile(profileId) {
-  appState.currentProfileId = profileId;
-  renderProfilesBar();
-  await loadCurrentProfile();
-  refreshCaregiverHub();
+function handleKeypadInput(val) {
+  const pinInput = document.getElementById("input-member-pin");
+  if (!pinInput) return;
+
+  if (val === "C") {
+    pinInput.value = "";
+  } else if (val === "DEL") {
+    pinInput.value = pinInput.value.slice(0, -1);
+  } else {
+    if (pinInput.value.length < 4) {
+      pinInput.value += val;
+    }
+  }
 }
 
-async function loadCurrentProfile() {
-  if (!appState.currentProfileId) return;
+async function handlePinLoginSubmit(e) {
+  e.preventDefault();
+  const pinInput = document.getElementById("input-member-pin");
+  const pin = pinInput ? pinInput.value.trim() : "";
+
+  if (pin.length !== 4) {
+    showToast("Please enter a 4-digit number PIN.");
+    return;
+  }
+
+  const errNotice = document.getElementById("pin-error-notice");
+  if (errNotice) errNotice.style.display = "none";
+
   try {
-    const res = await API.getProfile(appState.currentProfileId);
+    const res = await API.login(appState.selectedLoginMemberId, pin);
+    appState.currentUser = res.profile;
+    sessionStorage.setItem("doseguard_active_user", JSON.stringify(res.profile));
+
+    showToast(`Welcome back, ${res.profile.name}!`);
+    showDashboardView();
+    await loadPersonalDashboard(res.profile.id);
+  } catch (err) {
+    if (errNotice) {
+      errNotice.textContent = err.message || "Incorrect PIN credential.";
+      errNotice.style.display = "block";
+    }
+    if (pinInput) pinInput.value = "";
+  }
+}
+
+function handleLogout() {
+  sessionStorage.removeItem("doseguard_active_user");
+  appState.currentUser = null;
+  appState.currentProfileData = null;
+  showLandingView();
+  showToast("Logged out of personal session.");
+}
+
+// Personal Dashboard
+async function loadPersonalDashboard(profileId) {
+  try {
+    const res = await API.getProfile(profileId);
     appState.currentProfileData = res.profile;
     appState.adherence = res.adherence;
-    
-    renderAdherenceOverview();
-    renderRoutineChecklist();
-    updateCaregiverMessage();
+
+    renderPersonalHeader();
+    renderPersonalTimeline();
+    await loadAllFamilyMedications();
     updateChatSuggestions();
   } catch (err) {
-    showToast("Error retrieving profile details.");
+    showToast("Failed to load dashboard data.");
     console.error(err);
   }
 }
 
-function renderAdherenceOverview() {
-  const nameEl = document.getElementById("adherence-profile-name");
-  const subEl = document.getElementById("adherence-profile-sub");
-  const countEl = document.getElementById("adherence-ratio-text");
-  const pctEl = document.getElementById("adherence-pct-text");
-  const fillEl = document.getElementById("adherence-progress-fill");
+function renderPersonalHeader() {
+  const p = appState.currentProfileData;
+  if (!p) return;
 
-  if (nameEl) nameEl.textContent = `${appState.currentProfileData.role} (${appState.currentProfileData.name})`;
-  if (subEl) subEl.textContent = appState.currentProfileData.notes || "Standard Geriatric Regimen";
+  const nameEl = document.getElementById("banner-member-name");
+  const roleEl = document.getElementById("banner-member-role");
+  const avatarEl = document.getElementById("banner-member-avatar");
 
-  const { total, taken, percentage } = appState.adherence;
-  if (countEl) countEl.textContent = `${taken} of ${total} Doses Confirmed`;
-  if (pctEl) pctEl.textContent = `${percentage}%`;
+  if (nameEl) nameEl.textContent = `Hello, ${p.name}`;
+  if (roleEl) roleEl.textContent = `${p.role} Personal Schedule`;
+  if (avatarEl) avatarEl.textContent = p.initials;
 
-  if (fillEl) {
-    fillEl.style.width = `${percentage}%`;
-    fillEl.classList.toggle("complete", percentage === 100 && total > 0);
+  renderCalendarRibbon();
+}
+
+function renderCalendarRibbon() {
+  const ribbon = document.getElementById("calendar-days-ribbon");
+  if (!ribbon) return;
+
+  const daysOfWeek = ["M", "T", "W", "T", "F", "S", "S"];
+  const today = new Date();
+  const currentDayIndex = (today.getDay() + 6) % 7; // Monday = 0
+  const currentDateNum = today.getDate();
+
+  ribbon.innerHTML = "";
+  for (let i = 0; i < 7; i++) {
+    const dateOffset = i - currentDayIndex;
+    const dayDate = new Date(today);
+    dayDate.setDate(currentDateNum + dateOffset);
+
+    const isToday = i === currentDayIndex;
+    const item = document.createElement("div");
+    item.className = `calendar-day-item ${isToday ? "active" : ""}`;
+    item.innerHTML = `
+      <div class="calendar-day-label">${daysOfWeek[i]}</div>
+      <div class="calendar-date-number">${dayDate.getDate()}</div>
+    `;
+    ribbon.appendChild(item);
   }
 }
 
-function renderRoutineChecklist() {
-  const container = document.getElementById("routine-schedule-container");
-  if (!container) return;
+function renderPersonalTimeline() {
+  const container = document.getElementById("personal-timeline-container");
+  if (!container || !appState.currentProfileData) return;
 
   const meds = appState.currentProfileData.medications || [];
   const activeMeds = meds.filter(m => m.active !== false);
 
   if (activeMeds.length === 0) {
     container.innerHTML = `
-      <div style="text-align: center; padding: 40px 20px; color: var(--slate-500);">
-        <p style="font-weight: 600; margin-bottom: 8px;">No active medications configured for this profile.</p>
-        <p style="font-size: 0.88rem;">Use the "Prescription & Bill Ingestion" tab to load clinical records or add medications manually.</p>
+      <div style="text-align: center; padding: 40px; background: #ffffff; border-radius: var(--radius-lg); border: 1.5px solid var(--slate-200);">
+        <p style="font-weight: 700; color: var(--slate-700); margin-bottom: 6px;">No medications currently scheduled.</p>
+        <p style="font-size: 0.88rem; color: var(--slate-500); margin-bottom: 16px;">Click "Start Schedule" to add your daily medications.</p>
+        <button class="btn btn-primary" onclick="openModal('modal-add-med')">Add Medication</button>
       </div>
     `;
     return;
   }
 
-  const slots = [
-    { key: "Morning", title: "Morning (Breakfast and Early Hours)" },
-    { key: "Afternoon", title: "Afternoon (Lunch and Midday)" },
-    { key: "Evening", title: "Evening (Dinner and Early Night)" },
-    { key: "Night", title: "Night (Bedtime Schedule)" }
-  ];
-
   const todayStr = new Date().toISOString().split("T")[0];
   const logs = appState.currentProfileData.logs?.[todayStr] || {};
 
   let html = "";
+  activeMeds.forEach(med => {
+    const isTaken = !!logs[med.id];
+    const logInfo = logs[med.id];
 
-  slots.forEach(slot => {
-    const slotMeds = activeMeds.filter(m => m.timing === slot.key);
-    if (slotMeds.length > 0) {
-      html += `
-        <div class="time-slot">
-          <div class="time-slot-title">
-            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-              <circle cx="12" cy="12" r="10"></circle>
-              <polyline points="12 6 12 12 16 14"></polyline>
+    html += `
+      <div class="timeline-card ${isTaken ? "taken" : ""}">
+        <div class="timeline-left">
+          <div class="med-icon-pill">
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M12 2v20M2 12h20"></path>
             </svg>
-            ${slot.title} (${slotMeds.length})
           </div>
-      `;
-
-      slotMeds.forEach(med => {
-        const logEntry = logs[med.id];
-        const isTaken = !!logEntry;
-
-        html += `
-          <div class="medication-card ${isTaken ? "taken" : ""}">
-            <div class="medication-details">
-              <div class="medication-title-row">
-                <span class="medication-name">${escapeHtml(med.name)}</span>
-                <span class="pill-badge pill-dosage">${escapeHtml(med.dosage || "1 Unit")}</span>
-                <span class="pill-badge pill-purpose">${escapeHtml(med.purpose || "Prescribed Regimen")}</span>
-              </div>
-              <div class="medication-instruction">
-                <strong>Administration:</strong> ${escapeHtml(med.food_instruction || "Take with water")}
-              </div>
-              ${med.caution ? `<div class="medication-caution">Clinical Precaution: ${escapeHtml(med.caution)}</div>` : ""}
-              ${isTaken ? `<div class="medication-timestamp">Confirmed taken at ${logEntry.timestamp} (${logEntry.taken_by || "Caregiver"})</div>` : ""}
-            </div>
-            <div>
-              ${!isTaken ? `
-                <button class="btn btn-primary" onclick="handleMarkTaken('${med.id}')">
-                  <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
-                  Mark as Taken
-                </button>
-              ` : `
-                <button class="btn btn-secondary" onclick="handleUnmarkTaken('${med.id}')">
-                  Revert Status
-                </button>
-              `}
-              <button class="btn btn-outline-danger" style="margin-left: 6px;" onclick="handleDeleteMedication('${med.id}')" title="Delete Medication">
-                Delete
-              </button>
-            </div>
+          <div>
+            <div class="timeline-med-name">${escapeHtml(med.name)}</div>
+            <div class="timeline-med-dosage">${escapeHtml(med.dosage || "1 Unit")} • ${escapeHtml(med.purpose || "Prescribed")}</div>
+            <div class="timeline-med-instruction">${escapeHtml(med.food_instruction || "Take with water")}</div>
+            ${med.caution ? `<div class="timeline-med-caution">Caution: ${escapeHtml(med.caution)}</div>` : ""}
+            ${isTaken ? `<div style="font-size: 0.8rem; font-weight: 700; color: var(--success); margin-top: 4px;">Confirmed taken at ${logInfo.timestamp}</div>` : ""}
           </div>
-        `;
-      });
-
-      html += `</div>`;
-    }
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+          <div class="timeline-time-badge">${escapeHtml(med.time || "08:00 AM")}</div>
+          ${!isTaken ? `
+            <button class="btn btn-primary" onclick="handleMarkTaken('${med.id}')">
+              Mark Taken
+            </button>
+          ` : `
+            <button class="btn btn-secondary" onclick="handleUnmarkTaken('${med.id}')">
+              Revert
+            </button>
+          `}
+          <button class="btn btn-outline-danger" onclick="handleDeleteMedication('${med.id}')">
+            Remove
+          </button>
+        </div>
+      </div>
+    `;
   });
 
   container.innerHTML = html;
@@ -292,205 +369,279 @@ function renderRoutineChecklist() {
 
 async function handleMarkTaken(medId) {
   try {
-    const res = await API.markTaken(appState.currentProfileId, medId, "Family Caregiver");
+    await API.markTaken(appState.currentUser.id, medId, appState.currentUser.name);
     showToast("Status recorded: Dose confirmed.");
-    await loadCurrentProfile();
-    refreshCaregiverHub();
+    await loadPersonalDashboard(appState.currentUser.id);
   } catch (err) {
-    showToast("Failed to record confirmation.");
-    console.error(err);
+    showToast("Error recording status.");
   }
 }
 
 async function handleUnmarkTaken(medId) {
   try {
-    const res = await API.unmarkTaken(appState.currentProfileId, medId);
+    await API.unmarkTaken(appState.currentUser.id, medId);
     showToast("Status reverted: Dose set to pending.");
-    await loadCurrentProfile();
-    refreshCaregiverHub();
+    await loadPersonalDashboard(appState.currentUser.id);
   } catch (err) {
-    showToast("Failed to revert confirmation.");
-    console.error(err);
+    showToast("Error reverting status.");
   }
 }
 
 async function handleDeleteMedication(medId) {
-  if (!confirm("Are you sure you want to remove this medication from the profile?")) return;
+  if (!confirm("Are you sure you want to remove this medication from your schedule?")) return;
   try {
-    await API.deleteMedication(appState.currentProfileId, medId);
-    showToast("Medication removed from profile.");
-    await loadCurrentProfile();
-    refreshCaregiverHub();
+    await API.deleteMedication(appState.currentUser.id, medId);
+    showToast("Medication removed.");
+    await loadPersonalDashboard(appState.currentUser.id);
   } catch (err) {
-    showToast("Failed to remove medication.");
-    console.error(err);
+    showToast("Error deleting medication.");
   }
 }
 
-// Samples Loading
-async function loadSamples() {
+// All Family Members Cross-Visibility Page
+async function loadAllFamilyMedications() {
   try {
-    appState.samples = await API.getSamples();
-    renderSampleCards();
+    const data = await API.getAllFamilyMedications();
+    renderAllFamilyGrid(data.family_overview);
   } catch (err) {
-    console.error("Failed to load sample clinical data", err);
+    console.error("Failed to load family medications", err);
   }
 }
 
-function renderSampleCards() {
-  const container = document.getElementById("sample-prescriptions-grid");
+function renderAllFamilyGrid(familyOverview) {
+  const container = document.getElementById("all-family-cards-grid");
   if (!container) return;
 
   container.innerHTML = "";
-  Object.keys(appState.samples).forEach(key => {
-    const s = appState.samples[key];
+  familyOverview.forEach(member => {
+    const isCurrent = appState.currentUser && member.id === appState.currentUser.id;
     const card = document.createElement("div");
-    card.className = "sample-card";
+    card.className = "family-member-overview-card";
+    
+    let medsHtml = "";
+    if (member.medications.length === 0) {
+      medsHtml = `<div style="font-size: 0.85rem; color: var(--slate-400); font-style: italic;">No medications recorded</div>`;
+    } else {
+      member.medications.forEach(m => {
+        medsHtml += `
+          <div class="sublist-med-row">
+            <div>
+              <div class="sublist-med-name">${escapeHtml(m.name)}</div>
+              <div class="sublist-med-sub">${escapeHtml(m.dosage)} • ${escapeHtml(m.time || m.timing)}</div>
+            </div>
+            <div>
+              <span class="sublist-status-pill ${m.is_taken ? "taken" : "pending"}">
+                ${m.is_taken ? `Taken (${m.timestamp})` : "Pending"}
+              </span>
+            </div>
+          </div>
+        `;
+      });
+    }
+
     card.innerHTML = `
-      <div>
-        <div class="sample-card-title">${escapeHtml(s.title)}</div>
-        <div class="sample-card-desc">${escapeHtml(s.subtitle)} - ${escapeHtml(s.patient)}</div>
+      <div class="family-member-card-header">
+        <div class="family-member-initials">${member.initials}</div>
+        <div>
+          <div class="family-member-title-name">
+            ${escapeHtml(member.name)} ${isCurrent ? "<span style='font-size: 0.72rem; color: var(--primary);'>(You)</span>" : ""}
+          </div>
+          <div class="family-member-title-role">${escapeHtml(member.role)} (${member.age} yrs) • Adherence: ${member.adherence.percentage}%</div>
+        </div>
       </div>
-      <button class="btn btn-secondary" style="width: 100%; margin-top: 8px;">
-        Load Sample Script
-      </button>
+      <div style="font-size: 0.8rem; color: var(--slate-600); margin-bottom: 12px; background: var(--slate-50); padding: 6px 10px; border-radius: var(--radius-sm);">
+        <strong>Care Protocol:</strong> ${escapeHtml(member.notes || "Standard Protocol")}
+      </div>
+      <div class="member-meds-sublist">
+        ${medsHtml}
+      </div>
     `;
-    card.addEventListener("click", () => loadSampleIntoParser(key));
+
     container.appendChild(card);
   });
 }
 
-function loadSampleIntoParser(key) {
-  const sample = appState.samples[key];
-  if (!sample) return;
-
-  const textarea = document.getElementById("prescription-raw-textarea");
-  if (textarea) textarea.value = sample.raw_text;
-
-  document.getElementById("loaded-sample-key").value = key;
-  showToast(`Loaded: ${sample.title}`);
-}
-
-async function handleParsePrescription() {
-  const textarea = document.getElementById("prescription-raw-textarea");
-  const sampleKey = document.getElementById("loaded-sample-key").value || null;
-  const text = textarea ? textarea.value.trim() : "";
-
-  if (!text) {
-    showToast("Please paste prescription text or select a sample above.");
-    return;
-  }
-
-  const btn = document.getElementById("btn-parse-text");
-  if (btn) btn.textContent = "Processing Extraction...";
-
-  try {
-    const res = await API.parsePrescription(text, sampleKey);
-    appState.extractedMedsCache = res.medications;
-    renderExtractedResults(res.source);
-    showToast(`Successfully extracted ${res.medications.length} medication items.`);
-  } catch (err) {
-    showToast("Extraction error occurred.");
-    console.error(err);
-  } finally {
-    if (btn) btn.textContent = "Extract Medications with Open-Source AI";
-  }
-}
-
-async function handleFileUpload(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-
-  const formData = new FormData();
-  formData.append("file", file);
-
-  const statusEl = document.getElementById("upload-file-status");
-  if (statusEl) statusEl.textContent = `Scanning: ${file.name}...`;
-
-  try {
-    const res = await API.uploadPrescription(formData);
-    const textarea = document.getElementById("prescription-raw-textarea");
-    if (textarea) textarea.value = res.raw_text;
-    appState.extractedMedsCache = res.medications;
-    renderExtractedResults(res.source);
-    if (statusEl) statusEl.textContent = `File ingested: ${file.name}`;
-    showToast("File processed and entities extracted.");
-  } catch (err) {
-    if (statusEl) statusEl.textContent = "Error scanning file.";
-    showToast("File upload failed.");
-    console.error(err);
-  }
-}
-
-function renderExtractedResults(sourceName) {
-  const container = document.getElementById("extracted-results-container");
-  const saveBtn = document.getElementById("btn-save-extracted");
-  if (!container) return;
-
-  if (appState.extractedMedsCache.length === 0) {
-    container.innerHTML = "";
-    if (saveBtn) saveBtn.style.display = "none";
-    return;
-  }
-
-  let html = `
-    <div style="font-weight: 700; color: var(--slate-900); margin-bottom: 12px; font-size: 1rem;">
-      Extracted Schedule (${appState.extractedMedsCache.length} items from ${escapeHtml(sourceName)}):
-    </div>
-  `;
-
-  appState.extractedMedsCache.forEach((m, idx) => {
-    html += `
-      <div class="extracted-item">
-        <div class="extracted-title">#${idx + 1}: ${escapeHtml(m.name)} (${escapeHtml(m.dosage)})</div>
-        <div class="extracted-meta">
-          <strong>Timing:</strong> ${escapeHtml(m.timing)} | 
-          <strong>Administration:</strong> ${escapeHtml(m.food_instruction)}
-        </div>
-        <div class="extracted-meta" style="color: var(--warning); margin-top: 2px;">
-          <strong>Clinical Caution:</strong> ${escapeHtml(m.caution)}
-        </div>
-      </div>
-    `;
+function switchDashboardTab(tabId) {
+  appState.activeTab = tabId;
+  document.querySelectorAll(".dash-tab-btn").forEach(btn => {
+    btn.classList.toggle("active", btn.getAttribute("data-tab") === tabId);
+  });
+  document.querySelectorAll(".dash-tab-content").forEach(panel => {
+    panel.classList.toggle("active", panel.id === `dash-tab-${tabId}`);
   });
 
-  container.innerHTML = html;
-  if (saveBtn) {
-    saveBtn.style.display = "inline-flex";
-    saveBtn.textContent = `Save Extracted Items to ${appState.currentProfileData.role}'s Schedule`;
+  if (tabId === "all-family") {
+    loadAllFamilyMedications();
   }
 }
 
-async function handleSaveExtractedMeds() {
-  if (appState.extractedMedsCache.length === 0) return;
+// Alarm & Math Challenge System
+function triggerMedicationAlarm(medName, medTime, medId = null) {
+  appState.pendingAlarmMedId = medId;
+
+  // 1. Generate 2 distinct math puzzles
+  // Puzzle 1: 2-digit addition (e.g. 17 + 28)
+  const a1 = Math.floor(Math.random() * 40) + 12;
+  const b1 = Math.floor(Math.random() * 40) + 11;
+  const ans1 = a1 + b1;
+
+  // Puzzle 2: Multiplication (e.g. 7 * 8)
+  const a2 = Math.floor(Math.random() * 6) + 4; // 4 to 9
+  const b2 = Math.floor(Math.random() * 7) + 3; // 3 to 9
+  const ans2 = a2 * b2;
+
+  appState.currentMathPuzzles = {
+    p1: { prompt: `${a1} + ${b1}`, answer: ans1 },
+    p2: { prompt: `${a2} × ${b2}`, answer: ans2 }
+  };
+
+  // Populate UI
+  document.getElementById("math-prompt-1").textContent = `${a1} + ${b1} = ?`;
+  document.getElementById("math-prompt-2").textContent = `${a2} × ${b2} = ?`;
+  document.getElementById("input-math-ans-1").value = "";
+  document.getElementById("input-math-ans-2").value = "";
+  document.getElementById("alarm-error-notice").style.display = "none";
+  document.getElementById("alarm-med-label").textContent = `${medName} (${medTime})`;
+
+  // 2. Open Modal
+  const modal = document.getElementById("modal-alarm-challenge");
+  if (modal) modal.classList.add("active");
+
+  // 3. Play Web Audio Beeping Alarm
+  startAlarmAudio();
+}
+
+function startAlarmAudio() {
   try {
-    await API.batchAddMedications(appState.currentProfileId, appState.extractedMedsCache);
-    showToast(`Added ${appState.extractedMedsCache.length} medications to profile.`);
-    appState.extractedMedsCache = [];
-    renderExtractedResults("");
-    await loadCurrentProfile();
-    refreshCaregiverHub();
-    switchTab("routine");
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContext) return;
+
+    if (!appState.alarmAudioContext) {
+      appState.alarmAudioContext = new AudioContext();
+    }
+
+    if (appState.alarmAudioContext.state === "suspended") {
+      appState.alarmAudioContext.resume();
+    }
+
+    // Play periodic beeping sound
+    playBeepSound();
+    if (appState.alarmInterval) clearInterval(appState.alarmInterval);
+    appState.alarmInterval = setInterval(() => {
+      playBeepSound();
+    }, 1200);
+
   } catch (err) {
-    showToast("Failed to batch save medications.");
-    console.error(err);
+    console.error("AudioContext error", err);
   }
 }
 
-// AI Companion Chat
+function playBeepSound() {
+  if (!appState.alarmAudioContext) return;
+  try {
+    const ctx = appState.alarmAudioContext;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(880, ctx.currentTime); // High A
+    osc.frequency.setValueAtTime(659.25, ctx.currentTime + 0.15); // E
+
+    gain.gain.setValueAtTime(0.2, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.35);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.start();
+    osc.stop(ctx.currentTime + 0.36);
+  } catch (err) {
+    console.error("Beep error", err);
+  }
+}
+
+function stopAlarmAudio() {
+  if (appState.alarmInterval) {
+    clearInterval(appState.alarmInterval);
+    appState.alarmInterval = null;
+  }
+}
+
+function handleVerifyAlarmMath() {
+  const ans1 = parseInt(document.getElementById("input-math-ans-1").value.trim());
+  const ans2 = parseInt(document.getElementById("input-math-ans-2").value.trim());
+  const errNotice = document.getElementById("alarm-error-notice");
+
+  const expected1 = appState.currentMathPuzzles.p1.answer;
+  const expected2 = appState.currentMathPuzzles.p2.answer;
+
+  if (ans1 === expected1 && ans2 === expected2) {
+    // Stop Alarm
+    stopAlarmAudio();
+    const modal = document.getElementById("modal-alarm-challenge");
+    if (modal) modal.classList.remove("active");
+
+    showToast("Alarm dismissed. Mental alertness verified!");
+
+    // If alarm was for a specific med, mark it taken
+    if (appState.pendingAlarmMedId && appState.currentUser) {
+      handleMarkTaken(appState.pendingAlarmMedId);
+      appState.pendingAlarmMedId = null;
+    }
+  } else {
+    if (errNotice) {
+      errNotice.textContent = "Incorrect answer. Solve both puzzles accurately to dismiss the alarm.";
+      errNotice.style.display = "block";
+    }
+    // Continue audio alarm
+  }
+}
+
+// Add Medication Form
+async function handleAddMedicationSubmit(e) {
+  e.preventDefault();
+  const name = document.getElementById("input-med-name").value.trim();
+  const dosage = document.getElementById("input-med-dosage").value.trim();
+  const time = document.getElementById("input-med-time").value.trim() || "08:00 AM";
+  const timing = document.getElementById("select-med-timing").value;
+  const food = document.getElementById("input-med-food").value.trim() || "Take with water";
+  const purpose = document.getElementById("input-med-purpose").value.trim() || "Prescribed Item";
+  const caution = document.getElementById("input-med-caution").value.trim() || "Follow physician instructions";
+
+  if (!name || !appState.currentUser) return;
+
+  try {
+    await API.addMedication({
+      profile_id: appState.currentUser.id,
+      name: name,
+      dosage: dosage || "1 Unit",
+      time: time,
+      timing: timing,
+      food_instruction: food,
+      purpose: purpose,
+      caution: caution
+    });
+
+    showToast(`Added ${name} to your schedule.`);
+    document.getElementById("form-add-med").reset();
+    document.getElementById("modal-add-med").classList.remove("active");
+    await loadPersonalDashboard(appState.currentUser.id);
+  } catch (err) {
+    showToast("Error adding medication.");
+  }
+}
+
+// AI Companion
 function updateChatSuggestions() {
   const container = document.getElementById("chat-suggestions-container");
   if (!container || !appState.currentProfileData) return;
 
   const role = appState.currentProfileData.role;
-  const name = appState.currentProfileData.name;
-
   container.innerHTML = "";
   const suggestions = [
     `${role} missed their morning medication, it is 2 PM now. What is the clinical directive?`,
     `Are there recognized food interactions with grapefruit juice, milk, or tea for ${role}?`,
-    `What medications are scheduled for ${role} tonight?`,
-    `Explain the rationale for maintaining a 4-hour interval between calcium and thyroid medication.`
+    `What medications are scheduled for ${role} tonight?`
   ];
 
   suggestions.forEach(q => {
@@ -509,10 +660,7 @@ function updateChatSuggestions() {
 async function handleAskCompanion() {
   const input = document.getElementById("input-chat-question");
   const question = input ? input.value.trim() : "";
-  if (!question) {
-    showToast("Please enter or select a question.");
-    return;
-  }
+  if (!question || !appState.currentUser) return;
 
   const box = document.getElementById("chat-response-box");
   if (box) {
@@ -521,74 +669,11 @@ async function handleAskCompanion() {
   }
 
   try {
-    const res = await API.askCompanion(appState.currentProfileId, question);
+    const res = await API.askCompanion(appState.currentUser.id, question);
     if (box) box.textContent = res.answer;
   } catch (err) {
     if (box) box.textContent = "Error receiving clinical guidance.";
-    showToast("Failed to query companion.");
-    console.error(err);
   }
-}
-
-// Caregiver Hub
-function renderCaregiverHub(summaryList) {
-  const container = document.getElementById("caregiver-cards-container");
-  if (!container) return;
-
-  container.innerHTML = "";
-  (summaryList || []).forEach(item => {
-    const card = document.createElement("div");
-    card.className = `caregiver-card ${item.percentage === 100 && item.total > 0 ? "complete" : (item.taken > 0 ? "in-progress" : "")}`;
-    card.innerHTML = `
-      <div class="caregiver-card-initials">${item.initials}</div>
-      <div class="caregiver-card-name">${escapeHtml(item.name)}</div>
-      <div class="caregiver-card-role">${escapeHtml(item.role)}</div>
-      <div class="caregiver-card-pct">${item.percentage}%</div>
-      <div class="caregiver-card-status">${item.status}</div>
-    `;
-    container.appendChild(card);
-  });
-}
-
-async function refreshCaregiverHub() {
-  try {
-    const data = await API.getProfiles();
-    renderCaregiverHub(data.caregiver_summary);
-  } catch (err) {
-    console.error("Caregiver summary refresh failed", err);
-  }
-}
-
-function updateCaregiverMessage() {
-  const textarea = document.getElementById("caregiver-sms-textarea");
-  if (!textarea || !appState.currentProfileData) return;
-
-  const role = appState.currentProfileData.role;
-  const name = appState.currentProfileData.name;
-  const meds = appState.currentProfileData.medications || [];
-
-  const todayStr = new Date().toISOString().split("T")[0];
-  const logs = appState.currentProfileData.logs?.[todayStr] || {};
-  const pending = meds.filter(m => m.active !== false && !logs[m.id]);
-
-  if (pending.length > 0) {
-    const pendingNames = pending.map(m => m.name).join(", ");
-    textarea.value = `Hello ${role} (${name}), gentle reminder regarding your daily medication schedule. Remaining items for today: ${pendingNames}. Please ensure you take them with adequate room-temperature water. Let us know when completed.`;
-  } else {
-    textarea.value = `Hello ${role} (${name}), all prescribed medications for today have been confirmed as completed. Excellent adherence. Have a restful and healthy day.`;
-  }
-}
-
-function handleCopyCaregiverMessage() {
-  const textarea = document.getElementById("caregiver-sms-textarea");
-  if (!textarea) return;
-
-  textarea.select();
-  navigator.clipboard.writeText(textarea.value).then(() => {
-    showToast("Message copied to clipboard.");
-  }).catch(() => {
-    showToast("Could not copy message.");
-  });
 }
 
 async function handleExportVault() {
@@ -597,7 +682,7 @@ async function handleExportVault() {
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data, null, 2));
     const dlAnchor = document.createElement("a");
     dlAnchor.setAttribute("href", dataStr);
-    dlAnchor.setAttribute("download", `doseguard_health_vault_${new Date().toISOString().split("T")[0]}.json`);
+    dlAnchor.setAttribute("download", `doseguard_family_vault_${new Date().toISOString().split("T")[0]}.json`);
     dlAnchor.click();
     showToast("Vault exported successfully.");
   } catch (err) {
@@ -605,83 +690,11 @@ async function handleExportVault() {
   }
 }
 
-// Modals & Form Submissions
 function openModal(modalId) {
   const modal = document.getElementById(modalId);
   if (modal) modal.classList.add("active");
 }
 
-async function handleAddMedicationSubmit(e) {
-  e.preventDefault();
-  const name = document.getElementById("input-med-name").value.trim();
-  const dosage = document.getElementById("input-med-dosage").value.trim();
-  const timing = document.getElementById("select-med-timing").value;
-  const food = document.getElementById("input-med-food").value.trim();
-  const purpose = document.getElementById("input-med-purpose").value.trim();
-  const caution = document.getElementById("input-med-caution").value.trim();
-
-  if (!name) {
-    showToast("Medication name is required.");
-    return;
-  }
-
-  try {
-    await API.addMedication({
-      profile_id: appState.currentProfileId,
-      name: name,
-      dosage: dosage || "1 Unit",
-      timing: timing,
-      food_instruction: food || "Take with plain water",
-      purpose: purpose || "Prescribed Regimen",
-      caution: caution || "Follow physician instructions"
-    });
-    showToast(`Added ${name} to schedule.`);
-    document.getElementById("form-add-med").reset();
-    document.getElementById("modal-add-med").classList.remove("active");
-    await loadCurrentProfile();
-    refreshCaregiverHub();
-  } catch (err) {
-    showToast("Error adding medication.");
-    console.error(err);
-  }
-}
-
-async function handleAddMemberSubmit(e) {
-  e.preventDefault();
-  const name = document.getElementById("input-member-name").value.trim();
-  const role = document.getElementById("select-member-role").value;
-  const age = parseInt(document.getElementById("input-member-age").value) || 60;
-  const notes = document.getElementById("input-member-notes").value.trim();
-
-  if (!name) {
-    showToast("Name is required.");
-    return;
-  }
-
-  try {
-    const res = await API.createProfile({
-      name: name,
-      role: role,
-      age: age,
-      notes: notes
-    });
-    showToast(`Profile created for ${name}.`);
-    document.getElementById("form-add-member").reset();
-    document.getElementById("modal-add-member").classList.remove("active");
-
-    const data = await API.getProfiles();
-    appState.profiles = data.profiles;
-    appState.currentProfileId = res.profile.id;
-    renderProfilesBar();
-    await loadCurrentProfile();
-    refreshCaregiverHub();
-  } catch (err) {
-    showToast("Error creating profile.");
-    console.error(err);
-  }
-}
-
-// Utility
 function showToast(message) {
   let toast = document.getElementById("app-toast");
   if (!toast) {
