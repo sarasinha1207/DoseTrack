@@ -1,7 +1,8 @@
 /**
  * DoseGuard AI - Frontend Controller
- * Public landing, PIN-based member login, personal dashboards,
- * cross-family medication overview, and audio alarm with math puzzle verification.
+ * Public landing, PIN-based member login, demo sign-in options,
+ * personal dashboards with biometrics, all-family visibility,
+ * and audio alarms with math verification challenges.
  * Strictly no emojis.
  */
 
@@ -28,8 +29,8 @@ async function initApp() {
     const data = await API.getProfiles();
     appState.profiles = data.profiles;
     renderLoginMemberCards();
+    renderQuickDemoButtons();
 
-    // Check if user session exists in sessionStorage
     const savedUser = sessionStorage.getItem("doseguard_active_user");
     if (savedUser) {
       try {
@@ -50,7 +51,7 @@ async function initApp() {
 }
 
 function setupEventListeners() {
-  // Brand Home Click
+  // Brand Home
   const brandBlock = document.getElementById("brand-home-btn");
   if (brandBlock) {
     brandBlock.addEventListener("click", () => {
@@ -62,7 +63,7 @@ function setupEventListeners() {
     });
   }
 
-  // Landing "Get Started" Button
+  // Landing "Get Started"
   const btnGetStarted = document.getElementById("btn-landing-get-started");
   if (btnGetStarted) {
     btnGetStarted.addEventListener("click", () => {
@@ -70,7 +71,7 @@ function setupEventListeners() {
     });
   }
 
-  // Keypad Buttons
+  // Keypad
   document.querySelectorAll(".keypad-btn").forEach(btn => {
     btn.addEventListener("click", () => {
       const val = btn.getAttribute("data-val");
@@ -84,11 +85,23 @@ function setupEventListeners() {
     formLogin.addEventListener("submit", handlePinLoginSubmit);
   }
 
-  // Logout / Switch Member Button
-  const btnLogout = document.getElementById("btn-logout-session");
-  if (btnLogout) {
-    btnLogout.addEventListener("click", handleLogout);
+  // Standard Account Form Demo Notice
+  const formAccountLogin = document.getElementById("form-account-login");
+  if (formAccountLogin) {
+    formAccountLogin.addEventListener("submit", (e) => {
+      e.preventDefault();
+      // Auto redirect to PIN demo login
+      document.getElementById("input-member-pin").value = "5555";
+      appState.selectedLoginMemberId = "daughter";
+      renderLoginMemberCards();
+      handlePinLoginSubmit(e);
+    });
   }
+
+  // Logout Buttons (Top nav and in dashboard profile card)
+  document.querySelectorAll(".btn-logout-action").forEach(btn => {
+    btn.addEventListener("click", handleLogout);
+  });
 
   // Dashboard Tabs
   document.querySelectorAll(".dash-tab-btn").forEach(btn => {
@@ -107,6 +120,18 @@ function setupEventListeners() {
   const btnOpenAddMed = document.getElementById("btn-open-add-med");
   if (btnOpenAddMed) {
     btnOpenAddMed.addEventListener("click", () => openModal("modal-add-med"));
+  }
+
+  // Open Edit Profile Modal
+  const btnEditProfile = document.getElementById("btn-edit-profile-open");
+  if (btnEditProfile) {
+    btnEditProfile.addEventListener("click", handleOpenEditProfileModal);
+  }
+
+  // Form Edit Profile Submit
+  const formEditProfile = document.getElementById("form-edit-profile");
+  if (formEditProfile) {
+    formEditProfile.addEventListener("submit", handleEditProfileSubmit);
   }
 
   // Test Alarm Button
@@ -155,12 +180,14 @@ function showLandingView() {
   document.getElementById("view-landing").classList.add("active");
   document.getElementById("view-dashboard").classList.remove("active");
   document.getElementById("user-nav-block").style.display = "none";
+  document.getElementById("public-nav-links").style.display = "flex";
 }
 
 function showDashboardView() {
   document.getElementById("view-landing").classList.remove("active");
   document.getElementById("view-dashboard").classList.add("active");
   document.getElementById("user-nav-block").style.display = "flex";
+  document.getElementById("public-nav-links").style.display = "none";
 
   if (appState.currentUser) {
     document.getElementById("nav-user-initials").textContent = appState.currentUser.initials;
@@ -168,7 +195,7 @@ function showDashboardView() {
   }
 }
 
-// Login Member Selection & Keypad
+// Member PIN Cards
 function renderLoginMemberCards() {
   const container = document.getElementById("login-members-container");
   if (!container) return;
@@ -192,6 +219,50 @@ function renderLoginMemberCards() {
   });
 }
 
+function renderQuickDemoButtons() {
+  const container = document.getElementById("quick-demo-buttons-container");
+  if (!container) return;
+
+  const defaultPins = {
+    "mother": "1111",
+    "father": "2222",
+    "grandfather": "3333",
+    "grandmother": "4444",
+    "daughter": "5555"
+  };
+
+  container.innerHTML = "";
+  appState.profiles.forEach(p => {
+    const pin = defaultPins[p.id] || "1111";
+    const btn = document.createElement("div");
+    btn.className = "btn-demo-quick";
+    btn.innerHTML = `
+      <div>
+        <div class="demo-quick-name">${escapeHtml(p.name)} (${escapeHtml(p.role)})</div>
+        <div class="demo-quick-role">Age: ${p.age} • ${p.med_count} Meds Scheduled</div>
+      </div>
+      <div class="demo-quick-pin">PIN: ${pin}</div>
+    `;
+    btn.addEventListener("click", async () => {
+      appState.selectedLoginMemberId = p.id;
+      renderLoginMemberCards();
+      const pinInput = document.getElementById("input-member-pin");
+      if (pinInput) pinInput.value = pin;
+      try {
+        const res = await API.login(p.id, pin);
+        appState.currentUser = res.profile;
+        sessionStorage.setItem("doseguard_active_user", JSON.stringify(res.profile));
+        showToast(`Demo Sign-In: Authenticated as ${res.profile.name}!`);
+        showDashboardView();
+        await loadPersonalDashboard(res.profile.id);
+      } catch (err) {
+        showToast("Demo sign-in error.");
+      }
+    });
+    container.appendChild(btn);
+  });
+}
+
 function handleKeypadInput(val) {
   const pinInput = document.getElementById("input-member-pin");
   if (!pinInput) return;
@@ -208,7 +279,7 @@ function handleKeypadInput(val) {
 }
 
 async function handlePinLoginSubmit(e) {
-  e.preventDefault();
+  if (e) e.preventDefault();
   const pinInput = document.getElementById("input-member-pin");
   const pin = pinInput ? pinInput.value.trim() : "";
 
@@ -242,10 +313,10 @@ function handleLogout() {
   appState.currentUser = null;
   appState.currentProfileData = null;
   showLandingView();
-  showToast("Logged out of personal session.");
+  showToast("Logged out of session.");
 }
 
-// Personal Dashboard
+// Personal Dashboard & Biometrics
 async function loadPersonalDashboard(profileId) {
   try {
     const res = await API.getProfile(profileId);
@@ -253,6 +324,7 @@ async function loadPersonalDashboard(profileId) {
     appState.adherence = res.adherence;
 
     renderPersonalHeader();
+    renderBiometricsCard();
     renderPersonalTimeline();
     await loadAllFamilyMedications();
     updateChatSuggestions();
@@ -277,13 +349,72 @@ function renderPersonalHeader() {
   renderCalendarRibbon();
 }
 
+function renderBiometricsCard() {
+  const p = appState.currentProfileData;
+  if (!p) return;
+
+  const ageEl = document.getElementById("bio-val-age");
+  const weightEl = document.getElementById("bio-val-weight");
+  const heightEl = document.getElementById("bio-val-height");
+  const bloodEl = document.getElementById("bio-val-blood");
+  const doctorEl = document.getElementById("bio-val-doctor");
+  const notesEl = document.getElementById("bio-val-notes");
+
+  if (ageEl) ageEl.textContent = `${p.age} years`;
+  if (weightEl) weightEl.textContent = p.weight || "60 kg";
+  if (heightEl) heightEl.textContent = p.height || "165 cm";
+  if (bloodEl) bloodEl.textContent = p.blood_group || "O+";
+  if (doctorEl) doctorEl.textContent = p.doctor || "Attending Physician";
+  if (notesEl) notesEl.textContent = p.notes || "Standard Geriatric Regimen";
+}
+
+function handleOpenEditProfileModal() {
+  const p = appState.currentProfileData;
+  if (!p) return;
+
+  document.getElementById("input-edit-age").value = p.age || 25;
+  document.getElementById("input-edit-weight").value = p.weight || "60 kg";
+  document.getElementById("input-edit-height").value = p.height || "165 cm";
+  document.getElementById("input-edit-blood").value = p.blood_group || "O+";
+  document.getElementById("input-edit-notes").value = p.notes || "";
+
+  openModal("modal-edit-profile");
+}
+
+async function handleEditProfileSubmit(e) {
+  e.preventDefault();
+  const age = parseInt(document.getElementById("input-edit-age").value) || 25;
+  const weight = document.getElementById("input-edit-weight").value.trim() || "60 kg";
+  const height = document.getElementById("input-edit-height").value.trim() || "165 cm";
+  const blood = document.getElementById("input-edit-blood").value.trim() || "O+";
+  const notes = document.getElementById("input-edit-notes").value.trim();
+
+  try {
+    const res = await API.updateProfile({
+      profile_id: appState.currentUser.id,
+      age: age,
+      weight: weight,
+      height: height,
+      blood_group: blood,
+      notes: notes
+    });
+
+    appState.currentProfileData = res.profile;
+    renderBiometricsCard();
+    document.getElementById("modal-edit-profile").classList.remove("active");
+    showToast("Profile information updated successfully.");
+  } catch (err) {
+    showToast("Failed to update profile.");
+  }
+}
+
 function renderCalendarRibbon() {
   const ribbon = document.getElementById("calendar-days-ribbon");
   if (!ribbon) return;
 
   const daysOfWeek = ["M", "T", "W", "T", "F", "S", "S"];
   const today = new Date();
-  const currentDayIndex = (today.getDay() + 6) % 7; // Monday = 0
+  const currentDayIndex = (today.getDay() + 6) % 7;
   const currentDateNum = today.getDate();
 
   ribbon.innerHTML = "";
@@ -449,8 +580,9 @@ function renderAllFamilyGrid(familyOverview) {
           <div class="family-member-title-role">${escapeHtml(member.role)} (${member.age} yrs) • Adherence: ${member.adherence.percentage}%</div>
         </div>
       </div>
-      <div style="font-size: 0.8rem; color: var(--slate-600); margin-bottom: 12px; background: var(--slate-50); padding: 6px 10px; border-radius: var(--radius-sm);">
-        <strong>Care Protocol:</strong> ${escapeHtml(member.notes || "Standard Protocol")}
+      <div style="font-size: 0.8rem; color: var(--slate-600); margin-bottom: 12px; background: var(--slate-50); padding: 8px 10px; border-radius: var(--radius-sm);">
+        <div><strong>Biometrics:</strong> ${escapeHtml(member.weight)} • ${escapeHtml(member.height)} • Blood: ${escapeHtml(member.blood_group)}</div>
+        <div style="margin-top: 4px;"><strong>Care Protocol:</strong> ${escapeHtml(member.notes || "Standard Protocol")}</div>
       </div>
       <div class="member-meds-sublist">
         ${medsHtml}
@@ -480,14 +612,12 @@ function triggerMedicationAlarm(medName, medTime, medId = null) {
   appState.pendingAlarmMedId = medId;
 
   // 1. Generate 2 distinct math puzzles
-  // Puzzle 1: 2-digit addition (e.g. 17 + 28)
   const a1 = Math.floor(Math.random() * 40) + 12;
   const b1 = Math.floor(Math.random() * 40) + 11;
   const ans1 = a1 + b1;
 
-  // Puzzle 2: Multiplication (e.g. 7 * 8)
-  const a2 = Math.floor(Math.random() * 6) + 4; // 4 to 9
-  const b2 = Math.floor(Math.random() * 7) + 3; // 3 to 9
+  const a2 = Math.floor(Math.random() * 6) + 4;
+  const b2 = Math.floor(Math.random() * 7) + 3;
   const ans2 = a2 * b2;
 
   appState.currentMathPuzzles = {
@@ -495,7 +625,6 @@ function triggerMedicationAlarm(medName, medTime, medId = null) {
     p2: { prompt: `${a2} × ${b2}`, answer: ans2 }
   };
 
-  // Populate UI
   document.getElementById("math-prompt-1").textContent = `${a1} + ${b1} = ?`;
   document.getElementById("math-prompt-2").textContent = `${a2} × ${b2} = ?`;
   document.getElementById("input-math-ans-1").value = "";
@@ -503,11 +632,9 @@ function triggerMedicationAlarm(medName, medTime, medId = null) {
   document.getElementById("alarm-error-notice").style.display = "none";
   document.getElementById("alarm-med-label").textContent = `${medName} (${medTime})`;
 
-  // 2. Open Modal
   const modal = document.getElementById("modal-alarm-challenge");
   if (modal) modal.classList.add("active");
 
-  // 3. Play Web Audio Beeping Alarm
   startAlarmAudio();
 }
 
@@ -524,7 +651,6 @@ function startAlarmAudio() {
       appState.alarmAudioContext.resume();
     }
 
-    // Play periodic beeping sound
     playBeepSound();
     if (appState.alarmInterval) clearInterval(appState.alarmInterval);
     appState.alarmInterval = setInterval(() => {
@@ -544,8 +670,8 @@ function playBeepSound() {
     const gain = ctx.createGain();
 
     osc.type = "sine";
-    osc.frequency.setValueAtTime(880, ctx.currentTime); // High A
-    osc.frequency.setValueAtTime(659.25, ctx.currentTime + 0.15); // E
+    osc.frequency.setValueAtTime(880, ctx.currentTime);
+    osc.frequency.setValueAtTime(659.25, ctx.currentTime + 0.15);
 
     gain.gain.setValueAtTime(0.2, ctx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.35);
@@ -576,14 +702,12 @@ function handleVerifyAlarmMath() {
   const expected2 = appState.currentMathPuzzles.p2.answer;
 
   if (ans1 === expected1 && ans2 === expected2) {
-    // Stop Alarm
     stopAlarmAudio();
     const modal = document.getElementById("modal-alarm-challenge");
     if (modal) modal.classList.remove("active");
 
     showToast("Alarm dismissed. Mental alertness verified!");
 
-    // If alarm was for a specific med, mark it taken
     if (appState.pendingAlarmMedId && appState.currentUser) {
       handleMarkTaken(appState.pendingAlarmMedId);
       appState.pendingAlarmMedId = null;
@@ -593,11 +717,10 @@ function handleVerifyAlarmMath() {
       errNotice.textContent = "Incorrect answer. Solve both puzzles accurately to dismiss the alarm.";
       errNotice.style.display = "block";
     }
-    // Continue audio alarm
   }
 }
 
-// Add Medication Form
+// Add Medication
 async function handleAddMedicationSubmit(e) {
   e.preventDefault();
   const name = document.getElementById("input-med-name").value.trim();

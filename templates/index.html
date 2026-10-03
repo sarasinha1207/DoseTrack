@@ -4,14 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DoseGuard AI - Family Medication Protocol</title>
-  <meta name="description" content="Public family medication protocol platform with individual PIN dashboards, cross-member visibility, and math alarm challenge.">
+  <meta name="description" content="Professional family medication protocol platform with individual PIN dashboards, biometrics tracking, cross-member visibility, and math alarm challenge.">
   <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
 
   <div class="app-container">
 
-    <!-- Top Navigation Bar -->
+    <!-- Global Top Navigation Bar -->
     <header class="main-nav-bar">
       <div class="brand-block" id="brand-home-btn">
         <div class="brand-symbol">
@@ -24,27 +24,36 @@
         </div>
       </div>
 
-      <div class="nav-actions">
-        <!-- Logged in state info -->
-        <div id="user-nav-block" style="display: none; align-items: center; gap: 10px;">
-          <div class="user-session-badge">
-            <div class="user-session-avatar" id="nav-user-initials">AL</div>
-            <span id="nav-user-name">Alina</span>
-          </div>
-          <button class="btn btn-secondary" id="btn-logout-session" style="padding: 6px 14px; font-size: 0.82rem;">
-            Switch Member
-          </button>
+      <!-- Public Navigation Links -->
+      <nav class="public-nav-links" id="public-nav-links">
+        <a href="#section-features" class="public-nav-link">Features</a>
+        <a href="#section-how-it-works" class="public-nav-link">How It Works</a>
+        <a href="#section-story" class="public-nav-link">Family Care</a>
+        <a href="#section-login" class="public-nav-link">Sign In</a>
+        <a href="#section-login" class="btn btn-primary" style="padding: 7px 16px; font-size: 0.85rem;">
+          Demo Login
+        </a>
+      </nav>
+
+      <!-- Authenticated User Block -->
+      <div id="user-nav-block" style="display: none; align-items: center; gap: 12px;">
+        <div class="user-session-badge">
+          <div class="user-session-avatar" id="nav-user-initials">AL</div>
+          <span id="nav-user-name">Alina</span>
         </div>
+        <button class="btn btn-secondary btn-logout-action" style="padding: 6px 14px; font-size: 0.82rem;">
+          Log Out
+        </button>
       </div>
     </header>
 
 
     <!-- ================================================================= -->
-    <!-- VIEW 1: PUBLIC LANDING & PIN LOGIN -->
+    <!-- VIEW 1: COMPLETE PUBLIC WEBSITE -->
     <!-- ================================================================= -->
     <div class="landing-view active" id="view-landing">
 
-      <!-- Hero Card Inspired by Onboarding Design -->
+      <!-- Section 1: Hero Banner Inspired by Reference Mockup -->
       <section class="landing-hero-card">
         <div class="landing-tagline">
           <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -56,106 +65,219 @@
         <h1 class="landing-hero-title">We take care of your regular medication</h1>
         <p class="landing-hero-sub">
           Keep yourself and loved ones safe and never forget to take your meds, supplements, and vitamins.
-          Individual PIN access for every family member with complete cross-care transparency.
+          Personal PIN dashboards for each family member with cross-care transparency and alarm challenges.
         </p>
 
-        <button class="landing-cta-btn" id="btn-landing-get-started">
-          Get Started
-        </button>
-      </section>
-
-      <!-- Key Capabilities Grid -->
-      <section class="landing-features-grid">
-        <div class="feature-box">
-          <div class="feature-icon-wrapper">
-            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-              <circle cx="9" cy="7" r="4"></circle>
-              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-            </svg>
-          </div>
-          <div class="feature-title">5-Member Family Network</div>
-          <div class="feature-desc">Dedicated profiles for Mother, Father, Grandfather, Grandmother, and Daughter.</div>
-        </div>
-
-        <div class="feature-box">
-          <div class="feature-icon-wrapper">
-            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-            </svg>
-          </div>
-          <div class="feature-title">Secure Number PIN Access</div>
-          <div class="feature-desc">Each member logs into their personal timeline using an individual 4-digit PIN.</div>
-        </div>
-
-        <div class="feature-box">
-          <div class="feature-icon-wrapper">
-            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-              <circle cx="12" cy="12" r="3"></circle>
-            </svg>
-          </div>
-          <div class="feature-title">Cross-Member Visibility</div>
-          <div class="feature-desc">View the full medication schedule and adherence status of every other family member.</div>
-        </div>
-
-        <div class="feature-box">
-          <div class="feature-icon-wrapper">
-            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-              <circle cx="12" cy="12" r="10"></circle>
-              <polyline points="12 6 12 12 16 14"></polyline>
-            </svg>
-          </div>
-          <div class="feature-title">Math Puzzle Alarm Dismissal</div>
-          <div class="feature-desc">Alarms only dismiss after solving two math puzzles, guaranteeing wakefulness before medication.</div>
-        </div>
-      </section>
-
-      <!-- Member PIN Login Section -->
-      <section class="login-section-card" id="section-login">
-        <h2 class="login-header-title">Member Login</h2>
-        <p class="login-header-sub">Select your profile and enter your 4-digit number PIN to open your dashboard:</p>
-
-        <!-- Member Selector Cards -->
-        <div class="member-selection-grid" id="login-members-container">
-          <!-- Rendered dynamically by JavaScript -->
-        </div>
-
-        <!-- PIN Form -->
-        <form id="form-pin-login">
-          <div class="pin-display-wrapper">
-            <input type="password" id="input-member-pin" class="pin-input-field" maxlength="4" placeholder="••••" readonly required>
-          </div>
-
-          <!-- Onscreen Keypad -->
-          <div class="keypad-grid">
-            <button type="button" class="keypad-btn" data-val="1">1</button>
-            <button type="button" class="keypad-btn" data-val="2">2</button>
-            <button type="button" class="keypad-btn" data-val="3">3</button>
-            <button type="button" class="keypad-btn" data-val="4">4</button>
-            <button type="button" class="keypad-btn" data-val="5">5</button>
-            <button type="button" class="keypad-btn" data-val="6">6</button>
-            <button type="button" class="keypad-btn" data-val="7">7</button>
-            <button type="button" class="keypad-btn" data-val="8">8</button>
-            <button type="button" class="keypad-btn" data-val="9">9</button>
-            <button type="button" class="keypad-btn" data-val="C">C</button>
-            <button type="button" class="keypad-btn" data-val="0">0</button>
-            <button type="button" class="keypad-btn" data-val="DEL">DEL</button>
-          </div>
-
-          <div class="demo-pin-hint">
-            Default Demo PINs: Mother: 1111 • Father: 2222 • Grandfather: 3333 • Grandmother: 4444 • Daughter: 5555
-          </div>
-
-          <div id="pin-error-notice" style="color: var(--danger); font-size: 0.85rem; font-weight: 700; text-align: center; margin-bottom: 12px; display: none;"></div>
-
-          <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px; font-size: 1rem;">
-            Unlock Personal Dashboard
+        <div class="hero-cta-group">
+          <button class="landing-cta-btn" id="btn-landing-get-started">
+            Get Started
           </button>
-        </form>
+          <a href="#section-login" class="landing-demo-btn">
+            View Live Demo
+          </a>
+        </div>
       </section>
+
+      <!-- Section 2: Core Platform Capabilities -->
+      <section id="section-features" style="padding-top: 10px;">
+        <div class="section-headline">
+          <h2 class="section-title">Designed for Complete Family Peace of Mind</h2>
+          <p class="section-sub">
+            Built from clinical experience to address the real-world friction of multi-generation medication schedules.
+          </p>
+        </div>
+
+        <div class="features-grid">
+          <div class="feature-box">
+            <div class="feature-icon-wrapper">
+              <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+            </div>
+            <div class="feature-title">5-Member Family Network</div>
+            <div class="feature-desc">Pre-configured profiles for Mother, Father, Grandfather, Grandmother, and Daughter with individual biometrics.</div>
+          </div>
+
+          <div class="feature-box">
+            <div class="feature-icon-wrapper">
+              <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+            </div>
+            <div class="feature-title">Secure Number PIN Access</div>
+            <div class="feature-desc">Each member logs in with a personal 4-digit number PIN, opening their private timeline and biometric profile.</div>
+          </div>
+
+          <div class="feature-box">
+            <div class="feature-icon-wrapper">
+              <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </div>
+            <div class="feature-title">Cross-Member Visibility</div>
+            <div class="feature-desc">Any family member can check the medicine schedules, timing, and today's status of other family members on a single screen.</div>
+          </div>
+
+          <div class="feature-box">
+            <div class="feature-icon-wrapper">
+              <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+            </div>
+            <div class="feature-title">Math Puzzle Alarm Verification</div>
+            <div class="feature-desc">Audio alarms will not stop until the user solves two small arithmetic puzzles, guaranteeing cognitive wakefulness before medication.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 3: How It Works -->
+      <section id="section-how-it-works">
+        <div class="section-headline">
+          <h2 class="section-title">How DoseGuard Works</h2>
+          <p class="section-sub">A streamlined daily routine tailored for both elderly relatives and tech-savvy caregivers.</p>
+        </div>
+
+        <div class="steps-grid">
+          <div class="step-card">
+            <span class="step-number">Step 01</span>
+            <div class="step-title">Select Member &amp; Enter PIN</div>
+            <div class="step-desc">Choose your family card and punch in your individual 4-digit PIN on the tactile keypad.</div>
+          </div>
+
+          <div class="step-card">
+            <span class="step-number">Step 02</span>
+            <div class="step-title">Manage Personal Schedule</div>
+            <div class="step-desc">Review your calendar ribbon, exact scheduled times, food instructions, and track completed doses.</div>
+          </div>
+
+          <div class="step-card">
+            <span class="step-number">Step 03</span>
+            <div class="step-title">Monitor Other Family Members</div>
+            <div class="step-desc">Open the family-wide view to ensure parents took their blood pressure tablets or check grandparent routines.</div>
+          </div>
+
+          <div class="step-card">
+            <span class="step-number">Step 04</span>
+            <div class="step-title">Solve Alarm Math Challenge</div>
+            <div class="step-desc">When the alarm triggers, solve two quick math puzzles to silence the sound and confirm your intake.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 4: Family Caregiver Story -->
+      <section id="section-story">
+        <div class="story-card">
+          <div class="story-content">
+            <h3 class="story-title">Built for Real Loved Ones: Zero Double-Dosing Panic</h3>
+            <p class="story-desc">
+              "Did I take my morning pill 20 minutes ago, or did I just think about taking it?" This constant uncertainty leads either to skipped medication or dangerous double-doses. DoseGuard eliminates this anxiety forever with clear visual timestamps and family-wide check-in.
+            </p>
+          </div>
+          <div>
+            <a href="#section-login" class="btn btn-primary" style="padding: 12px 24px; font-size: 0.95rem;">
+              Access Family Vault
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 5: Public Login & Demo Section -->
+      <section id="section-login">
+        <div class="section-headline">
+          <h2 class="section-title">Member Sign In &amp; Demo Access</h2>
+          <p class="section-sub">Log in with your family credentials, or use the interactive number PINs below to test the live demo.</p>
+        </div>
+
+        <div class="public-login-section">
+
+          <!-- Column 1: Number PIN Sign-In (Demo Access) -->
+          <div class="login-card">
+            <div class="login-card-title">Sign In with Member PIN</div>
+            <div class="login-card-sub">Select your family profile and enter your 4-digit number PIN:</div>
+
+            <div class="member-selection-grid" id="login-members-container">
+              <!-- Rendered dynamically by JavaScript -->
+            </div>
+
+            <form id="form-pin-login">
+              <input type="password" id="input-member-pin" class="pin-input-field" maxlength="4" placeholder="••••" readonly required>
+
+              <div class="keypad-grid">
+                <button type="button" class="keypad-btn" data-val="1">1</button>
+                <button type="button" class="keypad-btn" data-val="2">2</button>
+                <button type="button" class="keypad-btn" data-val="3">3</button>
+                <button type="button" class="keypad-btn" data-val="4">4</button>
+                <button type="button" class="keypad-btn" data-val="5">5</button>
+                <button type="button" class="keypad-btn" data-val="6">6</button>
+                <button type="button" class="keypad-btn" data-val="7">7</button>
+                <button type="button" class="keypad-btn" data-val="8">8</button>
+                <button type="button" class="keypad-btn" data-val="9">9</button>
+                <button type="button" class="keypad-btn" data-val="C">C</button>
+                <button type="button" class="keypad-btn" data-val="0">0</button>
+                <button type="button" class="keypad-btn" data-val="DEL">DEL</button>
+              </div>
+
+              <div class="demo-pin-hint">
+                Default Demo PINs:<br>
+                Mother: 1111 • Father: 2222 • Grandfather: 3333 • Grandmother: 4444 • Daughter: 5555
+              </div>
+
+              <div id="pin-error-notice" style="color: var(--danger); font-size: 0.85rem; font-weight: 700; text-align: center; margin-bottom: 12px; display: none;"></div>
+
+              <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px;">
+                Unlock Personal Dashboard
+              </button>
+            </form>
+          </div>
+
+          <!-- Column 2: 1-Click Instant Demo Launchers -->
+          <div class="login-card">
+            <div class="login-card-title">1-Click Instant Demo Logins</div>
+            <div class="login-card-sub">Select any family member below to immediately launch their personal dashboard:</div>
+
+            <div class="demo-quick-buttons" id="quick-demo-buttons-container">
+              <!-- Rendered dynamically by JavaScript -->
+            </div>
+
+            <hr style="border: 0; border-top: 1px solid var(--slate-200); margin: 20px 0;">
+
+            <form id="form-account-login">
+              <div style="font-weight: 700; font-size: 0.95rem; color: var(--slate-900); margin-bottom: 8px;">Standard Family Account Login</div>
+              <div class="form-group" style="margin-bottom: 10px;">
+                <input type="text" class="form-input" placeholder="Family Account Username / Email" value="family@doseguard.local">
+              </div>
+              <div class="form-group" style="margin-bottom: 14px;">
+                <input type="password" class="form-input" placeholder="Password" value="••••••••">
+              </div>
+              <button type="submit" class="btn btn-secondary" style="width: 100%;">
+                Sign In with Family Account
+              </button>
+            </form>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Public Website Footer -->
+      <footer class="site-footer">
+        <div>
+          <div style="font-weight: 800; color: var(--slate-900); font-size: 1.1rem; margin-bottom: 4px;">DoseGuard AI</div>
+          <div>Family Medication Protocol &amp; Caregiver Verification Platform</div>
+          <div style="font-size: 0.78rem; color: var(--slate-400); margin-top: 4px;">Zero cloud health telemetry • 100% private local architecture</div>
+        </div>
+        <div class="footer-links">
+          <a href="#section-features" class="footer-link">Features</a>
+          <a href="#section-how-it-works" class="footer-link">How It Works</a>
+          <a href="#section-story" class="footer-link">Family Care</a>
+          <a href="#section-login" class="footer-link">Sign In</a>
+        </div>
+      </footer>
 
     </div>
 
@@ -165,7 +287,7 @@
     <!-- ================================================================= -->
     <div class="dashboard-view" id="view-dashboard">
 
-      <!-- Hero Greeting Banner (Styled like right mobile mockup) -->
+      <!-- Top Hero Greeting Banner (Styled like right mobile mockup) -->
       <section class="member-greeting-banner">
         <div class="greeting-row">
           <div class="greeting-user-info">
@@ -175,13 +297,10 @@
               <div class="greeting-text-name" id="banner-member-name">Hello Alina</div>
             </div>
           </div>
-          <div>
-            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-              <line x1="16" y1="2" x2="16" y2="6"></line>
-              <line x1="8" y1="2" x2="8" y2="6"></line>
-              <line x1="3" y1="10" x2="21" y2="10"></line>
-            </svg>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <button class="btn btn-secondary btn-logout-action" style="background: rgba(255,255,255,0.25); border-color: rgba(255,255,255,0.4); color: #ffffff; padding: 6px 14px; font-size: 0.82rem;">
+              Log Out
+            </button>
           </div>
         </div>
 
@@ -189,6 +308,41 @@
           <div class="schedule-action-title">CREATE NEW SCHEDULE</div>
           <button class="btn-start-schedule" id="btn-start-schedule">
             Start
+          </button>
+        </div>
+      </section>
+
+      <!-- Member Biometric Profile Information Card -->
+      <section class="profile-biometrics-card">
+        <div class="biometrics-grid">
+          <div class="bio-item">
+            <span class="bio-label">Age</span>
+            <span class="bio-val" id="bio-val-age">24 years</span>
+          </div>
+          <div class="bio-item">
+            <span class="bio-label">Weight</span>
+            <span class="bio-val" id="bio-val-weight">56 kg</span>
+          </div>
+          <div class="bio-item">
+            <span class="bio-label">Height</span>
+            <span class="bio-val" id="bio-val-height">165 cm</span>
+          </div>
+          <div class="bio-item">
+            <span class="bio-label">Blood Group</span>
+            <span class="bio-val" id="bio-val-blood">O+</span>
+          </div>
+          <div class="bio-item">
+            <span class="bio-label">Physician</span>
+            <span class="bio-val" id="bio-val-doctor">Dr. Lisa (Wellness)</span>
+          </div>
+        </div>
+
+        <div class="bio-actions">
+          <button class="btn btn-secondary" id="btn-edit-profile-open" style="padding: 7px 14px; font-size: 0.82rem;">
+            Edit Profile
+          </button>
+          <button class="btn btn-outline-danger btn-logout-action" style="padding: 7px 14px; font-size: 0.82rem;">
+            Log Out
           </button>
         </div>
       </section>
@@ -262,7 +416,7 @@
         <div style="margin-bottom: 20px;">
           <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--slate-900);">Family-Wide Medication Transparency</h3>
           <p style="font-size: 0.88rem; color: var(--slate-500);">
-            Inspect medications, timing, and today's status across all 5 members of the family:
+            Inspect medications, biometrics, schedules, and today's status across all 5 members of the family:
           </p>
         </div>
 
@@ -410,11 +564,51 @@
       </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="site-footer">
-      <div>DoseGuard AI • Built for Family Care and Adherence Verification</div>
-      <div style="margin-top: 4px;">Open-Source AI Foundation • Pure Python &amp; Web Standards • Zero Cloud Data Retention</div>
-    </footer>
+
+    <!-- ================================================================= -->
+    <!-- MODAL: EDIT MEMBER PROFILE BIOMETRICS -->
+    <!-- ================================================================= -->
+    <div class="modal-overlay" id="modal-edit-profile">
+      <div class="modal-box">
+        <div class="modal-header">
+          <h3 class="modal-title">Update Biometric Profile Information</h3>
+          <button class="modal-close-btn">&times;</button>
+        </div>
+        <form id="form-edit-profile">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div class="form-group">
+              <label class="form-label" for="input-edit-age">Age (Years)</label>
+              <input type="number" id="input-edit-age" class="form-input" min="1" max="120" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="input-edit-blood">Blood Group</label>
+              <input type="text" id="input-edit-blood" class="form-input" placeholder="e.g. O+, A+, B+" required>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div class="form-group">
+              <label class="form-label" for="input-edit-weight">Weight</label>
+              <input type="text" id="input-edit-weight" class="form-input" placeholder="e.g. 62 kg" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="input-edit-height">Height</label>
+              <input type="text" id="input-edit-height" class="form-input" placeholder="e.g. 165 cm" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="input-edit-notes">Clinical Conditions &amp; Notes</label>
+            <textarea id="input-edit-notes" class="form-textarea" style="min-height: 80px;" placeholder="Clinical protocols and conditions..."></textarea>
+          </div>
+
+          <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+            <button type="button" class="btn btn-secondary modal-cancel-btn">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save Profile Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
 
   </div>
 

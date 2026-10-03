@@ -1,7 +1,7 @@
 """
 DoseGuard AI - FastAPI Application Server
 Provides RESTful API and serves the professional web interface.
-Features public landing, PIN authentication, personal member dashboards,
+Features public landing, PIN authentication, personal member dashboards with biometric profiles,
 family-wide medication transparency, and audio alarms with math puzzle verification.
 Ready for deployment on Render.
 Strictly free of emojis.
@@ -22,7 +22,7 @@ from core.sample_data import SAMPLE_PRESCRIPTIONS
 app = FastAPI(
     title="DoseGuard AI API",
     description="Privacy-focused family medication management platform",
-    version="3.0.0"
+    version="3.1.0"
 )
 
 vault = FamilyVault()
@@ -44,6 +44,15 @@ app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 class LoginRequest(BaseModel):
     profile_id: str
     pin: str
+
+
+class UpdateProfileRequest(BaseModel):
+    profile_id: str
+    age: int
+    weight: str
+    height: str
+    blood_group: str
+    notes: str
 
 
 class MarkTakenRequest(BaseModel):
@@ -112,7 +121,6 @@ def login_with_pin(req: LoginRequest):
         )
 
     adherence = vault.calculate_today_adherence(req.profile_id)
-    # Strip pin before returning profile object
     safe_profile = {k: v for k, v in profile.items() if k != "pin"}
     return {
         "status": "success",
@@ -121,7 +129,7 @@ def login_with_pin(req: LoginRequest):
     }
 
 
-# Family Profiles & Cross-Member Visibility
+# Family Profiles & Biometrics
 @app.get("/api/profiles")
 def get_profiles_list():
     profiles = vault.get_profiles()
@@ -133,22 +141,13 @@ def get_profiles_list():
             "role": p["role"],
             "initials": p.get("initials", p["role"][:2].upper()),
             "age": p.get("age", 50),
+            "weight": p.get("weight", "60 kg"),
+            "height": p.get("height", "165 cm"),
+            "blood_group": p.get("blood_group", "O+"),
             "badge_color": p.get("badge_color", "#0284c7"),
             "med_count": len([m for m in p.get("medications", []) if m.get("active", True)])
         })
     return {"profiles": safe_list}
-
-
-@app.get("/api/family/all-medications")
-def get_all_family_medications():
-    """
-    Returns full medication transparency across all 5 family members on a single page.
-    """
-    overview = vault.get_all_family_overview()
-    return {
-        "family_overview": overview,
-        "today": vault.get_today_str()
-    }
 
 
 @app.get("/api/profiles/{profile_id}")
@@ -161,6 +160,31 @@ def get_profile_detail(profile_id: str):
     return {
         "profile": safe_profile,
         "adherence": adherence
+    }
+
+
+@app.post("/api/profiles/update")
+def update_profile(req: UpdateProfileRequest):
+    updated = vault.update_profile_info(
+        req.profile_id,
+        req.age,
+        req.weight,
+        req.height,
+        req.blood_group,
+        req.notes
+    )
+    if not updated:
+        raise HTTPException(status_code=404, detail="Profile not found")
+    safe_profile = {k: v for k, v in updated.items() if k != "pin"}
+    return {"status": "success", "profile": safe_profile}
+
+
+@app.get("/api/family/all-medications")
+def get_all_family_medications():
+    overview = vault.get_all_family_overview()
+    return {
+        "family_overview": overview,
+        "today": vault.get_today_str()
     }
 
 
@@ -232,26 +256,6 @@ def parse_prescription(req: ParseTextRequest):
     parsed = ai_engine.parse_prescription_text(req.text)
     return {
         "source": "Custom Input Document",
-        "medications": parsed
-    }
-
-
-@app.post("/api/prescription/upload")
-async def upload_prescription_document(file: UploadFile = File(...)):
-    filename = file.filename or "uploaded_document"
-    contents = await file.read()
-    demo_script = """
-APEX CLINICAL OUTPATIENT SUMMARY
-Patient: Uploaded Record
-Prescribed Items:
-1. Pantoprazole 40 mg - 1 tablet morning on an empty stomach.
-2. Paracetamol 650 mg - 1 tablet afternoon following meals for joint discomfort.
-3. Cetirizine 10 mg - 1 tablet night at bedtime.
-    """.strip()
-    parsed = ai_engine.parse_prescription_text(demo_script)
-    return {
-        "source": f"Scanned File: {filename} ({len(contents)} bytes)",
-        "raw_text": demo_script,
         "medications": parsed
     }
 

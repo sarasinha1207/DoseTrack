@@ -1,7 +1,7 @@
 """
 Family Data Layer for DoseGuard AI.
-Stores 5 family members, personal PIN credentials, medication schedules, and daily intake logs.
-Enables personal member dashboards and family-wide cross-visibility.
+Stores 5 family members, personal PIN credentials, biometric profiles (age, weight, height, blood group),
+medication schedules, and daily intake logs.
 Strictly free of emojis. Clean professional medical data structure.
 """
 
@@ -21,6 +21,10 @@ DEFAULT_FAMILY_DATA = {
             "initials": "MO",
             "pin": "1111",
             "age": 54,
+            "weight": "62 kg",
+            "height": "158 cm",
+            "blood_group": "B+",
+            "doctor": "Dr. R. Sharma, MD (Endocrinology)",
             "badge_color": "#0284c7",
             "notes": "Primary Hypothyroidism and mild Osteopenia. Maintain 4-hour gap between thyroid medication and calcium.",
             "medications": [
@@ -67,6 +71,10 @@ DEFAULT_FAMILY_DATA = {
             "initials": "FA",
             "pin": "2222",
             "age": 59,
+            "weight": "74 kg",
+            "height": "172 cm",
+            "blood_group": "A+",
+            "doctor": "Dr. K. Mehta, MD (Cardiology)",
             "badge_color": "#2563eb",
             "notes": "Essential Hypertension and Type 2 Diabetes. Routine blood pressure and fasting glucose monitoring required.",
             "medications": [
@@ -124,8 +132,12 @@ DEFAULT_FAMILY_DATA = {
             "initials": "GF",
             "pin": "3333",
             "age": 82,
+            "weight": "68 kg",
+            "height": "168 cm",
+            "blood_group": "O+",
+            "doctor": "Dr. Verma, Geriatric Specialist",
             "badge_color": "#0d9488",
-            "notes": "Geriatric care protocol. Requires clear schedule, assistance with ambulation, and warm fluids with doses.",
+            "notes": "Geriatric care protocol. Requires assistance with ambulation and warm fluids with doses.",
             "medications": [
                 {
                     "id": "med_gf_1",
@@ -181,6 +193,10 @@ DEFAULT_FAMILY_DATA = {
             "initials": "GM",
             "pin": "4444",
             "age": 78,
+            "weight": "58 kg",
+            "height": "152 cm",
+            "blood_group": "AB+",
+            "doctor": "Dr. Ananya, Family Medicine",
             "badge_color": "#d97706",
             "notes": "Peripheral joint stiffness and vitamin deficiency. Prefers mid-morning doses.",
             "medications": [
@@ -216,6 +232,10 @@ DEFAULT_FAMILY_DATA = {
             "initials": "AL",
             "pin": "5555",
             "age": 24,
+            "weight": "56 kg",
+            "height": "165 cm",
+            "blood_group": "O+",
+            "doctor": "Dr. Lisa, Wellness & Preventative Care",
             "badge_color": "#ec4899",
             "notes": "Daily wellness, iron supplementation, and allergy management.",
             "medications": [
@@ -291,9 +311,8 @@ class FamilyVault:
             try:
                 with open(self.filepath, "r", encoding="utf-8") as f:
                     vault_data = json.load(f)
-                    # Verify 5 members exist
                     profiles = vault_data.get("profiles", [])
-                    if len(profiles) >= 5:
+                    if len(profiles) >= 5 and "weight" in profiles[0]:
                         return vault_data
             except Exception as exc:
                 print(f"Error loading vault, falling back to default structure: {exc}")
@@ -315,6 +334,18 @@ class FamilyVault:
             if p["id"] == profile_id:
                 return p
         return None
+
+    def update_profile_info(self, profile_id: str, age: int, weight: str, height: str, blood_group: str, notes: str) -> Optional[Dict[str, Any]]:
+        profile = self.get_profile(profile_id)
+        if not profile:
+            return None
+        profile["age"] = age
+        profile["weight"] = weight
+        profile["height"] = height
+        profile["blood_group"] = blood_group
+        profile["notes"] = notes
+        self.save()
+        return profile
 
     def verify_pin(self, profile_id: str, pin: str) -> bool:
         profile = self.get_profile(profile_id)
@@ -416,16 +447,12 @@ class FamilyVault:
         return True
 
     def get_all_family_overview(self) -> List[Dict[str, Any]]:
-        """
-        Returns full overview of all 5 family members, their active medications,
-        cautions, and today's status for the cross-family transparency page.
-        """
         today = self.get_today_str()
         overview = []
         for p in self.get_profiles():
             adh = self.calculate_today_adherence(p["id"])
             p_logs = p.get("logs", {}).get(today, {})
-            
+
             meds_with_status = []
             for m in p.get("medications", []):
                 if m.get("active", True):
@@ -442,6 +469,10 @@ class FamilyVault:
                 "role": p["role"],
                 "initials": p.get("initials", p["role"][:2].upper()),
                 "age": p.get("age", 50),
+                "weight": p.get("weight", "60 kg"),
+                "height": p.get("height", "165 cm"),
+                "blood_group": p.get("blood_group", "O+"),
+                "doctor": p.get("doctor", "Family Care Physician"),
                 "notes": p.get("notes", ""),
                 "badge_color": p.get("badge_color", "#0284c7"),
                 "adherence": adh,

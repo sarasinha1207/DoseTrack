@@ -30,6 +30,16 @@ const API = {
     return await res.json();
   },
 
+  async updateProfile(profileData) {
+    const res = await fetch("/api/profiles/update", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(profileData)
+    });
+    if (!res.ok) throw new Error("Failed to update profile biometrics");
+    return await res.json();
+  },
+
   async getAllFamilyMedications() {
     const res = await fetch("/api/family/all-medications");
     if (!res.ok) throw new Error("Failed to load family medications");
@@ -71,16 +81,6 @@ const API = {
       method: "DELETE"
     });
     if (!res.ok) throw new Error("Failed to delete medication");
-    return await res.json();
-  },
-
-  async batchAddMedications(profileId, medications) {
-    const res = await fetch("/api/medications/batch-add", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ profile_id: profileId, medications: medications })
-    });
-    if (!res.ok) throw new Error("Failed to batch save medications");
     return await res.json();
   },
 

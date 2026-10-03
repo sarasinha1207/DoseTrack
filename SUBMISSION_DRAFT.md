@@ -19,9 +19,9 @@ This daily uncertainty has severe clinical consequences: elderly loved ones eith
 I engineered **DoseGuard AI** specifically for a **5-member family (Mother Sunita, Father Rajesh, Grandfather Ramesh, Grandmother Kamla, and Daughter Alina)**.
 
 ### Problems Solved
-1. **Public Website & PIN-Secured Member Access:** A modern public portal allowing each family member to select their profile and authenticate using a 4-digit number PIN (e.g. 1111 for Mother, 2222 for Father, 3333 for Grandfather, 4444 for Grandmother, 5555 for Daughter) on an onscreen keypad.
-2. **Personalized Member Dashboards:** Each family member has their private dashboard featuring a calendar ribbon, schedule creation, personal timeline with exact times (e.g. 06:30 AM, 08:00 AM, 12:30 PM, 10:30 PM), and controls to add or remove their medications.
-3. **Cross-Family Medication Transparency ("All Members on One Page"):** A dedicated family overview page where any member can inspect the medications, timing, and today's status of every other member in the family—enabling adult children to verify if parents took their blood pressure pills or check what grandparents need at night.
+1. **Public Website & Demo Access:** A comprehensive public portal featuring platform overview, feature breakdown, workflow explanation, family caregiver story, and a dedicated login section with **1-click instant demo sign-in** and number PIN authentication.
+2. **Individual Member Dashboards with Biometrics:** Each member has their private dashboard with a greeting, calendar ribbon, schedule creation, daily timeline with exact times (e.g. 06:30 AM, 08:00 AM, 12:30 PM, 10:30 PM), controls to add/remove medications, and a complete biometric profile (Age, Weight, Height, Blood Group, Doctor, and Care Notes) with full editing capabilities and prominent logout buttons.
+3. **Cross-Family Medication Transparency ("All Members on One Page"):** A dedicated family overview page where any member can inspect the medications, biometrics, timing, and today's status of every other member in the family—enabling adult children to verify if parents took their blood pressure pills or check what grandparents need at night.
 4. **Alarm with 2 Math Puzzles to Stop:** An integrated audio reminder powered by the Web Audio API. To prevent absent-minded dismissal, the alarm cannot be turned off until the user correctly solves two dynamic math puzzles (such as 2-digit addition and multiplication), guaranteeing cognitive alertness before ingesting medication.
 5. **Deterministic Clinical Health Companion:** Provides grounded, safety-first answers to urgent clinical questions (missed dose triage, CYP3A4 grapefruit interactions with statins, and spacing requirements between calcium and thyroid hormone).
 
@@ -33,9 +33,10 @@ I engineered **DoseGuard AI** specifically for a **5-member family (Mother Sunit
 - **Local Port:** Accessible at `http://localhost:8000`
 - **Source Code Repository:** [Provide your GitHub Repository URL here]
 
-### Interface Overview
-- **Design System:** Inspired by modern mobile health applications, with pastel gradients, floating cards, calendar day ribbons, and SVG indicators.
-- **Accessibility:** Large touch targets, clear timing categorization, and immediate tactile feedback.
+### Interface Highlights
+- **Public Portal:** Clean hero section, feature cards, workflow roadmap, caregiver testimonials, and dual login methods.
+- **Biometric Profiles:** Personal dashboards display vital health metrics (Age, Weight, Height, Blood Group) alongside daily regimens.
+- **Cognitive Alarm Challenge:** Active audio beeping that forces user alertness through arithmetic problem-solving.
 
 ---
 
@@ -95,4 +96,4 @@ Saved agent development transcript link:
 ---
 
 ### Family Feedback
-> *"The math puzzle alarm ensures I never just tap dismiss and go back to sleep. And knowing that Alina can see whether I took my morning pressure medicine gives our whole family peace of mind."* - Father
+> *"The math puzzle alarm ensures I never just tap dismiss and go back to sleep. And having my biometric profile and medication schedule accessible while knowing my family can cross-check my doses gives our whole household complete peace of mind."* - Father

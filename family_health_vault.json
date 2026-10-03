@@ -7,6 +7,10 @@
       "initials": "MO",
       "pin": "1111",
       "age": 54,
+      "weight": "62 kg",
+      "height": "158 cm",
+      "blood_group": "B+",
+      "doctor": "Dr. R. Sharma, MD (Endocrinology)",
       "badge_color": "#0284c7",
       "notes": "Primary Hypothyroidism and mild Osteopenia. Maintain 4-hour gap between thyroid medication and calcium.",
       "medications": [
@@ -53,6 +57,10 @@
       "initials": "FA",
       "pin": "2222",
       "age": 59,
+      "weight": "74 kg",
+      "height": "172 cm",
+      "blood_group": "A+",
+      "doctor": "Dr. K. Mehta, MD (Cardiology)",
       "badge_color": "#2563eb",
       "notes": "Essential Hypertension and Type 2 Diabetes. Routine blood pressure and fasting glucose monitoring required.",
       "medications": [
@@ -110,8 +118,12 @@
       "initials": "GF",
       "pin": "3333",
       "age": 82,
+      "weight": "68 kg",
+      "height": "168 cm",
+      "blood_group": "O+",
+      "doctor": "Dr. Verma, Geriatric Specialist",
       "badge_color": "#0d9488",
-      "notes": "Geriatric care protocol. Requires clear schedule, assistance with ambulation, and warm fluids with doses.",
+      "notes": "Geriatric care protocol. Requires assistance with ambulation and warm fluids with doses.",
       "medications": [
         {
           "id": "med_gf_1",
@@ -167,6 +179,10 @@
       "initials": "GM",
       "pin": "4444",
       "age": 78,
+      "weight": "58 kg",
+      "height": "152 cm",
+      "blood_group": "AB+",
+      "doctor": "Dr. Ananya, Family Medicine",
       "badge_color": "#d97706",
       "notes": "Peripheral joint stiffness and vitamin deficiency. Prefers mid-morning doses.",
       "medications": [
@@ -201,9 +217,13 @@
       "role": "Daughter",
       "initials": "AL",
       "pin": "5555",
-      "age": 24,
+      "age": 25,
+      "weight": "57 kg",
+      "height": "166 cm",
+      "blood_group": "O+",
+      "doctor": "Dr. Lisa, Wellness & Preventative Care",
       "badge_color": "#ec4899",
-      "notes": "Daily wellness, iron supplementation, and allergy management.",
+      "notes": "Updated notes",
       "medications": [
         {
           "id": "med_al_1",
