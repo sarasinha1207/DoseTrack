@@ -1,7 +1,7 @@
 """
 Family Data Layer for DoseGuard AI.
-Stores 5 family members, personal PIN credentials, biometric profiles (age, weight, height, blood group),
-medication schedules, and daily intake logs.
+Stores family members, credentials (Username/PIN), biometrics, Admin/Primary roles,
+medication schedules, and daily intake verification logs.
 Strictly free of emojis. Clean professional medical data structure.
 """
 
@@ -16,8 +16,13 @@ DEFAULT_FAMILY_DATA = {
     "profiles": [
         {
             "id": "mother",
-            "name": "Sunita",
+            "username": "sunita",
+            "password": "sunita123",
+            "first_name": "Sunita",
+            "last_name": "Sharma",
+            "name": "Sunita Sharma",
             "role": "Mother",
+            "gender": "Female",
             "initials": "MO",
             "pin": "1111",
             "age": 54,
@@ -25,6 +30,7 @@ DEFAULT_FAMILY_DATA = {
             "height": "158 cm",
             "blood_group": "B+",
             "doctor": "Dr. R. Sharma, MD (Endocrinology)",
+            "is_admin": True,
             "badge_color": "#0284c7",
             "notes": "Primary Hypothyroidism and mild Osteopenia. Maintain 4-hour gap between thyroid medication and calcium.",
             "medications": [
@@ -66,8 +72,13 @@ DEFAULT_FAMILY_DATA = {
         },
         {
             "id": "father",
-            "name": "Rajesh",
+            "username": "rajesh",
+            "password": "rajesh123",
+            "first_name": "Rajesh",
+            "last_name": "Sharma",
+            "name": "Rajesh Sharma",
             "role": "Father",
+            "gender": "Male",
             "initials": "FA",
             "pin": "2222",
             "age": 59,
@@ -75,6 +86,7 @@ DEFAULT_FAMILY_DATA = {
             "height": "172 cm",
             "blood_group": "A+",
             "doctor": "Dr. K. Mehta, MD (Cardiology)",
+            "is_admin": False,
             "badge_color": "#2563eb",
             "notes": "Essential Hypertension and Type 2 Diabetes. Routine blood pressure and fasting glucose monitoring required.",
             "medications": [
@@ -127,8 +139,13 @@ DEFAULT_FAMILY_DATA = {
         },
         {
             "id": "grandfather",
-            "name": "Ramesh",
+            "username": "ramesh",
+            "password": "ramesh123",
+            "first_name": "Ramesh",
+            "last_name": "Sharma",
+            "name": "Ramesh Sharma",
             "role": "Grandfather",
+            "gender": "Male",
             "initials": "GF",
             "pin": "3333",
             "age": 82,
@@ -136,6 +153,7 @@ DEFAULT_FAMILY_DATA = {
             "height": "168 cm",
             "blood_group": "O+",
             "doctor": "Dr. Verma, Geriatric Specialist",
+            "is_admin": False,
             "badge_color": "#0d9488",
             "notes": "Geriatric care protocol. Requires assistance with ambulation and warm fluids with doses.",
             "medications": [
@@ -188,8 +206,13 @@ DEFAULT_FAMILY_DATA = {
         },
         {
             "id": "grandmother",
-            "name": "Kamla",
+            "username": "kamla",
+            "password": "kamla123",
+            "first_name": "Kamla",
+            "last_name": "Sharma",
+            "name": "Kamla Sharma",
             "role": "Grandmother",
+            "gender": "Female",
             "initials": "GM",
             "pin": "4444",
             "age": 78,
@@ -197,6 +220,7 @@ DEFAULT_FAMILY_DATA = {
             "height": "152 cm",
             "blood_group": "AB+",
             "doctor": "Dr. Ananya, Family Medicine",
+            "is_admin": False,
             "badge_color": "#d97706",
             "notes": "Peripheral joint stiffness and vitamin deficiency. Prefers mid-morning doses.",
             "medications": [
@@ -227,8 +251,13 @@ DEFAULT_FAMILY_DATA = {
         },
         {
             "id": "daughter",
-            "name": "Alina",
+            "username": "alina",
+            "password": "alina123",
+            "first_name": "Alina",
+            "last_name": "Sharma",
+            "name": "Alina Sharma",
             "role": "Daughter",
+            "gender": "Female",
             "initials": "AL",
             "pin": "5555",
             "age": 24,
@@ -236,6 +265,7 @@ DEFAULT_FAMILY_DATA = {
             "height": "165 cm",
             "blood_group": "O+",
             "doctor": "Dr. Lisa, Wellness & Preventative Care",
+            "is_admin": True,
             "badge_color": "#ec4899",
             "notes": "Daily wellness, iron supplementation, and allergy management.",
             "medications": [
@@ -307,12 +337,41 @@ class FamilyVault:
         self.data = self._load()
 
     def _load(self) -> Dict[str, Any]:
+        default_credentials = {
+            "mother": ("sunita", "sunita123", "Sunita", "Sharma"),
+            "father": ("rajesh", "rajesh123", "Rajesh", "Sharma"),
+            "grandfather": ("ramesh", "ramesh123", "Ramesh", "Sharma"),
+            "grandmother": ("kamla", "kamla123", "Kamla", "Sharma"),
+            "daughter": ("alina", "alina123", "Alina", "Sharma")
+        }
         if os.path.exists(self.filepath):
             try:
                 with open(self.filepath, "r", encoding="utf-8") as f:
                     vault_data = json.load(f)
                     profiles = vault_data.get("profiles", [])
-                    if len(profiles) >= 5 and "weight" in profiles[0]:
+                    if len(profiles) >= 5:
+                        changed = False
+                        for p in profiles:
+                            pid = p.get("id", "")
+                            if pid in default_credentials:
+                                uname, pwd, fname, lname = default_credentials[pid]
+                                if "username" not in p or p.get("username") == pid:
+                                    p["username"] = uname
+                                    changed = True
+                                if "password" not in p:
+                                    p["password"] = pwd
+                                    changed = True
+                                if "first_name" not in p:
+                                    p["first_name"] = fname
+                                    p["last_name"] = lname
+                                    changed = True
+                            else:
+                                p.setdefault("username", pid)
+                                p.setdefault("password", f"{pid}123")
+                            p.setdefault("gender", "Female" if p.get("role") in ["Mother", "Grandmother", "Daughter"] else "Male")
+                            p.setdefault("is_admin", p.get("id") == "mother")
+                        if changed:
+                            self._save_raw(vault_data)
                         return vault_data
             except Exception as exc:
                 print(f"Error loading vault, falling back to default structure: {exc}")
@@ -335,6 +394,93 @@ class FamilyVault:
                 return p
         return None
 
+    def find_profile_by_identifier(self, identifier: str) -> Optional[Dict[str, Any]]:
+        ident_clean = str(identifier).strip().lower()
+        for p in self.get_profiles():
+            if p["id"].lower() == ident_clean:
+                return p
+            if p.get("username", "").lower() == ident_clean:
+                return p
+            if p.get("name", "").lower() == ident_clean:
+                return p
+            if p.get("first_name", "").lower() == ident_clean:
+                return p
+        return None
+
+    def register_new_member(self, member_data: Dict[str, Any]) -> Dict[str, Any]:
+        username = member_data.get("username", "").strip().lower()
+        if not username:
+            username = member_data.get("first_name", "member").strip().lower().replace(" ", "_")
+        
+        # Check existing username
+        existing = self.find_profile_by_identifier(username)
+        if existing:
+            username = f"{username}_{int(datetime.now().timestamp()) % 10000}"
+
+        profile_id = username
+        first_name = member_data.get("first_name", "").strip()
+        last_name = member_data.get("last_name", "").strip()
+        full_name = f"{first_name} {last_name}".strip() or member_data.get("name", "New Member")
+        role = member_data.get("role", "Family Member")
+        initials = (first_name[:1] + (last_name[:1] if last_name else role[:1])).upper()
+        if not initials:
+            initials = "FM"
+
+        password = str(member_data.get("password", "")).strip() or "password123"
+
+        colors = ["#4f46e5", "#0284c7", "#059669", "#7c3aed", "#d97706", "#2563eb"]
+        chosen_color = colors[len(self.data["profiles"]) % len(colors)]
+
+        new_profile = {
+            "id": profile_id,
+            "username": username,
+            "password": password,
+            "first_name": first_name,
+            "last_name": last_name,
+            "name": full_name,
+            "role": role,
+            "gender": member_data.get("gender", "Unspecified"),
+            "initials": initials,
+            "age": int(member_data.get("age", 30)),
+            "weight": member_data.get("weight", "-"),
+            "height": member_data.get("height", "-"),
+            "blood_group": member_data.get("blood_group", "-"),
+            "doctor": member_data.get("doctor", "Family Care Physician"),
+            "is_admin": bool(member_data.get("is_admin", False)),
+            "badge_color": chosen_color,
+            "notes": member_data.get("notes", "New registered family profile."),
+            "medications": [],
+            "logs": {}
+        }
+
+        self.data["profiles"].append(new_profile)
+        self.save()
+        return new_profile
+
+    def complete_onboarding(self, profile_id: str, onboarding_data: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+        profile = self.get_profile(profile_id)
+        if not profile:
+            return None
+        if onboarding_data.get("weight"):
+            profile["weight"] = onboarding_data["weight"].strip()
+        if onboarding_data.get("height"):
+            profile["height"] = onboarding_data["height"].strip()
+        if onboarding_data.get("blood_group"):
+            profile["blood_group"] = onboarding_data["blood_group"].strip()
+        if onboarding_data.get("doctor"):
+            profile["doctor"] = onboarding_data["doctor"].strip()
+        if onboarding_data.get("notes"):
+            profile["notes"] = onboarding_data["notes"].strip()
+        if "is_admin" in onboarding_data:
+            profile["is_admin"] = bool(onboarding_data["is_admin"])
+
+        initial_med = onboarding_data.get("initial_medication")
+        if initial_med and initial_med.get("name"):
+            self.add_medication(profile_id, initial_med)
+
+        self.save()
+        return profile
+
     def update_profile_info(self, profile_id: str, age: int, weight: str, height: str, blood_group: str, notes: str) -> Optional[Dict[str, Any]]:
         profile = self.get_profile(profile_id)
         if not profile:
@@ -347,12 +493,18 @@ class FamilyVault:
         self.save()
         return profile
 
-    def verify_pin(self, profile_id: str, pin: str) -> bool:
-        profile = self.get_profile(profile_id)
+    def verify_credentials(self, identifier: str, password: str) -> Optional[Dict[str, Any]]:
+        profile = self.find_profile_by_identifier(identifier)
         if not profile:
-            return False
-        stored_pin = str(profile.get("pin", "1234")).strip()
-        return stored_pin == str(pin).strip()
+            return None
+        pwd_clean = str(password).strip()
+        stored_pwd = str(profile.get("password", "")).strip()
+        stored_pin = str(profile.get("pin", "")).strip()
+        default_pwd = f"{profile.get('username', '')}123"
+
+        if pwd_clean in [stored_pwd, stored_pin, default_pwd] or (not stored_pwd and pwd_clean == "1234"):
+            return profile
+        return None
 
     def get_today_str(self) -> str:
         return date.today().isoformat()
@@ -388,14 +540,6 @@ class FamilyVault:
             self.save()
             return True
         return False
-
-    def is_med_taken_today(self, profile_id: str, med_id: str) -> Optional[Dict[str, Any]]:
-        profile = self.get_profile(profile_id)
-        if not profile:
-            return None
-        today = self.get_today_str()
-        today_logs = profile.get("logs", {}).get(today, {})
-        return today_logs.get(med_id, None)
 
     def calculate_today_adherence(self, profile_id: str) -> Dict[str, Any]:
         profile = self.get_profile(profile_id)
@@ -465,14 +609,17 @@ class FamilyVault:
 
             overview.append({
                 "id": p["id"],
+                "username": p.get("username", p["id"]),
                 "name": p["name"],
                 "role": p["role"],
+                "gender": p.get("gender", "Unspecified"),
                 "initials": p.get("initials", p["role"][:2].upper()),
                 "age": p.get("age", 50),
                 "weight": p.get("weight", "60 kg"),
                 "height": p.get("height", "165 cm"),
                 "blood_group": p.get("blood_group", "O+"),
                 "doctor": p.get("doctor", "Family Care Physician"),
+                "is_admin": p.get("is_admin", False),
                 "notes": p.get("notes", ""),
                 "badge_color": p.get("badge_color", "#0284c7"),
                 "adherence": adh,

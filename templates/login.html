@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In - DoseGuard AI Family Portal</title>
+  <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body class="public-page-wrapper">
+
+  <!-- Full-Width System Header -->
+  <header class="site-header-full">
+    <div class="header-inner-full">
+      <div class="brand-block" onclick="window.location.href='/'">
+        <div class="brand-symbol">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            <path d="M9 12l2 2 4-4"></path>
+          </svg>
+        </div>
+        <div>
+          <div class="brand-text-name">DoseGuard AI</div>
+          <div class="brand-subtext">Clinical Family Medication Vault</div>
+        </div>
+      </div>
+
+      <nav class="nav-links-row">
+        <a href="/" class="nav-item">Home</a>
+        <a href="/#features" class="nav-item">Clinical Features</a>
+        <a href="/#how-it-works" class="nav-item">How It Works</a>
+        <a href="/about" class="nav-item">About & Research</a>
+        <a href="/#faq-section" class="nav-item">Caregiver FAQ</a>
+      </nav>
+
+      <div class="nav-actions-right">
+        <a href="/" class="btn btn-secondary">
+          Back to Overview
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Login / Register Area -->
+  <main class="public-content-container">
+    <div style="max-width: 620px; margin: 0 auto;">
+
+      <!-- Card Container -->
+      <div class="login-card-box">
+
+        <!-- Tab Switcher -->
+        <div class="auth-tabs-row" style="display: flex; gap: 8px; margin-bottom: 24px; border-bottom: 2px solid var(--slate-200); padding-bottom: 8px;">
+          <button type="button" id="tab-btn-signin" class="btn btn-primary" style="flex: 1; border-radius: var(--radius-md);">
+            Existing Member Sign In
+          </button>
+          <button type="button" id="tab-btn-register" class="btn btn-secondary" style="flex: 1; border-radius: var(--radius-md);">
+            Register New Family Member
+          </button>
+        </div>
+
+        <!-- Form 1: Existing Member Sign In -->
+        <div id="section-signin">
+          <div style="margin-bottom: 20px;">
+            <h1 style="font-size: 1.4rem; font-weight: 800; color: var(--slate-900); margin-bottom: 6px;">
+              Family Portal Member Sign In
+            </h1>
+            <p style="font-size: 0.88rem; color: var(--slate-600);">
+              Enter your family account credentials to access your personal dashboard and scheduled medications.
+            </p>
+          </div>
+
+          <!-- Alert box for errors -->
+          <div id="signin-alert" class="alert-box alert-error" style="display: none; margin-bottom: 16px;"></div>
+
+          <form id="form-signin" onsubmit="return false;">
+            <div class="form-group" style="margin-bottom: 16px;">
+              <label for="login-username" class="form-label" style="display: block; font-weight: 700; margin-bottom: 6px; color: var(--slate-800);">
+                Username or Member ID
+              </label>
+              <input 
+                type="text" 
+                id="login-username" 
+                class="form-input" 
+                placeholder="e.g. sunita, rajesh, alina"
+                required
+                autocomplete="username"
+                style="width: 100%; padding: 12px 14px; border: 1.5px solid var(--slate-300); border-radius: var(--radius-md); font-size: 0.95rem;"
+              >
+            </div>
+
+            <div class="form-group" style="margin-bottom: 22px;">
+              <label for="login-password" class="form-label" style="display: block; font-weight: 700; margin-bottom: 6px; color: var(--slate-800);">
+                Password
+              </label>
+              <input 
+                type="password" 
+                id="login-password" 
+                class="form-input" 
+                placeholder="Enter account password"
+                required
+                autocomplete="current-password"
+                style="width: 100%; padding: 12px 14px; border: 1.5px solid var(--slate-300); border-radius: var(--radius-md); font-size: 0.95rem;"
+              >
+            </div>
+
+            <button type="submit" id="btn-submit-signin" class="btn btn-primary btn-lg" style="width: 100%; justify-content: center; padding: 14px;">
+              Sign In to Personal Dashboard
+            </button>
+          </form>
+
+          <!-- 1-Click Quick Demo Accounts -->
+          <div style="margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--slate-200);">
+            <div style="font-size: 0.8rem; font-weight: 800; color: var(--slate-500); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px;">
+              1-Click Demo Profiles (Prefills Username & Password)
+            </div>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+              <button type="button" class="btn btn-secondary btn-sm demo-account-btn" data-username="sunita" data-pwd="sunita123">
+                Mother (Sunita)
+              </button>
+              <button type="button" class="btn btn-secondary btn-sm demo-account-btn" data-username="rajesh" data-pwd="rajesh123">
+                Father (Rajesh)
+              </button>
+              <button type="button" class="btn btn-secondary btn-sm demo-account-btn" data-username="ramesh" data-pwd="ramesh123">
+                Grandfather (Ramesh)
+              </button>
+              <button type="button" class="btn btn-secondary btn-sm demo-account-btn" data-username="kamla" data-pwd="kamla123">
+                Grandmother (Kamla)
+              </button>
+              <button type="button" class="btn btn-secondary btn-sm demo-account-btn" data-username="alina" data-pwd="alina123">
+                Daughter / Admin (Alina)
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form 2: New Member Registration (Only 6 fields) -->
+        <div id="section-register" style="display: none;">
+          <div style="margin-bottom: 20px;">
+            <h1 style="font-size: 1.4rem; font-weight: 800; color: var(--slate-900); margin-bottom: 6px;">
+              Register New Family Member
+            </h1>
+            <p style="font-size: 0.88rem; color: var(--slate-600);">
+              Create an account with basic credentials. You will add clinical biometrics and medications immediately upon completion.
+            </p>
+          </div>
+
+          <!-- Alert box for register errors -->
+          <div id="register-alert" class="alert-box alert-error" style="display: none; margin-bottom: 16px;"></div>
+
+          <form id="form-register" onsubmit="return false;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+              <div class="form-group">
+                <label for="reg-first-name" class="form-label" style="display: block; font-weight: 700; margin-bottom: 6px; color: var(--slate-800);">
+                  First Name *
+                </label>
+                <input 
+                  type="text" 
+                  id="reg-first-name" 
+                  class="form-input" 
+                  placeholder="e.g. Ramesh" 
+                  required
+                  style="width: 100%; padding: 11px 14px; border: 1.5px solid var(--slate-300); border-radius: var(--radius-md);"
+                >
+              </div>
+
+              <div class="form-group">
+                <label for="reg-last-name" class="form-label" style="display: block; font-weight: 700; margin-bottom: 6px; color: var(--slate-800);">
+                  Second Name (Last Name) *
+                </label>
+                <input 
+                  type="text" 
+                  id="reg-last-name" 
+                  class="form-input" 
+                  placeholder="e.g. Sharma" 
+                  required
+                  style="width: 100%; padding: 11px 14px; border: 1.5px solid var(--slate-300); border-radius: var(--radius-md);"
+                >
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+              <div class="form-group">
+                <label for="reg-gender" class="form-label" style="display: block; font-weight: 700; margin-bottom: 6px; color: var(--slate-800);">
+                  Gender *
+                </label>
+                <select 
+                  id="reg-gender" 
+                  class="form-input" 
+                  required
+                  style="width: 100%; padding: 11px 14px; border: 1.5px solid var(--slate-300); border-radius: var(--radius-md); background: #ffffff;"
+                >
+                  <option value="Female">Female</option>
+                  <option value="Male">Male</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="reg-age" class="form-label" style="display: block; font-weight: 700; margin-bottom: 6px; color: var(--slate-800);">
+                  Age *
+                </label>
+                <input 
+                  type="number" 
+                  id="reg-age" 
+                  class="form-input" 
+                  placeholder="e.g. 72" 
+                  min="1" 
+                  max="120" 
+                  required
+                  style="width: 100%; padding: 11px 14px; border: 1.5px solid var(--slate-300); border-radius: var(--radius-md);"
+                >
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 14px;">
+              <label for="reg-username" class="form-label" style="display: block; font-weight: 700; margin-bottom: 6px; color: var(--slate-800);">
+                Username *
+              </label>
+              <input 
+                type="text" 
+                id="reg-username" 
+                class="form-input" 
+                placeholder="Choose a unique username (e.g. ramesh_s)" 
+                required
+                autocomplete="username"
+                style="width: 100%; padding: 11px 14px; border: 1.5px solid var(--slate-300); border-radius: var(--radius-md);"
+              >
+            </div>
+
+            <div class="form-group" style="margin-bottom: 22px;">
+              <label for="reg-password" class="form-label" style="display: block; font-weight: 700; margin-bottom: 6px; color: var(--slate-800);">
+                Password *
+              </label>
+              <input 
+                type="password" 
+                id="reg-password" 
+                class="form-input" 
+                placeholder="Minimum 4 characters" 
+                required
+                autocomplete="new-password"
+                style="width: 100%; padding: 11px 14px; border: 1.5px solid var(--slate-300); border-radius: var(--radius-md);"
+              >
+            </div>
+
+            <button type="submit" id="btn-submit-register" class="btn btn-primary btn-lg" style="width: 100%; justify-content: center; padding: 14px;">
+              Complete Registration & Proceed to Clinical Setup
+            </button>
+          </form>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Full-Width System Footer -->
+  <footer class="site-footer-full">
+    <div class="footer-inner-full">
+      <div class="footer-grid-improved">
+        <div class="footer-desc-column">
+          <div class="footer-brand-title">DoseGuard AI</div>
+          <p class="footer-brand-desc">
+            DoseGuard AI is a clinical family medication safety and adherence platform engineered to protect elderly parents and grandparents managing chronic, multi-drug therapies. Built to eliminate missed doses and dangerous accidental double-dosing, the platform combines individual member schedules, cross-family care transparency, local health vaults, and cognitive math alertness verification to safeguard our loved ones' health while preserving their independence.
+          </p>
+          <p class="footer-caregiver-assurance">
+            Dedicated to supporting family caregivers with reliable, local-first oversight and dignity for aging family members.
+          </p>
+        </div>
+
+        <div class="footer-links-column">
+          <div class="footer-col-title">Platform Navigation</div>
+          <ul class="footer-links-list">
+            <li><a href="/" class="footer-nav-link">Home Overview</a></li>
+            <li><a href="/#features" class="footer-nav-link">Clinical Features</a></li>
+            <li><a href="/#how-it-works" class="footer-nav-link">How It Works</a></li>
+            <li><a href="/about" class="footer-nav-link">About & Research</a></li>
+            <li><a href="/login" class="footer-nav-link">Family Portal Login</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-links-column">
+          <div class="footer-col-title">Caregiver Capabilities</div>
+          <ul class="footer-links-list">
+            <li><a href="/#features" class="footer-nav-link">Individual Member Schedules</a></li>
+            <li><a href="/#features" class="footer-nav-link">Cross-Family Transparency</a></li>
+            <li><a href="/about#math-verification" class="footer-nav-link">Cognitive Math Alarms</a></li>
+            <li><a href="/about#polypharmacy" class="footer-nav-link">Polypharmacy Protection</a></li>
+            <li><a href="/#faq-section" class="footer-nav-link">Caregiver FAQ</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom-bar-v2">
+        <div>
+          Copyright 2026 DoseGuard AI Platform. All rights reserved.
+        </div>
+        <div>
+          Clinical Decision Support Notice: Always consult licensed physicians for prescription adjustments.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/static/js/api.js"></script>
+  <script src="/static/js/login.js"></script>
+</body>
+</html>

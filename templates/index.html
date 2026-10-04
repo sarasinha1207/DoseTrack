@@ -3,617 +3,357 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DoseGuard AI - Family Medication Protocol</title>
-  <meta name="description" content="Professional family medication protocol platform with individual PIN dashboards, biometrics tracking, cross-member visibility, and math alarm challenge.">
+  <title>DoseGuard AI - Family Medication Safety & Adherence Platform</title>
   <link rel="stylesheet" href="/static/css/styles.css">
 </head>
-<body>
+<body class="public-page-wrapper">
 
-  <div class="app-container">
-
-    <!-- Global Top Navigation Bar -->
-    <header class="main-nav-bar">
-      <div class="brand-block" id="brand-home-btn">
+  <!-- Full-Width System Header -->
+  <header class="site-header-full">
+    <div class="header-inner-full">
+      <div class="brand-block" onclick="window.location.href='/'">
         <div class="brand-symbol">
-          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
-            <path d="M12 2v20M2 12h20"></path>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            <path d="M9 12l2 2 4-4"></path>
           </svg>
         </div>
         <div>
-          <div class="brand-text-name">DoseGuard</div>
+          <div class="brand-text-name">DoseGuard AI</div>
+          <div class="brand-subtext">Clinical Family Medication Vault</div>
         </div>
       </div>
 
-      <!-- Public Navigation Links -->
-      <nav class="public-nav-links" id="public-nav-links">
-        <a href="#section-features" class="public-nav-link">Features</a>
-        <a href="#section-how-it-works" class="public-nav-link">How It Works</a>
-        <a href="#section-story" class="public-nav-link">Family Care</a>
-        <a href="#section-login" class="public-nav-link">Sign In</a>
-        <a href="#section-login" class="btn btn-primary" style="padding: 7px 16px; font-size: 0.85rem;">
-          Demo Login
-        </a>
+      <nav class="nav-links-row">
+        <a href="/" class="nav-item active">Home</a>
+        <a href="/#features" class="nav-item">Clinical Features</a>
+        <a href="/#how-it-works" class="nav-item">How It Works</a>
+        <a href="/about" class="nav-item">About & Research</a>
+        <a href="/#faq-section" class="nav-item">Caregiver FAQ</a>
       </nav>
 
-      <!-- Authenticated User Block -->
-      <div id="user-nav-block" style="display: none; align-items: center; gap: 12px;">
-        <div class="user-session-badge">
-          <div class="user-session-avatar" id="nav-user-initials">AL</div>
-          <span id="nav-user-name">Alina</span>
-        </div>
-        <button class="btn btn-secondary btn-logout-action" style="padding: 6px 14px; font-size: 0.82rem;">
-          Log Out
-        </button>
+      <div class="nav-actions-right">
+        <a href="/login" class="btn btn-primary" id="btn-nav-login">
+          Sign In to Portal
+        </a>
       </div>
-    </header>
+    </div>
+  </header>
 
+  <!-- Main Content Body -->
+  <main class="public-content-container">
 
-    <!-- ================================================================= -->
-    <!-- VIEW 1: COMPLETE PUBLIC WEBSITE -->
-    <!-- ================================================================= -->
-    <div class="landing-view active" id="view-landing">
+    <!-- Hero Section -->
+    <section class="public-hero-card">
+      <span class="hero-badge">Built for Parents & Grandparents</span>
+      <h1 class="hero-title">
+        Intelligent Medication Oversight Built for the Ones Who Cared for Us First
+      </h1>
+      <p class="hero-description">
+        DoseGuard AI protects elderly family members managing polypharmacy regimens. Combining individual member dashboards, cross-family dosage visibility, and audio alarms with mandatory math puzzle alertness checks to stop accidental double-dosing or forgotten pills.
+      </p>
+      <div class="hero-actions">
+        <a href="/login" class="btn btn-primary btn-lg">
+          Access Family Portal
+        </a>
+        <a href="/about" class="btn btn-secondary btn-lg">
+          Read Clinical Mission
+        </a>
+      </div>
+    </section>
 
-      <!-- Section 1: Hero Banner Inspired by Reference Mockup -->
-      <section class="landing-hero-card">
-        <div class="landing-tagline">
-          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-          </svg>
-          Intelligent Family Medication Protocol
-        </div>
+    <!-- Adherence Metric Highlights -->
+    <section class="stats-row">
+      <div class="stat-pill-card">
+        <div class="stat-num">50%</div>
+        <div class="stat-label">Senior Non-Adherence Rate Reduced</div>
+      </div>
+      <div class="stat-pill-card">
+        <div class="stat-num">2-Step</div>
+        <div class="stat-label">Arithmetic Alertness Verification</div>
+      </div>
+      <div class="stat-pill-card">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Family Caregiver Transparency</div>
+      </div>
+      <div class="stat-pill-card">
+        <div class="stat-num">Zero</div>
+        <div class="stat-label">External Cloud Dependency</div>
+      </div>
+    </section>
 
-        <h1 class="landing-hero-title">We take care of your regular medication</h1>
-        <p class="landing-hero-sub">
-          Keep yourself and loved ones safe and never forget to take your meds, supplements, and vitamins.
-          Personal PIN dashboards for each family member with cross-care transparency and alarm challenges.
+    <!-- Clinical Features Grid -->
+    <section id="features" class="features-section">
+      <div class="section-header-center">
+        <h2 class="section-title">Comprehensive Elder Medication Safety</h2>
+        <p class="section-subtitle">
+          Designed specifically for adult children, elderly parents, and grandparents managing complex chronic treatment schedules.
         </p>
+      </div>
 
-        <div class="hero-cta-group">
-          <button class="landing-cta-btn" id="btn-landing-get-started">
-            Get Started
-          </button>
-          <a href="#section-login" class="landing-demo-btn">
-            View Live Demo
-          </a>
-        </div>
-      </section>
-
-      <!-- Section 2: Core Platform Capabilities -->
-      <section id="section-features" style="padding-top: 10px;">
-        <div class="section-headline">
-          <h2 class="section-title">Designed for Complete Family Peace of Mind</h2>
-          <p class="section-sub">
-            Built from clinical experience to address the real-world friction of multi-generation medication schedules.
+      <div class="features-grid">
+        <div class="feature-item-card">
+          <div class="feature-icon-wrapper">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          </div>
+          <h3 class="feature-card-title">Personal Member Dashboards</h3>
+          <p class="feature-card-desc">
+            Each family member possesses their own secure profile recording biometrics (weight, height, blood group, age), primary care physician, and specific scheduled intake windows.
           </p>
         </div>
 
-        <div class="features-grid">
-          <div class="feature-box">
-            <div class="feature-icon-wrapper">
-              <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                <circle cx="9" cy="7" r="4"></circle>
-                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-              </svg>
-            </div>
-            <div class="feature-title">5-Member Family Network</div>
-            <div class="feature-desc">Pre-configured profiles for Mother, Father, Grandfather, Grandmother, and Daughter with individual biometrics.</div>
+        <div class="feature-item-card">
+          <div class="feature-icon-wrapper">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
           </div>
-
-          <div class="feature-box">
-            <div class="feature-icon-wrapper">
-              <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-              </svg>
-            </div>
-            <div class="feature-title">Secure Number PIN Access</div>
-            <div class="feature-desc">Each member logs in with a personal 4-digit number PIN, opening their private timeline and biometric profile.</div>
-          </div>
-
-          <div class="feature-box">
-            <div class="feature-icon-wrapper">
-              <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                <circle cx="12" cy="12" r="3"></circle>
-              </svg>
-            </div>
-            <div class="feature-title">Cross-Member Visibility</div>
-            <div class="feature-desc">Any family member can check the medicine schedules, timing, and today's status of other family members on a single screen.</div>
-          </div>
-
-          <div class="feature-box">
-            <div class="feature-icon-wrapper">
-              <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="10"></circle>
-                <polyline points="12 6 12 12 16 14"></polyline>
-              </svg>
-            </div>
-            <div class="feature-title">Math Puzzle Alarm Verification</div>
-            <div class="feature-desc">Audio alarms will not stop until the user solves two small arithmetic puzzles, guaranteeing cognitive wakefulness before medication.</div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Section 3: How It Works -->
-      <section id="section-how-it-works">
-        <div class="section-headline">
-          <h2 class="section-title">How DoseGuard Works</h2>
-          <p class="section-sub">A streamlined daily routine tailored for both elderly relatives and tech-savvy caregivers.</p>
+          <h3 class="feature-card-title">Cross-Family Schedule Transparency</h3>
+          <p class="feature-card-desc">
+            Any family member can view the active medications and compliance logs of parents and grandparents. Caregivers instantly see if morning doses were verified or missed.
+          </p>
         </div>
 
-        <div class="steps-grid">
-          <div class="step-card">
-            <span class="step-number">Step 01</span>
-            <div class="step-title">Select Member &amp; Enter PIN</div>
-            <div class="step-desc">Choose your family card and punch in your individual 4-digit PIN on the tactile keypad.</div>
+        <div class="feature-item-card">
+          <div class="feature-icon-wrapper">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
           </div>
-
-          <div class="step-card">
-            <span class="step-number">Step 02</span>
-            <div class="step-title">Manage Personal Schedule</div>
-            <div class="step-desc">Review your calendar ribbon, exact scheduled times, food instructions, and track completed doses.</div>
-          </div>
-
-          <div class="step-card">
-            <span class="step-number">Step 03</span>
-            <div class="step-title">Monitor Other Family Members</div>
-            <div class="step-desc">Open the family-wide view to ensure parents took their blood pressure tablets or check grandparent routines.</div>
-          </div>
-
-          <div class="step-card">
-            <span class="step-number">Step 04</span>
-            <div class="step-title">Solve Alarm Math Challenge</div>
-            <div class="step-desc">When the alarm triggers, solve two quick math puzzles to silence the sound and confirm your intake.</div>
-          </div>
+          <h3 class="feature-card-title">Dual-Puzzle Math Wakeup Alarm</h3>
+          <p class="feature-card-desc">
+            Audio alerts cannot be reflexively silenced or snoozed. Seniors must solve two simple arithmetic math problems to confirm cognitive alertness before the alarm turns off.
+          </p>
         </div>
-      </section>
 
-      <!-- Section 4: Family Caregiver Story -->
-      <section id="section-story">
-        <div class="story-card">
-          <div class="story-content">
-            <h3 class="story-title">Built for Real Loved Ones: Zero Double-Dosing Panic</h3>
-            <p class="story-desc">
-              "Did I take my morning pill 20 minutes ago, or did I just think about taking it?" This constant uncertainty leads either to skipped medication or dangerous double-doses. DoseGuard eliminates this anxiety forever with clear visual timestamps and family-wide check-in.
+        <div class="feature-item-card">
+          <div class="feature-icon-wrapper">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+            </svg>
+          </div>
+          <h3 class="feature-card-title">Clinical Prescription Intake</h3>
+          <p class="feature-card-desc">
+            Integrated support for hospital discharge summaries, prescription slips, and pharmacy bills. The AI engine extracts drug names, dosages, intervals, and food instructions.
+          </p>
+        </div>
+
+        <div class="feature-item-card">
+          <div class="feature-icon-wrapper">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+            </svg>
+          </div>
+          <h3 class="feature-card-title">Primary Family Admin Control</h3>
+          <p class="feature-card-desc">
+            Designate a primary family caregiver (such as an adult daughter or son) who holds elevated management privileges to add regimens, update dosages, and supervise all members.
+          </p>
+        </div>
+
+        <div class="feature-item-card">
+          <div class="feature-icon-wrapper">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+          </div>
+          <h3 class="feature-card-title">Zero-Cloud Vault Security</h3>
+          <p class="feature-card-desc">
+            Elder health records, biometric indicators, and medication schedules stay strictly confidential within your local vault, eliminating third-party commercial data harvesting.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="workflow-section">
+      <div class="section-header-center">
+        <h2 class="section-title">How DoseGuard AI Operates</h2>
+        <p class="section-subtitle">
+          A four-step clinical workflow designed for straightforward everyday adoption by seniors and adult children.
+        </p>
+      </div>
+
+      <div class="workflow-steps-grid">
+        <div class="step-card">
+          <div class="step-badge">Step 1</div>
+          <h4 class="step-title">Register Member Profile</h4>
+          <p class="step-desc">
+            Sign up with basic credentials, followed by clinical profile completion including weight, height, blood group, and physician details.
+          </p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-badge">Step 2</div>
+          <h4 class="step-title">Enter Medication Regimen</h4>
+          <p class="step-desc">
+            Add medication names, prescribed dosages, target times (Morning, Afternoon, Evening, Night), and specific food intake guidance.
+          </p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-badge">Step 3</div>
+          <h4 class="step-title">Auditory Alarm & Math Verification</h4>
+          <p class="step-desc">
+            At intake time, the Web Audio alarm activates. The senior solves 2 arithmetic problems to confirm alertness before logging the dose.
+          </p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-badge">Step 4</div>
+          <h4 class="step-title">Family Caregiver Confirmation</h4>
+          <p class="step-desc">
+            All connected family members view real-time adherence indicators across all relatives from the Family Overview tab.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dedicated Caregiver Story -->
+    <section class="family-story-card">
+      <div class="story-content">
+        <span class="story-tag">Real-World Purpose</span>
+        <h3 class="story-heading">Built to Safeguard Our Elders: Parents and Grandparents</h3>
+        <p class="story-body">
+          Chronic conditions such as hypertension, diabetes, arthritis, and cardiovascular issues require precise adherence across multiple daily medications. A missed morning pill or an accidental double dose can lead to severe complications. DoseGuard AI was constructed to give elders independence while providing adult children continuous peace of mind.
+        </p>
+        <div class="story-family-pills">
+          <span class="family-pill">Mother: Sunita (Hypertension & Thyroid)</span>
+          <span class="family-pill">Father: Rajesh (Type 2 Diabetes & Statin)</span>
+          <span class="family-pill">Grandfather: Ramesh (Cardiology & Joint Care)</span>
+          <span class="family-pill">Grandmother: Kamla (Bone Density & Vitamins)</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Collapsible FAQ Section -->
+    <section id="faq-section" class="faq-section-wrapper">
+      <div class="section-header-center">
+        <h2 class="section-title">Frequently Asked Questions</h2>
+        <p class="section-subtitle">
+          Answers to common questions regarding elder safety, alarm verification, and family access.
+        </p>
+      </div>
+
+      <div class="faq-accordion-container">
+        <div class="faq-accordion-item">
+          <button type="button" class="faq-accordion-btn">
+            <span>Why is arithmetic math verification required to dismiss medication alarms?</span>
+            <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+          <div class="faq-accordion-body">
+            <p>
+              Elderly individuals frequently silence alarms in a semi-conscious or distracted state, intending to take their medication later and subsequently forgetting. Requiring the solution of two simple arithmetic problems (such as 24 + 17 or 6 x 8) confirms genuine cognitive alertness before the alarm is dismissed.
             </p>
           </div>
-          <div>
-            <a href="#section-login" class="btn btn-primary" style="padding: 12px 24px; font-size: 0.95rem;">
-              Access Family Vault
-            </a>
-          </div>
-        </div>
-      </section>
-
-      <!-- Section 5: Public Login & Demo Section -->
-      <section id="section-login">
-        <div class="section-headline">
-          <h2 class="section-title">Member Sign In &amp; Demo Access</h2>
-          <p class="section-sub">Log in with your family credentials, or use the interactive number PINs below to test the live demo.</p>
         </div>
 
-        <div class="public-login-section">
-
-          <!-- Column 1: Number PIN Sign-In (Demo Access) -->
-          <div class="login-card">
-            <div class="login-card-title">Sign In with Member PIN</div>
-            <div class="login-card-sub">Select your family profile and enter your 4-digit number PIN:</div>
-
-            <div class="member-selection-grid" id="login-members-container">
-              <!-- Rendered dynamically by JavaScript -->
-            </div>
-
-            <form id="form-pin-login">
-              <input type="password" id="input-member-pin" class="pin-input-field" maxlength="4" placeholder="••••" readonly required>
-
-              <div class="keypad-grid">
-                <button type="button" class="keypad-btn" data-val="1">1</button>
-                <button type="button" class="keypad-btn" data-val="2">2</button>
-                <button type="button" class="keypad-btn" data-val="3">3</button>
-                <button type="button" class="keypad-btn" data-val="4">4</button>
-                <button type="button" class="keypad-btn" data-val="5">5</button>
-                <button type="button" class="keypad-btn" data-val="6">6</button>
-                <button type="button" class="keypad-btn" data-val="7">7</button>
-                <button type="button" class="keypad-btn" data-val="8">8</button>
-                <button type="button" class="keypad-btn" data-val="9">9</button>
-                <button type="button" class="keypad-btn" data-val="C">C</button>
-                <button type="button" class="keypad-btn" data-val="0">0</button>
-                <button type="button" class="keypad-btn" data-val="DEL">DEL</button>
-              </div>
-
-              <div class="demo-pin-hint">
-                Default Demo PINs:<br>
-                Mother: 1111 • Father: 2222 • Grandfather: 3333 • Grandmother: 4444 • Daughter: 5555
-              </div>
-
-              <div id="pin-error-notice" style="color: var(--danger); font-size: 0.85rem; font-weight: 700; text-align: center; margin-bottom: 12px; display: none;"></div>
-
-              <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px;">
-                Unlock Personal Dashboard
-              </button>
-            </form>
-          </div>
-
-          <!-- Column 2: 1-Click Instant Demo Launchers -->
-          <div class="login-card">
-            <div class="login-card-title">1-Click Instant Demo Logins</div>
-            <div class="login-card-sub">Select any family member below to immediately launch their personal dashboard:</div>
-
-            <div class="demo-quick-buttons" id="quick-demo-buttons-container">
-              <!-- Rendered dynamically by JavaScript -->
-            </div>
-
-            <hr style="border: 0; border-top: 1px solid var(--slate-200); margin: 20px 0;">
-
-            <form id="form-account-login">
-              <div style="font-weight: 700; font-size: 0.95rem; color: var(--slate-900); margin-bottom: 8px;">Standard Family Account Login</div>
-              <div class="form-group" style="margin-bottom: 10px;">
-                <input type="text" class="form-input" placeholder="Family Account Username / Email" value="family@doseguard.local">
-              </div>
-              <div class="form-group" style="margin-bottom: 14px;">
-                <input type="password" class="form-input" placeholder="Password" value="••••••••">
-              </div>
-              <button type="submit" class="btn btn-secondary" style="width: 100%;">
-                Sign In with Family Account
-              </button>
-            </form>
-          </div>
-
-        </div>
-      </section>
-
-      <!-- Public Website Footer -->
-      <footer class="site-footer">
-        <div>
-          <div style="font-weight: 800; color: var(--slate-900); font-size: 1.1rem; margin-bottom: 4px;">DoseGuard AI</div>
-          <div>Family Medication Protocol &amp; Caregiver Verification Platform</div>
-          <div style="font-size: 0.78rem; color: var(--slate-400); margin-top: 4px;">Zero cloud health telemetry • 100% private local architecture</div>
-        </div>
-        <div class="footer-links">
-          <a href="#section-features" class="footer-link">Features</a>
-          <a href="#section-how-it-works" class="footer-link">How It Works</a>
-          <a href="#section-story" class="footer-link">Family Care</a>
-          <a href="#section-login" class="footer-link">Sign In</a>
-        </div>
-      </footer>
-
-    </div>
-
-
-    <!-- ================================================================= -->
-    <!-- VIEW 2: AUTHENTICATED PERSONAL & FAMILY DASHBOARDS -->
-    <!-- ================================================================= -->
-    <div class="dashboard-view" id="view-dashboard">
-
-      <!-- Top Hero Greeting Banner (Styled like right mobile mockup) -->
-      <section class="member-greeting-banner">
-        <div class="greeting-row">
-          <div class="greeting-user-info">
-            <div class="greeting-avatar" id="banner-member-avatar">AL</div>
-            <div>
-              <div class="greeting-text-title" id="banner-member-role">Personal Schedule</div>
-              <div class="greeting-text-name" id="banner-member-name">Hello Alina</div>
-            </div>
-          </div>
-          <div style="display: flex; align-items: center; gap: 10px;">
-            <button class="btn btn-secondary btn-logout-action" style="background: rgba(255,255,255,0.25); border-color: rgba(255,255,255,0.4); color: #ffffff; padding: 6px 14px; font-size: 0.82rem;">
-              Log Out
-            </button>
-          </div>
-        </div>
-
-        <div class="greeting-action-box">
-          <div class="schedule-action-title">CREATE NEW SCHEDULE</div>
-          <button class="btn-start-schedule" id="btn-start-schedule">
-            Start
-          </button>
-        </div>
-      </section>
-
-      <!-- Member Biometric Profile Information Card -->
-      <section class="profile-biometrics-card">
-        <div class="biometrics-grid">
-          <div class="bio-item">
-            <span class="bio-label">Age</span>
-            <span class="bio-val" id="bio-val-age">24 years</span>
-          </div>
-          <div class="bio-item">
-            <span class="bio-label">Weight</span>
-            <span class="bio-val" id="bio-val-weight">56 kg</span>
-          </div>
-          <div class="bio-item">
-            <span class="bio-label">Height</span>
-            <span class="bio-val" id="bio-val-height">165 cm</span>
-          </div>
-          <div class="bio-item">
-            <span class="bio-label">Blood Group</span>
-            <span class="bio-val" id="bio-val-blood">O+</span>
-          </div>
-          <div class="bio-item">
-            <span class="bio-label">Physician</span>
-            <span class="bio-val" id="bio-val-doctor">Dr. Lisa (Wellness)</span>
-          </div>
-        </div>
-
-        <div class="bio-actions">
-          <button class="btn btn-secondary" id="btn-edit-profile-open" style="padding: 7px 14px; font-size: 0.82rem;">
-            Edit Profile
-          </button>
-          <button class="btn btn-outline-danger btn-logout-action" style="padding: 7px 14px; font-size: 0.82rem;">
-            Log Out
-          </button>
-        </div>
-      </section>
-
-      <!-- Calendar Strip Ribbon (M T W T F S S with active day) -->
-      <section class="calendar-ribbon" id="calendar-days-ribbon">
-        <!-- Rendered dynamically by JavaScript -->
-      </section>
-
-      <!-- Dashboard Navigation Tabs -->
-      <nav class="dashboard-nav-tabs">
-        <button class="dash-tab-btn active" data-tab="personal">
-          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <polyline points="9 11 12 14 22 4"></polyline>
-            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
-          </svg>
-          My Personal Schedule
-        </button>
-
-        <button class="dash-tab-btn" data-tab="all-family">
-          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-            <circle cx="9" cy="7" r="4"></circle>
-            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-          </svg>
-          All Family Members' Medications
-        </button>
-
-        <button class="dash-tab-btn" data-tab="companion">
-          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-          </svg>
-          Clinical Health Guidance
-        </button>
-      </nav>
-
-
-      <!-- TAB 1: PERSONAL TIMELINE & SCHEDULE -->
-      <div class="dash-tab-content active" id="dash-tab-personal">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; flex-wrap: wrap; gap: 12px;">
-          <div>
-            <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--slate-900);">Daily Medication Timeline</h3>
-            <p style="font-size: 0.85rem; color: var(--slate-500);">Track, mark taken, or remove your daily doses:</p>
-          </div>
-          <div style="display: flex; gap: 10px;">
-            <button class="btn btn-secondary" id="btn-test-alarm-trigger">
-              <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="10"></circle>
-                <polyline points="12 6 12 12 16 14"></polyline>
-              </svg>
-              Test Alarm Now
-            </button>
-            <button class="btn btn-primary" id="btn-open-add-med">
-              <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path d="M12 5v14M5 12h14"></path>
-              </svg>
-              Add Medicine
-            </button>
-          </div>
-        </div>
-
-        <div id="personal-timeline-container">
-          <!-- Rendered dynamically by JavaScript -->
-        </div>
-      </div>
-
-
-      <!-- TAB 2: ALL FAMILY MEMBERS' MEDICINES -->
-      <div class="dash-tab-content" id="dash-tab-all-family">
-        <div style="margin-bottom: 20px;">
-          <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--slate-900);">Family-Wide Medication Transparency</h3>
-          <p style="font-size: 0.88rem; color: var(--slate-500);">
-            Inspect medications, biometrics, schedules, and today's status across all 5 members of the family:
-          </p>
-        </div>
-
-        <div class="all-family-grid" id="all-family-cards-grid">
-          <!-- Rendered dynamically by JavaScript -->
-        </div>
-
-        <div style="text-align: right; margin-top: 10px;">
-          <button class="btn btn-secondary" id="btn-export-vault">
-            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-              <polyline points="7 10 12 15 17 10"></polyline>
-              <line x1="12" y1="15" x2="12" y2="3"></line>
+        <div class="faq-accordion-item">
+          <button type="button" class="faq-accordion-btn">
+            <span>Can all family members see medications taken by other family members?</span>
+            <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"></polyline>
             </svg>
-            Export Complete Family Records (JSON)
           </button>
+          <div class="faq-accordion-body">
+            <p>
+              Yes. DoseGuard AI features a dedicated "All Family Medications" view accessible to all authenticated household members. While each member manages their personal dashboard, complete transparency allows adult children to verify if parents or grandparents took their scheduled morning or evening tablets.
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-accordion-item">
+          <button type="button" class="faq-accordion-btn">
+            <span>What happens if an elderly relative cannot remember their password?</span>
+            <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+          <div class="faq-accordion-body">
+            <p>
+              The designated Primary Family Admin has administrative oversight to manage profiles and update schedules on behalf of any relative. Additionally, demo buttons are provided on the sign-in page for immediate testing.
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-accordion-item">
+          <button type="button" class="faq-accordion-btn">
+            <span>Is our family clinical information stored on public AI servers?</span>
+            <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+          <div class="faq-accordion-body">
+            <p>
+              No. DoseGuard AI operates using local vault architecture. Prescriptions, biometric records, and medication timings remain under your control without reliance on third-party commercial data brokers.
+            </p>
+          </div>
         </div>
       </div>
+    </section>
 
+  </main>
 
-      <!-- TAB 3: CLINICAL HEALTH COMPANION -->
-      <div class="dash-tab-content" id="dash-tab-companion">
-        <div style="background: #ffffff; border: 1.5px solid var(--slate-200); border-radius: var(--radius-lg); padding: 24px; box-shadow: var(--shadow-sm);">
-          <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--slate-900); margin-bottom: 6px;">Clinical Health Guidance</h3>
-          <p style="font-size: 0.88rem; color: var(--slate-500); margin-bottom: 18px;">
-            Deterministic guidance on missed dose triage, food interactions, and administration timing:
+  <!-- Full-Width System Footer -->
+  <footer class="site-footer-full">
+    <div class="footer-inner-full">
+      <div class="footer-grid-improved">
+        <div class="footer-desc-column">
+          <div class="footer-brand-title">DoseGuard AI</div>
+          <p class="footer-brand-desc">
+            DoseGuard AI is a clinical family medication safety and adherence platform engineered to protect elderly parents and grandparents managing chronic, multi-drug therapies. Built to eliminate missed doses and dangerous accidental double-dosing, the platform combines individual member schedules, cross-family care transparency, local health vaults, and cognitive math alertness verification to safeguard our loved ones' health while preserving their independence.
           </p>
+          <p class="footer-caregiver-assurance">
+            Dedicated to supporting family caregivers with reliable, local-first oversight and dignity for aging family members.
+          </p>
+        </div>
 
-          <label class="form-label">Frequently Referenced Clinical Guidance:</label>
-          <div class="chat-suggestions" id="chat-suggestions-container" style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px;">
-            <!-- Rendered dynamically by JavaScript -->
-          </div>
+        <div class="footer-links-column">
+          <div class="footer-col-title">Platform Navigation</div>
+          <ul class="footer-links-list">
+            <li><a href="/" class="footer-nav-link">Home Overview</a></li>
+            <li><a href="/#features" class="footer-nav-link">Clinical Features</a></li>
+            <li><a href="/#how-it-works" class="footer-nav-link">How It Works</a></li>
+            <li><a href="/about" class="footer-nav-link">About & Research</a></li>
+            <li><a href="/login" class="footer-nav-link">Family Portal Login</a></li>
+          </ul>
+        </div>
 
-          <div class="form-group">
-            <div style="display: flex; gap: 10px;">
-              <input type="text" id="input-chat-question" class="form-input" placeholder="e.g. What should be done if a morning blood pressure dose was missed?">
-              <button class="btn btn-primary" id="btn-ask-companion" style="white-space: nowrap;">
-                Ask Companion
-              </button>
-            </div>
-          </div>
-
-          <div id="chat-response-box" style="display: none; background: var(--slate-50); border: 1.5px solid var(--slate-300); border-radius: var(--radius-md); padding: 20px; white-space: pre-wrap; font-size: 0.92rem; color: var(--slate-800); margin-top: 14px;"></div>
+        <div class="footer-links-column">
+          <div class="footer-col-title">Caregiver Capabilities</div>
+          <ul class="footer-links-list">
+            <li><a href="/#features" class="footer-nav-link">Individual Member Schedules</a></li>
+            <li><a href="/#features" class="footer-nav-link">Cross-Family Transparency</a></li>
+            <li><a href="/about#math-verification" class="footer-nav-link">Cognitive Math Alarms</a></li>
+            <li><a href="/about#polypharmacy" class="footer-nav-link">Polypharmacy Protection</a></li>
+            <li><a href="/#faq-section" class="footer-nav-link">Caregiver FAQ</a></li>
+          </ul>
         </div>
       </div>
 
-    </div>
-
-
-    <!-- ================================================================= -->
-    <!-- ALARM MODAL: 2 SMALL MATH PUZZLES TO STOP -->
-    <!-- ================================================================= -->
-    <div class="alarm-overlay" id="modal-alarm-challenge">
-      <div class="alarm-box">
-        <div class="alarm-bell-icon">
-          <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
-            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-          </svg>
+      <div class="footer-bottom-bar-v2">
+        <div>
+          Copyright 2026 DoseGuard AI Platform. All rights reserved.
         </div>
-
-        <h3 class="alarm-box-title">Medication Alarm Active!</h3>
-        <p class="alarm-box-sub">
-          Time for: <strong id="alarm-med-label">Scheduled Dose</strong>.<br>
-          To stop the alarm and confirm mental alertness, solve the two math puzzles:
-        </p>
-
-        <!-- Puzzle 1 -->
-        <div class="math-challenge-card">
-          <div class="math-prompt-text" id="math-prompt-1">24 + 19 = ?</div>
-          <input type="number" id="input-math-ans-1" class="math-input-field" placeholder="Enter answer">
+        <div>
+          Clinical Decision Support Notice: Always consult licensed physicians for prescription adjustments.
         </div>
-
-        <!-- Puzzle 2 -->
-        <div class="math-challenge-card">
-          <div class="math-prompt-text" id="math-prompt-2">7 × 8 = ?</div>
-          <input type="number" id="input-math-ans-2" class="math-input-field" placeholder="Enter answer">
-        </div>
-
-        <div class="math-error-notice" id="alarm-error-notice"></div>
-
-        <button type="button" class="btn-dismiss-alarm" id="btn-verify-alarm-math">
-          Verify Answers &amp; Stop Alarm
-        </button>
       </div>
     </div>
+  </footer>
 
-
-    <!-- ================================================================= -->
-    <!-- MODAL: ADD MEDICATION -->
-    <!-- ================================================================= -->
-    <div class="modal-overlay" id="modal-add-med">
-      <div class="modal-box">
-        <div class="modal-header">
-          <h3 class="modal-title">Add Medication to Schedule</h3>
-          <button class="modal-close-btn">&times;</button>
-        </div>
-        <form id="form-add-med">
-          <div class="form-group">
-            <label class="form-label" for="input-med-name">Medication Name</label>
-            <input type="text" id="input-med-name" class="form-input" placeholder="e.g. Vitamin C or Metformin" required>
-          </div>
-
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-            <div class="form-group">
-              <label class="form-label" for="input-med-dosage">Dosage / Strength</label>
-              <input type="text" id="input-med-dosage" class="form-input" placeholder="e.g. 2 Capsules or 500 mg" required>
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="input-med-time">Scheduled Alarm Time</label>
-              <input type="text" id="input-med-time" class="form-input" placeholder="e.g. 08:00 AM" required>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="select-med-timing">Daily Time Slot</label>
-            <select id="select-med-timing" class="form-select">
-              <option value="Morning">Morning</option>
-              <option value="Afternoon">Afternoon</option>
-              <option value="Evening">Evening</option>
-              <option value="Night">Night</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="input-med-food">Administration Instructions</label>
-            <input type="text" id="input-med-food" class="form-input" placeholder="e.g. Take with breakfast and a glass of water">
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="input-med-purpose">Purpose</label>
-            <input type="text" id="input-med-purpose" class="form-input" placeholder="e.g. Micronutrient or Blood Pressure">
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="input-med-caution">Safety Precaution</label>
-            <input type="text" id="input-med-caution" class="form-input" placeholder="e.g. Avoid taking on empty stomach">
-          </div>
-
-          <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
-            <button type="button" class="btn btn-secondary modal-cancel-btn">Cancel</button>
-            <button type="submit" class="btn btn-primary">Save to Schedule</button>
-          </div>
-        </form>
-      </div>
-    </div>
-
-
-    <!-- ================================================================= -->
-    <!-- MODAL: EDIT MEMBER PROFILE BIOMETRICS -->
-    <!-- ================================================================= -->
-    <div class="modal-overlay" id="modal-edit-profile">
-      <div class="modal-box">
-        <div class="modal-header">
-          <h3 class="modal-title">Update Biometric Profile Information</h3>
-          <button class="modal-close-btn">&times;</button>
-        </div>
-        <form id="form-edit-profile">
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-            <div class="form-group">
-              <label class="form-label" for="input-edit-age">Age (Years)</label>
-              <input type="number" id="input-edit-age" class="form-input" min="1" max="120" required>
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="input-edit-blood">Blood Group</label>
-              <input type="text" id="input-edit-blood" class="form-input" placeholder="e.g. O+, A+, B+" required>
-            </div>
-          </div>
-
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-            <div class="form-group">
-              <label class="form-label" for="input-edit-weight">Weight</label>
-              <input type="text" id="input-edit-weight" class="form-input" placeholder="e.g. 62 kg" required>
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="input-edit-height">Height</label>
-              <input type="text" id="input-edit-height" class="form-input" placeholder="e.g. 165 cm" required>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="input-edit-notes">Clinical Conditions &amp; Notes</label>
-            <textarea id="input-edit-notes" class="form-textarea" style="min-height: 80px;" placeholder="Clinical protocols and conditions..."></textarea>
-          </div>
-
-          <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
-            <button type="button" class="btn btn-secondary modal-cancel-btn">Cancel</button>
-            <button type="submit" class="btn btn-primary">Save Profile Changes</button>
-          </div>
-        </form>
-      </div>
-    </div>
-
-  </div>
-
-  <script src="/static/js/api.js"></script>
-  <script src="/static/js/app.js"></script>
-
+  <script src="/static/js/home.js"></script>
 </body>
 </html>

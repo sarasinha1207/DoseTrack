@@ -11,15 +11,41 @@ const API = {
     return await res.json();
   },
 
-  async login(profileId, pin) {
+  async login(username, password) {
     const res = await fetch("/api/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ profile_id: profileId, pin: pin })
+      body: JSON.stringify({ username: username, password: password })
     });
     if (!res.ok) {
       const errData = await res.json().catch(() => ({}));
-      throw new Error(errData.detail || "Invalid PIN credential");
+      throw new Error(errData.detail || "Invalid credentials");
+    }
+    return await res.json();
+  },
+
+  async register(registerData) {
+    const res = await fetch("/api/auth/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(registerData)
+    });
+    if (!res.ok) {
+      const errData = await res.json().catch(() => ({}));
+      throw new Error(errData.detail || "Failed to register family member");
+    }
+    return await res.json();
+  },
+
+  async completeOnboarding(onboardingData) {
+    const res = await fetch("/api/profiles/complete-onboarding", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(onboardingData)
+    });
+    if (!res.ok) {
+      const errData = await res.json().catch(() => ({}));
+      throw new Error(errData.detail || "Failed to save health profile details");
     }
     return await res.json();
   },

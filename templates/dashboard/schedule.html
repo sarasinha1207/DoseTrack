@@ -1,0 +1,51 @@
+<!-- View 1: My Daily Schedule -->
+<section id="page-schedule" class="dash-page active">
+  <!-- Member Greeting Banner -->
+  <div class="member-greeting-banner">
+    <div class="greeting-row">
+      <div class="greeting-user-info">
+        <div class="greeting-avatar" id="banner-avatar">FM</div>
+        <div>
+          <div class="greeting-text-title">Active Member Dashboard</div>
+          <h2 style="font-size: 1.35rem; font-weight: 800; line-height: 1.2;" id="banner-user-name">Member Name</h2>
+        </div>
+      </div>
+      <div style="text-align: right;">
+        <span class="badge" id="banner-admin-badge" style="background: rgba(255,255,255,0.2); color: #fff; font-size: 0.78rem;">
+          Family Member
+        </span>
+      </div>
+    </div>
+
+    <!-- Adherence Progress -->
+    <div class="adherence-progress-box">
+      <div style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 700; margin-bottom: 6px;">
+        <span>Today's Intake Adherence</span>
+        <span id="text-adherence-pct">0% (0 of 0 taken)</span>
+      </div>
+      <div class="progress-bar-track">
+        <div class="progress-bar-fill" id="bar-adherence-fill" style="width: 0%;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Schedule Controls Row -->
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
+    <div>
+      <h3 style="font-size: 1.1rem; font-weight: 800; color: var(--slate-900);">Scheduled Intake Windows</h3>
+      <p style="font-size: 0.82rem; color: var(--slate-500);">Chronological dosing for today with audio reminders and math alertness verification.</p>
+    </div>
+    <button type="button" class="btn btn-primary btn-sm" id="btn-open-add-med-modal">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <line x1="12" y1="5" x2="12" y2="19"></line>
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+      </svg>
+      <span>Add Medication</span>
+    </button>
+  </div>
+
+  <!-- Chronological Medication List -->
+  <div id="schedule-medications-list">
+    <!-- Rendered dynamically via schedule.js -->
+  </div>
+</section>

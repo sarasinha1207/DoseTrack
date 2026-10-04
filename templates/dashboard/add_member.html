@@ -1,0 +1,80 @@
+<!-- View 3: Add Family Member -->
+<section id="page-add-member" class="dash-page">
+  <div style="max-width: 650px;">
+    <div style="margin-bottom: 20px;">
+      <h2 style="font-size: 1.25rem; font-weight: 800; color: var(--slate-900); margin-bottom: 4px;">
+        Add Connected Family Member
+      </h2>
+      <p style="font-size: 0.85rem; color: var(--slate-600);">
+        Register an additional parent, grandparent, or child into the household vault with their individual clinical profile.
+      </p>
+    </div>
+
+    <div class="card" style="padding: 24px;">
+      <form id="form-add-family-member" onsubmit="return false;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+          <div class="form-group">
+            <label class="form-label">First Name *</label>
+            <input type="text" id="add-member-first" class="form-input" required placeholder="e.g. Ramesh">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Second Name (Last Name) *</label>
+            <input type="text" id="add-member-last" class="form-input" required placeholder="e.g. Sharma">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+          <div class="form-group">
+            <label class="form-label">Relationship / Family Role *</label>
+            <select id="add-member-role" class="form-input" style="background:#fff;">
+              <option value="Grandfather">Grandfather</option>
+              <option value="Grandmother">Grandmother</option>
+              <option value="Father">Father</option>
+              <option value="Mother">Mother</option>
+              <option value="Son">Son</option>
+              <option value="Daughter">Daughter</option>
+              <option value="Relative">Relative</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Gender *</label>
+            <select id="add-member-gender" class="form-input" style="background:#fff;">
+              <option value="Female">Female</option>
+              <option value="Male">Male</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+          <div class="form-group">
+            <label class="form-label">Age *</label>
+            <input type="number" id="add-member-age" class="form-input" min="1" max="120" value="70" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Username *</label>
+            <input type="text" id="add-member-username" class="form-input" required placeholder="e.g. ramesh_g">
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 18px;">
+          <label class="form-label">Password *</label>
+          <input type="password" id="add-member-pwd" class="form-input" required placeholder="Enter password (minimum 4 characters)">
+        </div>
+
+        <div class="form-group" style="margin-bottom: 22px;">
+          <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+            <input type="checkbox" id="add-member-admin">
+            <span style="font-size: 0.88rem; font-weight: 700; color: var(--slate-800);">
+              Designate as Primary Caregiver Admin (Allowed to modify family regimens)
+            </span>
+          </label>
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="btn-submit-add-member" style="padding: 12px 24px;">
+          Save & Register Family Member
+        </button>
+      </form>
+    </div>
+  </div>
+</section>

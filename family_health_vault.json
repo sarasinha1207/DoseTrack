@@ -2,8 +2,10 @@
   "profiles": [
     {
       "id": "mother",
+      "username": "sunita",
       "name": "Sunita",
       "role": "Mother",
+      "gender": "Female",
       "initials": "MO",
       "pin": "1111",
       "age": 54,
@@ -11,6 +13,7 @@
       "height": "158 cm",
       "blood_group": "B+",
       "doctor": "Dr. R. Sharma, MD (Endocrinology)",
+      "is_admin": true,
       "badge_color": "#0284c7",
       "notes": "Primary Hypothyroidism and mild Osteopenia. Maintain 4-hour gap between thyroid medication and calcium.",
       "medications": [
@@ -48,12 +51,17 @@
           "active": true
         }
       ],
-      "logs": {}
+      "logs": {},
+      "password": "sunita123",
+      "first_name": "Sunita",
+      "last_name": "Sharma"
     },
     {
       "id": "father",
+      "username": "rajesh",
       "name": "Rajesh",
       "role": "Father",
+      "gender": "Male",
       "initials": "FA",
       "pin": "2222",
       "age": 59,
@@ -61,6 +69,7 @@
       "height": "172 cm",
       "blood_group": "A+",
       "doctor": "Dr. K. Mehta, MD (Cardiology)",
+      "is_admin": false,
       "badge_color": "#2563eb",
       "notes": "Essential Hypertension and Type 2 Diabetes. Routine blood pressure and fasting glucose monitoring required.",
       "medications": [
@@ -109,12 +118,17 @@
           "active": true
         }
       ],
-      "logs": {}
+      "logs": {},
+      "password": "rajesh123",
+      "first_name": "Rajesh",
+      "last_name": "Sharma"
     },
     {
       "id": "grandfather",
+      "username": "ramesh",
       "name": "Ramesh",
       "role": "Grandfather",
+      "gender": "Male",
       "initials": "GF",
       "pin": "3333",
       "age": 82,
@@ -122,6 +136,7 @@
       "height": "168 cm",
       "blood_group": "O+",
       "doctor": "Dr. Verma, Geriatric Specialist",
+      "is_admin": false,
       "badge_color": "#0d9488",
       "notes": "Geriatric care protocol. Requires assistance with ambulation and warm fluids with doses.",
       "medications": [
@@ -170,12 +185,17 @@
           "active": true
         }
       ],
-      "logs": {}
+      "logs": {},
+      "password": "ramesh123",
+      "first_name": "Ramesh",
+      "last_name": "Sharma"
     },
     {
       "id": "grandmother",
+      "username": "kamla",
       "name": "Kamla",
       "role": "Grandmother",
+      "gender": "Female",
       "initials": "GM",
       "pin": "4444",
       "age": 78,
@@ -183,6 +203,7 @@
       "height": "152 cm",
       "blood_group": "AB+",
       "doctor": "Dr. Ananya, Family Medicine",
+      "is_admin": false,
       "badge_color": "#d97706",
       "notes": "Peripheral joint stiffness and vitamin deficiency. Prefers mid-morning doses.",
       "medications": [
@@ -209,21 +230,27 @@
           "active": true
         }
       ],
-      "logs": {}
+      "logs": {},
+      "password": "kamla123",
+      "first_name": "Kamla",
+      "last_name": "Sharma"
     },
     {
       "id": "daughter",
+      "username": "alina",
       "name": "Alina",
       "role": "Daughter",
+      "gender": "Female",
       "initials": "AL",
       "pin": "5555",
-      "age": 25,
-      "weight": "57 kg",
-      "height": "166 cm",
+      "age": 24,
+      "weight": "56 kg",
+      "height": "165 cm",
       "blood_group": "O+",
       "doctor": "Dr. Lisa, Wellness & Preventative Care",
+      "is_admin": true,
       "badge_color": "#ec4899",
-      "notes": "Updated notes",
+      "notes": "Daily wellness, iron supplementation, and allergy management.",
       "medications": [
         {
           "id": "med_al_1",
@@ -281,7 +308,45 @@
           "active": true
         }
       ],
-      "logs": {}
+      "logs": {},
+      "password": "alina123",
+      "first_name": "Alina",
+      "last_name": "Sharma"
+    },
+    {
+      "id": "testuser_1791156177",
+      "username": "testuser_1791156177",
+      "password": "password123",
+      "first_name": "Dev",
+      "last_name": "Sharma",
+      "name": "Dev Sharma",
+      "role": "Family Member",
+      "gender": "Male",
+      "initials": "DS",
+      "age": 65,
+      "weight": "72 kg",
+      "height": "170 cm",
+      "blood_group": "O+",
+      "doctor": "Dr. Chopra, Cardiology",
+      "is_admin": true,
+      "badge_color": "#2563eb",
+      "notes": "No known allergies",
+      "medications": [
+        {
+          "id": "med_testuser_1791156177_1791156177_0",
+          "name": "Telmisartan",
+          "dosage": "40 mg",
+          "time": "08:30 AM",
+          "timing": "Morning",
+          "food_instruction": "With warm water after breakfast",
+          "purpose": "Blood Pressure Regulation",
+          "caution": "Follow physician guidance",
+          "active": true
+        }
+      ],
+      "logs": {
+        "2026-10-05": {}
+      }
     }
   ]
 }
