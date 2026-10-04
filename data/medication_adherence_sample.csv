@@ -1,0 +1,21 @@
+Date,Day,Member Name,Role,Medications Scheduled,Doses Taken,Doses Missed,Compliance Rate,Notes
+2026-10-01,Thursday,Sunita Sharma,Mother,3,3,0,100%,All morning afternoon and night doses verified with arithmetic alarm.
+2026-10-01,Thursday,Rajesh Sharma,Father,4,4,0,100%,Blood pressure and diabetes tablets completed on time.
+2026-10-01,Thursday,Ramesh Sharma,Grandfather,3,3,0,100%,Cardiology and multivitamin doses confirmed.
+2026-10-01,Thursday,Kamla Sharma,Grandmother,2,2,0,100%,Calcium and vitamin D3 taken after lunch.
+2026-10-02,Friday,Sunita Sharma,Mother,3,2,1,67%,Midday Shelcal 500 delayed and missed during outdoor errand.
+2026-10-02,Friday,Rajesh Sharma,Father,4,4,0,100%,All 4 doses logged after breakfast dinner and bedtime.
+2026-10-02,Friday,Ramesh Sharma,Grandfather,3,3,0,100%,Morning blood pressure and afternoon drops completed.
+2026-10-02,Friday,Kamla Sharma,Grandmother,2,2,0,100%,Full adherence maintained.
+2026-10-03,Saturday,Sunita Sharma,Mother,3,3,0,100%,Complete regimen verified.
+2026-10-03,Saturday,Rajesh Sharma,Father,4,3,1,75%,Night Atorvastatin delayed past target intake window.
+2026-10-03,Saturday,Ramesh Sharma,Grandfather,3,3,0,100%,All doses confirmed.
+2026-10-03,Saturday,Kamla Sharma,Grandmother,2,2,0,100%,All doses confirmed.
+2026-10-04,Sunday,Sunita Sharma,Mother,3,3,0,100%,Full compliance across all intake windows.
+2026-10-04,Sunday,Rajesh Sharma,Father,4,4,0,100%,Full compliance. Both Metformin doses logged with meals.
+2026-10-04,Sunday,Ramesh Sharma,Grandfather,3,2,1,67%,Afternoon neurobion supplement skipped.
+2026-10-04,Sunday,Kamla Sharma,Grandmother,2,2,0,100%,Full compliance.
+2026-10-05,Monday,Sunita Sharma,Mother,3,3,0,100%,Morning and afternoon doses on track.
+2026-10-05,Monday,Rajesh Sharma,Father,4,4,0,100%,Morning Telmisartan and Metformin verified with math challenge.
+2026-10-05,Monday,Ramesh Sharma,Grandfather,3,3,0,100%,Morning regimen verified.
+2026-10-05,Monday,Kamla Sharma,Grandmother,2,2,0,100%,Morning schedule verified.

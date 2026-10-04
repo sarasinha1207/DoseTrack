@@ -1,0 +1,105 @@
+<!-- View: Add Medication & Current Regimens Management -->
+<section id="page-add-medication" class="dash-page">
+  <div class="dash-centered-container">
+
+    <div style="margin-bottom: 24px;">
+      <h2 style="font-size: 1.3rem; font-weight: 800; color: var(--slate-900); margin-bottom: 4px;">
+        Medication Regimen Management
+      </h2>
+      <p style="font-size: 0.88rem; color: var(--slate-600);">
+        Prescribe new clinical treatments, configure schedule intervals, and inspect comprehensive medication profiles.
+      </p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1.1fr 1.3fr; gap: 24px; align-items: start;">
+
+      <!-- Section 1: Add New Medication Form -->
+      <div class="card" style="padding: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <h3 style="font-size: 1.05rem; font-weight: 800; color: var(--slate-900);">
+            Add New Medication
+          </h3>
+          <span class="badge badge-primary" style="font-size: 0.72rem;">Prescription Entry</span>
+        </div>
+
+        <form id="form-page-add-med" onsubmit="return false;">
+          <div class="form-group" style="margin-bottom: 14px;">
+            <label class="form-label">Target Family Member *</label>
+            <select id="add-med-page-member" class="form-input" style="background: #ffffff; font-weight: 600;">
+              <!-- Dynamically populated with family members -->
+            </select>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 14px;">
+            <label class="form-label">Medication Name & Formulation *</label>
+            <input type="text" id="add-med-page-name" class="form-input" required placeholder="e.g. Telmisartan / Shelcal 500">
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
+            <div class="form-group">
+              <label class="form-label">Dosage & Strength *</label>
+              <input type="text" id="add-med-page-dosage" class="form-input" required placeholder="e.g. 40 mg (1 Tab)">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Scheduled Time *</label>
+              <input type="text" id="add-med-page-time" class="form-input" required placeholder="e.g. 08:00 AM">
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 14px;">
+            <label class="form-label">Intake Window *</label>
+            <select id="add-med-page-timing" class="form-input" style="background: #ffffff;">
+              <option value="Morning">Morning</option>
+              <option value="Afternoon">Afternoon</option>
+              <option value="Evening">Evening</option>
+              <option value="Night">Night</option>
+            </select>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 14px;">
+            <label class="form-label">Food & Administration Instructions *</label>
+            <input type="text" id="add-med-page-food" class="form-input" required placeholder="e.g. Take immediately after breakfast with full glass of water">
+          </div>
+
+          <div class="form-group" style="margin-bottom: 14px;">
+            <label class="form-label">Clinical Purpose *</label>
+            <input type="text" id="add-med-page-purpose" class="form-input" required placeholder="e.g. Blood Pressure Regulation / Joint Health">
+          </div>
+
+          <div class="form-group" style="margin-bottom: 20px;">
+            <label class="form-label">Precautions & Drug Warnings</label>
+            <input type="text" id="add-med-page-caution" class="form-input" placeholder="e.g. Maintain 4-hour gap from calcium supplements">
+          </div>
+
+          <button type="submit" class="btn btn-primary" id="btn-save-page-med" style="width: 100%; justify-content: center; padding: 12px;">
+            Save & Add to Regimen
+          </button>
+        </form>
+      </div>
+
+      <!-- Section 2: Current Prescribed Regimens List & Information -->
+      <div class="card" style="padding: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+          <div>
+            <h3 style="font-size: 1.05rem; font-weight: 800; color: var(--slate-900);">
+              Active Prescribed Regimens
+            </h3>
+            <p style="font-size: 0.8rem; color: var(--slate-500);">Current medication schedules and clinical dosing guidelines</p>
+          </div>
+
+          <div>
+            <select id="filter-prescribed-member" class="form-input" style="font-size: 0.82rem; padding: 6px 10px; background: #fff;">
+              <!-- Dynamically populated -->
+            </select>
+          </div>
+        </div>
+
+        <div id="present-medications-container">
+          <!-- Dynamically populated by add_medication.js -->
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>

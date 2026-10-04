@@ -1,0 +1,38 @@
+Date,Time,Member Name,Role,Measurement Type,Primary Reading,Secondary Reading,Pulse BPM,Unit,Context Timing,Category Status,Clinical Notes
+2026-10-01,07:30 AM,Sunita Sharma,Mother,Blood Pressure,138,88,74,mmHg,Morning Rest,Stage 1 Hypertension,Pre-medication morning reading. Resting quietly for 5 minutes.
+2026-10-01,08:00 AM,Sunita Sharma,Mother,Blood Sugar,98.0,,0,mg/dL,Fasting,Normal,Fasting blood glucose before morning thyroid regimen.
+2026-10-01,08:00 AM,Rajesh Sharma,Father,Blood Pressure,142,92,78,mmHg,Morning Rest,Stage 1 Hypertension,Morning BP check prior to Telmisartan dose.
+2026-10-01,08:15 AM,Rajesh Sharma,Father,Blood Sugar,142.0,,0,mg/dL,Fasting,Elevated,Fasting sugar elevated. Advised low glycemic breakfast.
+2026-10-01,02:00 PM,Rajesh Sharma,Father,Blood Sugar,178.0,,0,mg/dL,Post-prandial,High,Post-lunch measurement after wheat roti and vegetable curry.
+2026-10-02,07:45 AM,Sunita Sharma,Mother,Blood Pressure,132,84,72,mmHg,Morning Rest,Elevated,Improvement observed following evening walk.
+2026-10-02,08:15 AM,Sunita Sharma,Mother,Blood Sugar,92.0,,0,mg/dL,Fasting,Normal,Fasting reading stable.
+2026-10-02,08:30 AM,Rajesh Sharma,Father,Blood Pressure,136,88,76,mmHg,Morning Rest,Pre-hypertension,Morning BP stable after 20-minute terrace walk.
+2026-10-02,01:30 PM,Sunita Sharma,Mother,Blood Sugar,134.0,,0,mg/dL,Post-prandial,Normal,2 hours after lunch. Within geriatric target range.
+2026-10-02,07:30 AM,Rajesh Sharma,Father,Blood Sugar,130.0,,0,mg/dL,Fasting,Mild Elevation,Gradual reduction following Metformin adherence.
+2026-10-02,09:00 AM,Ramesh Sharma,Grandfather,Blood Pressure,145,88,68,mmHg,Morning Rest,Stage 1 Hypertension,Mild morning stiffness noted. Pulse regular.
+2026-10-02,08:30 AM,Ramesh Sharma,Grandfather,Blood Sugar,104.0,,0,mg/dL,Fasting,Normal,Fasting glucose well regulated.
+2026-10-02,10:00 AM,Kamla Sharma,Grandmother,Blood Pressure,126,78,72,mmHg,Morning Rest,Normal,Optimum blood pressure recorded after calcium supplement.
+2026-10-03,07:15 AM,Sunita Sharma,Mother,Blood Pressure,126,80,70,mmHg,Morning Rest,Normal,Optimal systolic and diastolic control.
+2026-10-03,08:00 AM,Sunita Sharma,Mother,Blood Sugar,95.0,,0,mg/dL,Fasting,Normal,Morning baseline normal.
+2026-10-03,08:00 AM,Rajesh Sharma,Father,Blood Pressure,130,84,74,mmHg,Morning Rest,Pre-hypertension,Systolic trending downward.
+2026-10-03,07:45 AM,Rajesh Sharma,Father,Blood Sugar,122.0,,0,mg/dL,Fasting,Mild Elevation,Better glucose control observed.
+2026-10-03,09:00 AM,Ramesh Sharma,Grandfather,Blood Pressure,138,82,66,mmHg,Morning Rest,Pre-hypertension,Stable cardiac rhythm.
+2026-10-03,08:30 AM,Kamla Sharma,Grandmother,Blood Sugar,96.0,,0,mg/dL,Fasting,Normal,Morning blood glucose within optimal limits.
+2026-10-04,07:30 AM,Sunita Sharma,Mother,Blood Pressure,122,78,68,mmHg,Morning Rest,Normal,Consistently normal blood pressure.
+2026-10-04,08:00 AM,Sunita Sharma,Mother,Blood Sugar,91.0,,0,mg/dL,Fasting,Normal,Fasting control remains exemplary.
+2026-10-04,08:30 AM,Rajesh Sharma,Father,Blood Pressure,128,82,72,mmHg,Morning Rest,Normal,Blood pressure within normal clinical boundary.
+2026-10-04,07:30 AM,Rajesh Sharma,Father,Blood Sugar,116.0,,0,mg/dL,Fasting,Normal,Significant fasting reduction compared to day 1.
+2026-10-04,01:30 PM,Rajesh Sharma,Father,Blood Sugar,148.0,,0,mg/dL,Post-prandial,Normal,2-hour post prandial within acceptable diabetic target.
+2026-10-04,09:00 AM,Ramesh Sharma,Grandfather,Blood Pressure,130,78,65,mmHg,Morning Rest,Normal,Resting pulse 65 bpm. Systolic controlled.
+2026-10-04,08:30 AM,Ramesh Sharma,Grandfather,Blood Sugar,101.0,,0,mg/dL,Fasting,Normal,Fasting sugar steady.
+2026-10-04,10:15 AM,Kamla Sharma,Grandmother,Blood Pressure,122,76,70,mmHg,Morning Rest,Normal,Normal readings. Tolerating bone supplements well.
+2026-10-05,07:00 AM,Sunita Sharma,Mother,Blood Pressure,120,78,71,mmHg,Morning Rest,Normal,Resting BP normal. No headache or dizziness.
+2026-10-05,08:00 AM,Sunita Sharma,Mother,Blood Sugar,94.0,,0,mg/dL,Fasting,Normal,Fasting sugar baseline optimal.
+2026-10-05,08:00 AM,Rajesh Sharma,Father,Blood Pressure,124,80,73,mmHg,Morning Rest,Normal,Consistent target maintenance.
+2026-10-05,07:30 AM,Rajesh Sharma,Father,Blood Sugar,110.0,,0,mg/dL,Fasting,Normal,Normal fasting range achieved.
+2026-10-05,08:45 AM,Ramesh Sharma,Grandfather,Blood Pressure,128,76,67,mmHg,Morning Rest,Normal,Cardiovascular parameter within normal bounds.
+2026-10-05,08:15 AM,Kamla Sharma,Grandmother,Blood Sugar,94.0,,0,mg/dL,Fasting,Normal,Excellent glycemic reading.
+2026-10-05,05:31 AM,Sunita,Mother,Blood Pressure,118,76,70,mmHg,Morning Rest,Normal,Test BP reading
+2026-10-05,05:37 AM,Sunita,Mother,Blood Sugar,95.0,,0,mg/dL,Morning Rest,Normal,Morning fasting baseline
+2026-10-05,05:37 AM,Sunita,Mother,Blood Sugar,95.0,,0,mg/dL,Morning Rest,Normal,Morning fasting baseline
+2026-10-05,05:38 AM,Sunita,Mother,Blood Sugar,95.0,,0,mg/dL,Morning Rest,Normal,Morning fasting baseline

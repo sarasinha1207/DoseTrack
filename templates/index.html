@@ -236,6 +236,74 @@
       </div>
     </section>
 
+    <!-- All Family Medication Calendar Section -->
+    <section id="family-calendar" class="calendar-card" style="margin: 40px auto; max-width: 1140px;">
+      <div class="calendar-top-bar">
+        <div class="calendar-title-box">
+          <span class="hero-badge" style="margin-bottom: 6px; display: inline-block;">Monthly Oversight</span>
+          <h2 class="section-title" style="text-align: left; font-size: 1.35rem; margin-bottom: 4px;">
+            All Family Medication Adherence Calendar
+          </h2>
+          <p style="font-size: 0.85rem; color: var(--slate-600);">
+            Live calendar showing verified medicine taken vs missed markings across all parents and grandparents for October 2026.
+          </p>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+          <div class="calendar-legend-bar">
+            <div class="calendar-legend-item">
+              <span class="cal-legend-dot" style="background: var(--success);"></span>
+              <span>All Doses Taken</span>
+            </div>
+            <div class="calendar-legend-item">
+              <span class="cal-legend-dot" style="background: var(--accent-rose);"></span>
+              <span>Missed / Delayed</span>
+            </div>
+            <div class="calendar-legend-item">
+              <span class="cal-legend-dot" style="background: var(--slate-300);"></span>
+              <span>Scheduled Future</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Metrics Strip -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 20px;">
+        <div style="background: var(--slate-50); border: 1px solid var(--slate-200); border-radius: var(--radius-sm); padding: 12px 16px;">
+          <div style="font-size: 0.72rem; font-weight: 700; color: var(--slate-500); text-transform: uppercase;">Month Overview</div>
+          <div style="font-size: 1.15rem; font-weight: 800; color: var(--slate-900);">October 2026</div>
+        </div>
+        <div style="background: var(--success-light); border: 1px solid var(--success-border); border-radius: var(--radius-sm); padding: 12px 16px;">
+          <div style="font-size: 0.72rem; font-weight: 700; color: var(--success); text-transform: uppercase;">Verified Doses Taken</div>
+          <div style="font-size: 1.15rem; font-weight: 800; color: var(--success);" id="home-cal-taken-count">88 Doses</div>
+        </div>
+        <div style="background: #fef2f2; border: 1px solid #fecdd3; border-radius: var(--radius-sm); padding: 12px 16px;">
+          <div style="font-size: 0.72rem; font-weight: 700; color: var(--accent-rose); text-transform: uppercase;">Missed Intakes Logged</div>
+          <div style="font-size: 1.15rem; font-weight: 800; color: var(--accent-rose);" id="home-cal-missed-count">7 Alerts</div>
+        </div>
+        <div style="background: var(--primary-light); border: 1px solid var(--primary-border); border-radius: var(--radius-sm); padding: 12px 16px;">
+          <div style="font-size: 0.72rem; font-weight: 700; color: var(--primary); text-transform: uppercase;">Household Compliance</div>
+          <div style="font-size: 1.15rem; font-weight: 800; color: var(--primary);" id="home-cal-rate">92% Average</div>
+        </div>
+      </div>
+
+      <!-- Calendar Column Headers -->
+      <div class="calendar-grid-header">
+        <div class="cal-col-header">Thu</div>
+        <div class="cal-col-header">Fri</div>
+        <div class="cal-col-header">Sat</div>
+        <div class="cal-col-header">Sun</div>
+        <div class="cal-col-header">Mon</div>
+        <div class="cal-col-header">Tue</div>
+        <div class="cal-col-header">Wed</div>
+      </div>
+
+      <!-- Calendar Days Grid -->
+      <div class="calendar-days-grid" id="home-calendar-days">
+        <!-- Rendered by home.js -->
+      </div>
+    </section>
+
     <!-- Interactive Collapsible FAQ Section -->
     <section id="faq-section" class="faq-section-wrapper">
       <div class="section-header-center">

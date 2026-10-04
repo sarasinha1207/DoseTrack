@@ -49,9 +49,91 @@
           "purpose": "Cardiovascular and Lipid Support",
           "caution": "Take with meal for optimal bioavailability",
           "active": true
+        },
+        {
+          "id": "med_mother_1791158889_4",
+          "name": "Vitamin D3",
+          "dosage": "1000 IU",
+          "time": "09:00 AM",
+          "timing": "Morning",
+          "food_instruction": "Take after breakfast",
+          "purpose": "Bone density and calcium absorption",
+          "caution": "Follow physician instructions",
+          "active": true
         }
       ],
-      "logs": {},
+      "logs": {
+        "2026-10-05": {
+          "med_mother_1791158889_4": {
+            "taken": true,
+            "timestamp": "05:42 AM",
+            "taken_by": "Self"
+          }
+        },
+        "2026-10-01": {
+          "med_mo_1": {
+            "taken": true,
+            "timestamp": "06:30 AM",
+            "taken_by": "Self"
+          },
+          "med_mo_2": {
+            "taken": true,
+            "timestamp": "01:30 PM",
+            "taken_by": "Self"
+          },
+          "med_mo_3": {
+            "taken": true,
+            "timestamp": "08:30 PM",
+            "taken_by": "Self"
+          }
+        },
+        "2026-10-02": {
+          "med_mo_1": {
+            "taken": true,
+            "timestamp": "06:30 AM",
+            "taken_by": "Self"
+          },
+          "med_mo_3": {
+            "taken": true,
+            "timestamp": "08:30 PM",
+            "taken_by": "Self"
+          }
+        },
+        "2026-10-03": {
+          "med_mo_1": {
+            "taken": true,
+            "timestamp": "06:30 AM",
+            "taken_by": "Self"
+          },
+          "med_mo_2": {
+            "taken": true,
+            "timestamp": "01:30 PM",
+            "taken_by": "Self"
+          },
+          "med_mo_3": {
+            "taken": true,
+            "timestamp": "08:30 PM",
+            "taken_by": "Self"
+          }
+        },
+        "2026-10-04": {
+          "med_mo_1": {
+            "taken": true,
+            "timestamp": "06:30 AM",
+            "taken_by": "Self"
+          },
+          "med_mo_2": {
+            "taken": true,
+            "timestamp": "01:30 PM",
+            "taken_by": "Self"
+          },
+          "med_mo_3": {
+            "taken": true,
+            "timestamp": "08:30 PM",
+            "taken_by": "Self"
+          }
+        }
+      },
       "password": "sunita123",
       "first_name": "Sunita",
       "last_name": "Sharma"
@@ -118,7 +200,113 @@
           "active": true
         }
       ],
-      "logs": {},
+      "logs": {
+        "2026-10-01": {
+          "med_fa_1": {
+            "taken": true,
+            "timestamp": "08:00 AM",
+            "taken_by": "Self"
+          },
+          "med_fa_2": {
+            "taken": true,
+            "timestamp": "08:30 AM",
+            "taken_by": "Self"
+          },
+          "med_fa_3": {
+            "taken": true,
+            "timestamp": "08:00 PM",
+            "taken_by": "Self"
+          },
+          "med_fa_4": {
+            "taken": true,
+            "timestamp": "10:00 PM",
+            "taken_by": "Self"
+          }
+        },
+        "2026-10-02": {
+          "med_fa_1": {
+            "taken": true,
+            "timestamp": "08:00 AM",
+            "taken_by": "Self"
+          },
+          "med_fa_2": {
+            "taken": true,
+            "timestamp": "08:30 AM",
+            "taken_by": "Self"
+          },
+          "med_fa_3": {
+            "taken": true,
+            "timestamp": "08:00 PM",
+            "taken_by": "Self"
+          },
+          "med_fa_4": {
+            "taken": true,
+            "timestamp": "10:00 PM",
+            "taken_by": "Self"
+          }
+        },
+        "2026-10-03": {
+          "med_fa_1": {
+            "taken": true,
+            "timestamp": "08:00 AM",
+            "taken_by": "Self"
+          },
+          "med_fa_2": {
+            "taken": true,
+            "timestamp": "08:30 AM",
+            "taken_by": "Self"
+          },
+          "med_fa_3": {
+            "taken": true,
+            "timestamp": "08:00 PM",
+            "taken_by": "Self"
+          }
+        },
+        "2026-10-04": {
+          "med_fa_1": {
+            "taken": true,
+            "timestamp": "08:00 AM",
+            "taken_by": "Self"
+          },
+          "med_fa_2": {
+            "taken": true,
+            "timestamp": "08:30 AM",
+            "taken_by": "Self"
+          },
+          "med_fa_3": {
+            "taken": true,
+            "timestamp": "08:00 PM",
+            "taken_by": "Self"
+          },
+          "med_fa_4": {
+            "taken": true,
+            "timestamp": "10:00 PM",
+            "taken_by": "Self"
+          }
+        },
+        "2026-10-05": {
+          "med_fa_1": {
+            "taken": true,
+            "timestamp": "08:00 AM",
+            "taken_by": "Self"
+          },
+          "med_fa_2": {
+            "taken": true,
+            "timestamp": "08:30 AM",
+            "taken_by": "Self"
+          },
+          "med_fa_3": {
+            "taken": true,
+            "timestamp": "08:00 PM",
+            "taken_by": "Self"
+          },
+          "med_fa_4": {
+            "taken": true,
+            "timestamp": "10:00 PM",
+            "taken_by": "Self"
+          }
+        }
+      },
       "password": "rajesh123",
       "first_name": "Rajesh",
       "last_name": "Sharma"
@@ -185,7 +373,113 @@
           "active": true
         }
       ],
-      "logs": {},
+      "logs": {
+        "2026-10-01": {
+          "med_gf_1": {
+            "taken": true,
+            "timestamp": "08:30 AM",
+            "taken_by": "Self"
+          },
+          "med_gf_2": {
+            "taken": true,
+            "timestamp": "01:30 PM",
+            "taken_by": "Self"
+          },
+          "med_gf_3": {
+            "taken": true,
+            "timestamp": "09:00 AM",
+            "taken_by": "Self"
+          },
+          "med_gf_4": {
+            "taken": true,
+            "timestamp": "09:30 PM",
+            "taken_by": "Self"
+          }
+        },
+        "2026-10-02": {
+          "med_gf_1": {
+            "taken": true,
+            "timestamp": "08:30 AM",
+            "taken_by": "Self"
+          },
+          "med_gf_2": {
+            "taken": true,
+            "timestamp": "01:30 PM",
+            "taken_by": "Self"
+          },
+          "med_gf_3": {
+            "taken": true,
+            "timestamp": "09:00 AM",
+            "taken_by": "Self"
+          },
+          "med_gf_4": {
+            "taken": true,
+            "timestamp": "09:30 PM",
+            "taken_by": "Self"
+          }
+        },
+        "2026-10-03": {
+          "med_gf_1": {
+            "taken": true,
+            "timestamp": "08:30 AM",
+            "taken_by": "Self"
+          },
+          "med_gf_2": {
+            "taken": true,
+            "timestamp": "01:30 PM",
+            "taken_by": "Self"
+          },
+          "med_gf_3": {
+            "taken": true,
+            "timestamp": "09:00 AM",
+            "taken_by": "Self"
+          },
+          "med_gf_4": {
+            "taken": true,
+            "timestamp": "09:30 PM",
+            "taken_by": "Self"
+          }
+        },
+        "2026-10-04": {
+          "med_gf_1": {
+            "taken": true,
+            "timestamp": "08:30 AM",
+            "taken_by": "Self"
+          },
+          "med_gf_2": {
+            "taken": true,
+            "timestamp": "01:30 PM",
+            "taken_by": "Self"
+          },
+          "med_gf_4": {
+            "taken": true,
+            "timestamp": "09:30 PM",
+            "taken_by": "Self"
+          }
+        },
+        "2026-10-05": {
+          "med_gf_1": {
+            "taken": true,
+            "timestamp": "08:30 AM",
+            "taken_by": "Self"
+          },
+          "med_gf_2": {
+            "taken": true,
+            "timestamp": "01:30 PM",
+            "taken_by": "Self"
+          },
+          "med_gf_3": {
+            "taken": true,
+            "timestamp": "09:00 AM",
+            "taken_by": "Self"
+          },
+          "med_gf_4": {
+            "taken": true,
+            "timestamp": "09:30 PM",
+            "taken_by": "Self"
+          }
+        }
+      },
       "password": "ramesh123",
       "first_name": "Ramesh",
       "last_name": "Sharma"
@@ -230,7 +524,68 @@
           "active": true
         }
       ],
-      "logs": {},
+      "logs": {
+        "2026-10-01": {
+          "med_gm_1": {
+            "taken": true,
+            "timestamp": "09:00 AM",
+            "taken_by": "Self"
+          },
+          "med_gm_2": {
+            "taken": true,
+            "timestamp": "02:00 PM",
+            "taken_by": "Self"
+          }
+        },
+        "2026-10-02": {
+          "med_gm_1": {
+            "taken": true,
+            "timestamp": "09:00 AM",
+            "taken_by": "Self"
+          },
+          "med_gm_2": {
+            "taken": true,
+            "timestamp": "02:00 PM",
+            "taken_by": "Self"
+          }
+        },
+        "2026-10-03": {
+          "med_gm_1": {
+            "taken": true,
+            "timestamp": "09:00 AM",
+            "taken_by": "Self"
+          },
+          "med_gm_2": {
+            "taken": true,
+            "timestamp": "02:00 PM",
+            "taken_by": "Self"
+          }
+        },
+        "2026-10-04": {
+          "med_gm_1": {
+            "taken": true,
+            "timestamp": "09:00 AM",
+            "taken_by": "Self"
+          },
+          "med_gm_2": {
+            "taken": true,
+            "timestamp": "02:00 PM",
+            "taken_by": "Self"
+          }
+        },
+        "2026-10-05": {
+          "med_gm_1": {
+            "taken": true,
+            "timestamp": "09:00 AM",
+            "taken_by": "Self"
+          },
+          "med_gm_2": {
+            "taken": true,
+            "timestamp": "02:00 PM",
+            "taken_by": "Self"
+          }
+        }
+      },
       "password": "kamla123",
       "first_name": "Kamla",
       "last_name": "Sharma"
@@ -308,7 +663,143 @@
           "active": true
         }
       ],
-      "logs": {},
+      "logs": {
+        "2026-10-01": {
+          "med_al_1": {
+            "taken": true,
+            "timestamp": "06:30 AM",
+            "taken_by": "Self"
+          },
+          "med_al_2": {
+            "taken": true,
+            "timestamp": "08:00 AM",
+            "taken_by": "Self"
+          },
+          "med_al_3": {
+            "taken": true,
+            "timestamp": "12:30 PM",
+            "taken_by": "Self"
+          },
+          "med_al_4": {
+            "taken": true,
+            "timestamp": "01:00 PM",
+            "taken_by": "Self"
+          },
+          "med_al_5": {
+            "taken": true,
+            "timestamp": "10:30 PM",
+            "taken_by": "Self"
+          }
+        },
+        "2026-10-02": {
+          "med_al_1": {
+            "taken": true,
+            "timestamp": "06:30 AM",
+            "taken_by": "Self"
+          },
+          "med_al_2": {
+            "taken": true,
+            "timestamp": "08:00 AM",
+            "taken_by": "Self"
+          },
+          "med_al_3": {
+            "taken": true,
+            "timestamp": "12:30 PM",
+            "taken_by": "Self"
+          },
+          "med_al_4": {
+            "taken": true,
+            "timestamp": "01:00 PM",
+            "taken_by": "Self"
+          },
+          "med_al_5": {
+            "taken": true,
+            "timestamp": "10:30 PM",
+            "taken_by": "Self"
+          }
+        },
+        "2026-10-03": {
+          "med_al_1": {
+            "taken": true,
+            "timestamp": "06:30 AM",
+            "taken_by": "Self"
+          },
+          "med_al_2": {
+            "taken": true,
+            "timestamp": "08:00 AM",
+            "taken_by": "Self"
+          },
+          "med_al_3": {
+            "taken": true,
+            "timestamp": "12:30 PM",
+            "taken_by": "Self"
+          },
+          "med_al_4": {
+            "taken": true,
+            "timestamp": "01:00 PM",
+            "taken_by": "Self"
+          },
+          "med_al_5": {
+            "taken": true,
+            "timestamp": "10:30 PM",
+            "taken_by": "Self"
+          }
+        },
+        "2026-10-04": {
+          "med_al_1": {
+            "taken": true,
+            "timestamp": "06:30 AM",
+            "taken_by": "Self"
+          },
+          "med_al_2": {
+            "taken": true,
+            "timestamp": "08:00 AM",
+            "taken_by": "Self"
+          },
+          "med_al_3": {
+            "taken": true,
+            "timestamp": "12:30 PM",
+            "taken_by": "Self"
+          },
+          "med_al_4": {
+            "taken": true,
+            "timestamp": "01:00 PM",
+            "taken_by": "Self"
+          },
+          "med_al_5": {
+            "taken": true,
+            "timestamp": "10:30 PM",
+            "taken_by": "Self"
+          }
+        },
+        "2026-10-05": {
+          "med_al_1": {
+            "taken": true,
+            "timestamp": "06:30 AM",
+            "taken_by": "Self"
+          },
+          "med_al_2": {
+            "taken": true,
+            "timestamp": "08:00 AM",
+            "taken_by": "Self"
+          },
+          "med_al_3": {
+            "taken": true,
+            "timestamp": "12:30 PM",
+            "taken_by": "Self"
+          },
+          "med_al_4": {
+            "taken": true,
+            "timestamp": "01:00 PM",
+            "taken_by": "Self"
+          },
+          "med_al_5": {
+            "taken": true,
+            "timestamp": "10:30 PM",
+            "taken_by": "Self"
+          }
+        }
+      },
       "password": "alina123",
       "first_name": "Alina",
       "last_name": "Sharma"
@@ -345,7 +836,35 @@
         }
       ],
       "logs": {
-        "2026-10-05": {}
+        "2026-10-05": {},
+        "2026-10-01": {
+          "med_testuser_1791156177_1791156177_0": {
+            "taken": true,
+            "timestamp": "08:30 AM",
+            "taken_by": "Self"
+          }
+        },
+        "2026-10-02": {
+          "med_testuser_1791156177_1791156177_0": {
+            "taken": true,
+            "timestamp": "08:30 AM",
+            "taken_by": "Self"
+          }
+        },
+        "2026-10-03": {
+          "med_testuser_1791156177_1791156177_0": {
+            "taken": true,
+            "timestamp": "08:30 AM",
+            "taken_by": "Self"
+          }
+        },
+        "2026-10-04": {
+          "med_testuser_1791156177_1791156177_0": {
+            "taken": true,
+            "timestamp": "08:30 AM",
+            "taken_by": "Self"
+          }
+        }
       }
     }
   ]

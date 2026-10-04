@@ -103,6 +103,19 @@ class AddMedicationRequest(BaseModel):
     caution: str = "Follow physician instructions"
 
 
+class AddVitalRequest(BaseModel):
+    profile_id: str
+    measurement_type: str
+    systolic: Optional[int] = None
+    diastolic: Optional[int] = None
+    pulse: Optional[int] = 72
+    sugar_value: Optional[float] = None
+    sugar_context: Optional[str] = "Fasting"
+    date: Optional[str] = None
+    time: Optional[str] = None
+    notes: Optional[str] = ""
+
+
 class ParseTextRequest(BaseModel):
     text: str
     sample_key: Optional[str] = None
@@ -379,6 +392,54 @@ def batch_add_medications(req: BatchAddMedicationsRequest):
     for med in req.medications:
         vault.add_medication(req.profile_id, med)
     return {"status": "success", "count": len(req.medications)}
+
+
+# Health Vitals (BP, Blood Sugar, Statistical Metrics, CSV Export)
+@app.get("/api/vitals")
+def get_vitals_list(profile_id: Optional[str] = None):
+    vitals = vault.get_vitals(profile_id)
+    stats = vault.compute_vital_stats(profile_id)
+    return {
+        "vitals": vitals,
+        "stats": stats
+    }
+
+
+@app.post("/api/vitals/add")
+def add_vital_reading(req: AddVitalRequest):
+    new_vital = vault.add_vital(req.dict())
+    stats = vault.compute_vital_stats(req.profile_id)
+    return {
+        "status": "success",
+        "vital": new_vital,
+        "stats": stats
+    }
+
+
+@app.delete("/api/vitals/{vital_id}")
+def delete_vital_reading(vital_id: str):
+    success = vault.delete_vital(vital_id)
+    if not success:
+        raise HTTPException(status_code=404, detail="Vital reading not found")
+    return {"status": "success"}
+
+
+@app.get("/api/vitals/export-csv")
+def export_vitals_csv():
+    from core.models import VITALS_CSV_FILE
+    if not os.path.exists(VITALS_CSV_FILE):
+        vault._save_vitals_to_csv()
+    return FileResponse(
+        path=VITALS_CSV_FILE,
+        filename="doseguard_vitals_records.csv",
+        media_type="text/csv"
+    )
+
+
+# Calendar Adherence
+@app.get("/api/calendar/adherence")
+def get_calendar_adherence_data(month: Optional[str] = None):
+    return vault.get_calendar_adherence(month)
 
 
 # AI Prescription & Invoice Ingestion

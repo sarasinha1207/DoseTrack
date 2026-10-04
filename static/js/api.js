@@ -140,5 +140,40 @@ const API = {
     const res = await fetch("/api/export");
     if (!res.ok) throw new Error("Failed to export vault data");
     return await res.json();
+  },
+
+  async getVitals(profileId = null) {
+    const query = profileId && profileId !== "all" ? `?profile_id=${encodeURIComponent(profileId)}` : "";
+    const res = await fetch(`/api/vitals${query}`);
+    if (!res.ok) throw new Error("Failed to load health vitals records");
+    return await res.json();
+  },
+
+  async addVital(vitalData) {
+    const res = await fetch("/api/vitals/add", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(vitalData)
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || "Failed to save vital reading");
+    }
+    return await res.json();
+  },
+
+  async deleteVital(vitalId) {
+    const res = await fetch(`/api/vitals/${vitalId}`, {
+      method: "DELETE"
+    });
+    if (!res.ok) throw new Error("Failed to delete vital reading");
+    return await res.json();
+  },
+
+  async getCalendarAdherence(month = null) {
+    const query = month ? `?month=${encodeURIComponent(month)}` : "";
+    const res = await fetch(`/api/calendar/adherence${query}`);
+    if (!res.ok) throw new Error("Failed to load calendar adherence records");
+    return await res.json();
   }
 };

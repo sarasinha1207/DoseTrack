@@ -33,9 +33,10 @@ const DashboardCore = {
     this.setupOnboardingModal();
 
     if (window.ScheduleModule) window.ScheduleModule.setupAddMedModal();
+    if (window.AddMedicationModule) window.AddMedicationModule.init();
+    if (window.VitalsModule) window.VitalsModule.init();
     if (window.AddMemberModule) window.AddMemberModule.init();
     if (window.ProfileModule) window.ProfileModule.init();
-    if (window.ClinicalModule) window.ClinicalModule.init();
     if (window.HelpModule) window.HelpModule.init();
 
     // Load user data and render
@@ -314,9 +315,10 @@ const DashboardCore = {
     const titles = {
       "schedule": { title: "My Daily Schedule", sub: "Today's scheduled medication intake and adherence tracking" },
       "family": { title: "All Family Medications", sub: "Transparent cross-family adherence oversight for parents and grandparents" },
+      "add-medication": { title: "Medication Regimen Management", sub: "Prescribe new clinical treatments, configure schedule intervals, and inspect comprehensive medication profiles" },
+      "vitals": { title: "Health Vitals & Diagnostic Log", sub: "Track Blood Pressure (BP) and Blood Sugar levels, evaluate clinical thresholds, and export diagnostic history" },
       "add-member": { title: "Add Family Member", sub: "Register an additional household member with their dedicated profile" },
       "profile": { title: "Biometric Profile", sub: "Recorded biometric indicators, attending physician, and clinical allergies" },
-      "clinical": { title: "Clinical Guidance", sub: "AI prescription parsing, hospital summaries, and drug instruction analysis" },
       "help": { title: "Help & FAQ", sub: "Caregiver guides, math challenge alarm instructions, and support" }
     };
 
@@ -353,6 +355,10 @@ const DashboardCore = {
       window.ScheduleModule.render();
     } else if (dashState.activePage === "family" && window.FamilyModule) {
       window.FamilyModule.render();
+    } else if (dashState.activePage === "add-medication" && window.AddMedicationModule) {
+      window.AddMedicationModule.render();
+    } else if (dashState.activePage === "vitals" && window.VitalsModule) {
+      window.VitalsModule.loadAndRender();
     } else if (dashState.activePage === "profile" && window.ProfileModule) {
       window.ProfileModule.updateDisplay();
     }

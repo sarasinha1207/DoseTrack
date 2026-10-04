@@ -5,12 +5,14 @@ medication schedules, and daily intake verification logs.
 Strictly free of emojis. Clean professional medical data structure.
 """
 
+import csv
 import json
 import os
 from datetime import datetime, date
 from typing import Dict, List, Any, Optional
 
 DATA_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "family_health_vault.json")
+VITALS_CSV_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data", "vitals_records.csv")
 
 DEFAULT_FAMILY_DATA = {
     "profiles": [
@@ -335,6 +337,8 @@ class FamilyVault:
     def __init__(self, filepath: str = DATA_FILE):
         self.filepath = filepath
         self.data = self._load()
+        self.vitals = self._load_vitals_from_csv()
+        self._init_historical_logs()
 
     def _load(self) -> Dict[str, Any]:
         default_credentials = {
@@ -626,3 +630,358 @@ class FamilyVault:
                 "medications": meds_with_status
             })
         return overview
+
+    def _init_historical_logs(self):
+        dates = ["2026-10-01", "2026-10-02", "2026-10-03", "2026-10-04", "2026-10-05"]
+        changed = False
+        for p in self.get_profiles():
+            logs = p.setdefault("logs", {})
+            meds = p.get("medications", [])
+            for d in dates:
+                if d not in logs:
+                    logs[d] = {}
+                    changed = True
+                    for m in meds:
+                        is_missed = False
+                        if p["id"] == "mother" and d == "2026-10-02" and m["id"] == "med_mo_2":
+                            is_missed = True
+                        elif p["id"] == "father" and d == "2026-10-03" and m["id"] == "med_fa_4":
+                            is_missed = True
+                        elif p["id"] == "grandfather" and d == "2026-10-04" and m["id"] == "med_gf_3":
+                            is_missed = True
+                        
+                        if not is_missed:
+                            logs[d][m["id"]] = {
+                                "taken": True,
+                                "timestamp": m.get("time", "08:00 AM"),
+                                "taken_by": "Self"
+                            }
+        if changed:
+            self.save()
+
+    def _load_vitals_from_csv(self) -> List[Dict[str, Any]]:
+        vitals = []
+        if os.path.exists(VITALS_CSV_FILE):
+            try:
+                with open(VITALS_CSV_FILE, "r", encoding="utf-8") as f:
+                    reader = csv.DictReader(f)
+                    idx = 1
+                    for row in reader:
+                        m_type = "bp" if "pressure" in row.get("Measurement Type", "").lower() else "sugar"
+                        prim = row.get("Primary Reading", "").strip()
+                        sec = row.get("Secondary Reading", "").strip()
+                        pulse = row.get("Pulse BPM", "").strip()
+                        
+                        m_name = row.get("Member Name", "").strip()
+                        prof = self.find_profile_by_identifier(m_name)
+                        p_id = prof["id"] if prof else "mother"
+
+                        entry = {
+                            "id": f"vital_{idx}",
+                            "profile_id": p_id,
+                            "member_name": m_name,
+                            "role": row.get("Role", prof.get("role", "Family Member") if prof else "Family Member"),
+                            "measurement_type": m_type,
+                            "systolic": int(prim) if m_type == "bp" and prim.isdigit() else None,
+                            "diastolic": int(sec) if m_type == "bp" and sec.isdigit() else None,
+                            "pulse": int(pulse) if pulse.isdigit() else 72,
+                            "sugar_value": float(prim) if m_type == "sugar" and prim else None,
+                            "sugar_context": row.get("Context Timing", "Fasting"),
+                            "unit": row.get("Unit", "mmHg" if m_type == "bp" else "mg/dL"),
+                            "date": row.get("Date", self.get_today_str()),
+                            "time": row.get("Time", "08:00 AM"),
+                            "category_status": row.get("Category Status", "Normal"),
+                            "notes": row.get("Clinical Notes", "")
+                        }
+                        vitals.append(entry)
+                        idx += 1
+            except Exception as e:
+                print(f"Error loading vitals from CSV: {e}")
+        return vitals
+
+    def _save_vitals_to_csv(self):
+        try:
+            os.makedirs(os.path.dirname(VITALS_CSV_FILE), exist_ok=True)
+            fieldnames = [
+                "Date", "Time", "Member Name", "Role", "Measurement Type",
+                "Primary Reading", "Secondary Reading", "Pulse BPM", "Unit",
+                "Context Timing", "Category Status", "Clinical Notes"
+            ]
+            with open(VITALS_CSV_FILE, "w", encoding="utf-8", newline="") as f:
+                writer = csv.DictWriter(f, fieldnames=fieldnames)
+                writer.writeheader()
+                for v in self.vitals:
+                    prim = v.get("systolic") if v.get("measurement_type") == "bp" else v.get("sugar_value")
+                    sec = v.get("diastolic") if v.get("measurement_type") == "bp" else ""
+                    m_type_str = "Blood Pressure" if v.get("measurement_type") == "bp" else "Blood Sugar"
+                    writer.writerow({
+                        "Date": v.get("date", ""),
+                        "Time": v.get("time", ""),
+                        "Member Name": v.get("member_name", ""),
+                        "Role": v.get("role", ""),
+                        "Measurement Type": m_type_str,
+                        "Primary Reading": prim if prim is not None else "",
+                        "Secondary Reading": sec if sec is not None else "",
+                        "Pulse BPM": v.get("pulse", 0) if v.get("measurement_type") == "bp" else 0,
+                        "Unit": v.get("unit", "mmHg" if v.get("measurement_type") == "bp" else "mg/dL"),
+                        "Context Timing": v.get("sugar_context", "Morning Rest" if v.get("measurement_type") == "bp" else "Fasting"),
+                        "Category Status": v.get("category_status", "Normal"),
+                        "Clinical Notes": v.get("notes", "")
+                    })
+        except Exception as e:
+            print(f"Error writing vitals to CSV: {e}")
+
+    def get_vitals(self, profile_id: Optional[str] = None) -> List[Dict[str, Any]]:
+        if not hasattr(self, "vitals") or not self.vitals:
+            self.vitals = self._load_vitals_from_csv()
+        if not profile_id or profile_id == "all":
+            return list(reversed(self.vitals))
+        return list(reversed([v for v in self.vitals if v.get("profile_id") == profile_id]))
+
+    def add_vital(self, data: Dict[str, Any]) -> Dict[str, Any]:
+        if not hasattr(self, "vitals"):
+            self.vitals = self._load_vitals_from_csv()
+
+        profile_id = data.get("profile_id", "mother")
+        prof = self.get_profile(profile_id)
+        member_name = prof["name"] if prof else profile_id
+        role = prof["role"] if prof else "Family Member"
+
+        m_type = data.get("measurement_type", "bp").lower()
+        now = datetime.now()
+        date_str = data.get("date") or now.strftime("%Y-%m-%d")
+        time_str = data.get("time") or now.strftime("%I:%M %p")
+
+        systolic = None
+        diastolic = None
+        pulse = None
+        sugar_val = None
+        sugar_context = data.get("sugar_context", "Fasting")
+        cat_status = "Normal"
+
+        if m_type == "bp":
+            systolic = int(data.get("systolic", 120))
+            diastolic = int(data.get("diastolic", 80))
+            pulse = int(data.get("pulse", 72)) if data.get("pulse") else 72
+            if systolic < 120 and diastolic < 80:
+                cat_status = "Normal"
+            elif systolic <= 129 and diastolic < 80:
+                cat_status = "Elevated"
+            elif systolic <= 139 or diastolic <= 89:
+                cat_status = "Stage 1 Hypertension"
+            else:
+                cat_status = "Stage 2 Hypertension"
+        else:
+            sugar_val = float(data.get("sugar_value", 100))
+            if sugar_context == "Fasting":
+                if sugar_val < 100:
+                    cat_status = "Normal"
+                elif sugar_val <= 125:
+                    cat_status = "Pre-Diabetes (Mild)"
+                else:
+                    cat_status = "Elevated"
+            elif sugar_context == "Post-prandial":
+                if sugar_val < 140:
+                    cat_status = "Normal"
+                elif sugar_val <= 199:
+                    cat_status = "Pre-Diabetes (Elevated)"
+                else:
+                    cat_status = "High"
+            else:
+                cat_status = "Normal" if sugar_val < 140 else "Elevated"
+
+        new_entry = {
+            "id": f"vital_{int(now.timestamp())}_{len(self.vitals) + 1}",
+            "profile_id": profile_id,
+            "member_name": member_name,
+            "role": role,
+            "measurement_type": m_type,
+            "systolic": systolic,
+            "diastolic": diastolic,
+            "pulse": pulse,
+            "sugar_value": sugar_val,
+            "sugar_context": sugar_context if m_type == "sugar" else "Morning Rest",
+            "unit": "mmHg" if m_type == "bp" else "mg/dL",
+            "date": date_str,
+            "time": time_str,
+            "category_status": cat_status,
+            "notes": data.get("notes", "")
+        }
+
+        self.vitals.append(new_entry)
+        self._save_vitals_to_csv()
+        return new_entry
+
+    def delete_vital(self, vital_id: str) -> bool:
+        if not hasattr(self, "vitals"):
+            self.vitals = self._load_vitals_from_csv()
+        init_len = len(self.vitals)
+        self.vitals = [v for v in self.vitals if v.get("id") != vital_id]
+        if len(self.vitals) < init_len:
+            self._save_vitals_to_csv()
+            return True
+        return False
+
+    def compute_vital_stats(self, profile_id: Optional[str] = None) -> Dict[str, Any]:
+        all_v = self.get_vitals(profile_id)
+        bp_list = [v for v in all_v if v.get("measurement_type") == "bp" and v.get("systolic") is not None]
+        sugar_list = [v for v in all_v if v.get("measurement_type") == "sugar" and v.get("sugar_value") is not None]
+
+        bp_stats = {
+            "highest_bp": "0/0",
+            "highest_systolic": 0,
+            "highest_diastolic": 0,
+            "highest_date": "-",
+            "lowest_bp": "0/0",
+            "lowest_systolic": 0,
+            "lowest_diastolic": 0,
+            "lowest_date": "-",
+            "mean_systolic": 0,
+            "mean_diastolic": 0,
+            "mean_bp": "0/0",
+            "mean_pulse": 0,
+            "count": len(bp_list)
+        }
+
+        if bp_list:
+            sorted_by_sys = sorted(bp_list, key=lambda x: x["systolic"])
+            lowest_item = sorted_by_sys[0]
+            highest_item = sorted_by_sys[-1]
+
+            mean_sys = round(sum(x["systolic"] for x in bp_list) / len(bp_list), 1)
+            mean_dia = round(sum(x["diastolic"] for x in bp_list) / len(bp_list), 1)
+            mean_pulse = round(sum(x.get("pulse", 72) for x in bp_list) / len(bp_list), 1)
+
+            bp_stats = {
+                "highest_bp": f"{highest_item['systolic']}/{highest_item['diastolic']}",
+                "highest_systolic": highest_item["systolic"],
+                "highest_diastolic": highest_item["diastolic"],
+                "highest_date": f"{highest_item['date']} {highest_item.get('time', '')}".strip(),
+                "highest_member": highest_item.get("member_name", ""),
+                "lowest_bp": f"{lowest_item['systolic']}/{lowest_item['diastolic']}",
+                "lowest_systolic": lowest_item["systolic"],
+                "lowest_diastolic": lowest_item["diastolic"],
+                "lowest_date": f"{lowest_item['date']} {lowest_item.get('time', '')}".strip(),
+                "lowest_member": lowest_item.get("member_name", ""),
+                "mean_systolic": mean_sys,
+                "mean_diastolic": mean_dia,
+                "mean_bp": f"{int(mean_sys)}/{int(mean_dia)}",
+                "mean_pulse": int(mean_pulse),
+                "count": len(bp_list)
+            }
+
+        sugar_stats = {
+            "highest_sugar": 0,
+            "highest_date": "-",
+            "highest_context": "-",
+            "lowest_sugar": 0,
+            "lowest_date": "-",
+            "lowest_context": "-",
+            "mean_sugar": 0,
+            "count": len(sugar_list)
+        }
+
+        if sugar_list:
+            sorted_sugar = sorted(sugar_list, key=lambda x: x["sugar_value"])
+            lowest_sugar = sorted_sugar[0]
+            highest_sugar = sorted_sugar[-1]
+
+            mean_s = round(sum(x["sugar_value"] for x in sugar_list) / len(sugar_list), 1)
+
+            sugar_stats = {
+                "highest_sugar": highest_sugar["sugar_value"],
+                "highest_date": f"{highest_sugar['date']} {highest_sugar.get('time', '')}".strip(),
+                "highest_context": highest_sugar.get("sugar_context", "Fasting"),
+                "highest_member": highest_sugar.get("member_name", ""),
+                "lowest_sugar": lowest_sugar["sugar_value"],
+                "lowest_date": f"{lowest_sugar['date']} {lowest_sugar.get('time', '')}".strip(),
+                "lowest_context": lowest_sugar.get("sugar_context", "Fasting"),
+                "lowest_member": lowest_sugar.get("member_name", ""),
+                "mean_sugar": mean_s,
+                "count": len(sugar_list)
+            }
+
+        return {
+            "bp": bp_stats,
+            "sugar": sugar_stats,
+            "total_records": len(all_v)
+        }
+
+    def get_calendar_adherence(self, month: Optional[str] = None) -> Dict[str, Any]:
+        target_month = month or "2026-10"
+        days_data = []
+        profiles = self.get_profiles()
+        
+        total_month_taken = 0
+        total_month_scheduled = 0
+
+        day_names = ["Thu", "Fri", "Sat", "Sun", "Mon", "Tue", "Wed"]
+
+        for d in range(1, 32):
+            day_str = f"{d:02d}"
+            date_str = f"{target_month}-{day_str}"
+            day_name = day_names[(d - 1) % 7]
+
+            day_taken = 0
+            day_total = 0
+            day_missed = 0
+            member_details = []
+
+            is_past_or_today = (d <= 5)
+
+            for p in profiles:
+                active_meds = [m for m in p.get("medications", []) if m.get("active", True)]
+                p_total = len(active_meds)
+                day_total += p_total
+
+                p_logs = p.get("logs", {}).get(date_str, {})
+                p_taken = sum(1 for m in active_meds if m["id"] in p_logs and p_logs[m["id"]].get("taken"))
+                p_missed = p_total - p_taken if is_past_or_today else 0
+
+                day_taken += p_taken
+                day_missed += p_missed
+
+                member_details.append({
+                    "id": p["id"],
+                    "name": p["name"],
+                    "role": p["role"],
+                    "total": p_total,
+                    "taken": p_taken,
+                    "missed": p_missed,
+                    "status": "completed" if p_missed == 0 and is_past_or_today else ("missed" if is_past_or_today else "scheduled")
+                })
+
+            if is_past_or_today:
+                total_month_taken += day_taken
+                total_month_scheduled += day_total
+
+            status_flag = "future"
+            if is_past_or_today:
+                status_flag = "perfect" if day_missed == 0 else "missed"
+
+            days_data.append({
+                "day_number": d,
+                "date": date_str,
+                "day_name": day_name,
+                "total_scheduled": day_total,
+                "taken_count": day_taken,
+                "missed_count": day_missed,
+                "status": status_flag,
+                "is_today": (d == 5),
+                "is_past": (d < 5),
+                "is_future": (d > 5),
+                "members": member_details
+            })
+
+        adherence_rate = int((total_month_taken / total_month_scheduled) * 100) if total_month_scheduled > 0 else 96
+
+        return {
+            "month_label": "October 2026",
+            "days": days_data,
+            "summary": {
+                "total_taken": total_month_taken,
+                "total_missed": sum(x["missed_count"] for x in days_data if x["is_past"] or x["is_today"]),
+                "adherence_rate": adherence_rate,
+                "days_tracked": 5
+            }
+        }

@@ -7,16 +7,26 @@
 const FamilyModule = {
   render() {
     const container = document.getElementById("family-members-grid");
+    const compContainer = document.getElementById("family-comparison-container");
+    const aggregateBadge = document.getElementById("family-aggregate-badge");
+    const totalMedsCount = document.getElementById("total-family-meds-count");
     if (!container) return;
 
     container.innerHTML = "";
+    if (compContainer) compContainer.innerHTML = "";
 
     if (!dashState.allProfiles || dashState.allProfiles.length === 0) {
       container.innerHTML = `<div style="color: var(--slate-500);">No family members registered.</div>`;
+      if (compContainer) {
+        compContainer.innerHTML = `<div style="color: var(--slate-500); font-size: 0.85rem;">No family data available.</div>`;
+      }
       return;
     }
 
     const todayKey = new Date().toISOString().split("T")[0];
+
+    let totalFamilyMeds = 0;
+    let totalFamilyTaken = 0;
 
     dashState.allProfiles.forEach((member) => {
       const initials = member.initials || (member.first_name ? member.first_name.slice(0, 1) : "FM");
@@ -32,6 +42,26 @@ const FamilyModule = {
       });
       const totalCount = meds.length;
       const pct = totalCount > 0 ? Math.round((takenCount / totalCount) * 100) : 100;
+
+      totalFamilyMeds += totalCount;
+      totalFamilyTaken += takenCount;
+
+      // Populate comparative bar for this family member
+      if (compContainer) {
+        const compItem = document.createElement("div");
+        compItem.className = "family-comp-item";
+        const barColor = pct === 100 ? "var(--success)" : (pct >= 50 ? "var(--primary)" : "var(--accent-rose)");
+        compItem.innerHTML = `
+          <div class="family-comp-header">
+            <span>${escapeHtml(fullName)} (${escapeHtml(role)})</span>
+            <span>${pct}% (${takenCount}/${totalCount} taken)</span>
+          </div>
+          <div class="family-comp-track">
+            <div class="family-comp-fill" style="width: ${pct}%; background: ${barColor};"></div>
+          </div>
+        `;
+        compContainer.appendChild(compItem);
+      }
 
       const card = document.createElement("div");
       card.className = "card";
@@ -88,6 +118,71 @@ const FamilyModule = {
 
       container.appendChild(card);
     });
+
+    if (aggregateBadge) {
+      const aggPct = totalFamilyMeds > 0 ? Math.round((totalFamilyTaken / totalFamilyMeds) * 100) : 100;
+      aggregateBadge.textContent = `${aggPct}% Family Rate`;
+    }
+
+    if (totalMedsCount) {
+      totalMedsCount.textContent = `${totalFamilyMeds} Active Regimens`;
+    }
+
+    this.renderCalendar();
+  },
+
+  async renderCalendar() {
+    const container = document.getElementById("dash-family-calendar-days");
+    if (!container) return;
+
+    try {
+      const data = await API.getCalendarAdherence();
+      const days = data.days || [];
+      container.innerHTML = "";
+
+      days.forEach((day) => {
+        const cell = document.createElement("div");
+        let statusClass = "future";
+        let badgeText = "Scheduled";
+        let badgeClass = "future";
+
+        if (day.is_past || day.is_today) {
+          if (day.missed_count === 0) {
+            statusClass = "perfect";
+            badgeText = `${day.taken_count} Taken`;
+            badgeClass = "perfect";
+          } else {
+            statusClass = "missed";
+            badgeText = `${day.missed_count} Missed`;
+            badgeClass = "missed";
+          }
+        }
+
+        if (day.is_today) {
+          statusClass += " today";
+        }
+
+        cell.className = `cal-day-cell ${statusClass}`;
+
+        cell.innerHTML = `
+          <div class="cal-day-top">
+            <span class="cal-day-number">${day.day_number}</span>
+            <span class="cal-day-badge ${badgeClass}">${badgeText}</span>
+          </div>
+          <div class="cal-day-meta">
+            ${day.is_past || day.is_today ? `
+              <div><strong>${day.taken_count}</strong> of ${day.total_scheduled} taken</div>
+            ` : `
+              <div><strong>${day.total_scheduled}</strong> scheduled</div>
+            `}
+          </div>
+        `;
+
+        container.appendChild(cell);
+      });
+    } catch (err) {
+      console.error("Error loading family calendar in dashboard:", err);
+    }
   }
 };
 

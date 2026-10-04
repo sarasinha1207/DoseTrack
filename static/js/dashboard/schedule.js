@@ -17,10 +17,21 @@ const ScheduleModule = {
 
     container.innerHTML = "";
 
-    // Calculate adherence
+    // Calculate adherence and time-of-day distribution
     let takenCount = 0;
+    let morningCount = 0;
+    let afternoonCount = 0;
+    let eveningCount = 0;
+    let nightCount = 0;
+
     meds.forEach((m) => {
       if (todayLogs[m.id]) takenCount++;
+      const timing = (m.timing || "").toLowerCase();
+      if (timing.includes("morning")) morningCount++;
+      else if (timing.includes("afternoon")) afternoonCount++;
+      else if (timing.includes("evening")) eveningCount++;
+      else if (timing.includes("night") || timing.includes("bedtime")) nightCount++;
+      else morningCount++;
     });
     const totalCount = meds.length;
     const pct = totalCount > 0 ? Math.round((takenCount / totalCount) * 100) : 0;
@@ -29,6 +40,48 @@ const ScheduleModule = {
     const pctFill = document.getElementById("bar-adherence-fill");
     if (pctText) pctText.textContent = `${pct}% (${takenCount} of ${totalCount} taken)`;
     if (pctFill) pctFill.style.width = `${pct}%`;
+
+    // Update streak & verification metrics
+    const valVerifiedToday = document.getElementById("val-verified-today");
+    if (valVerifiedToday) valVerifiedToday.textContent = `${takenCount} / ${totalCount}`;
+
+    // Update today's bar in weekly adherence chart
+    const chartValToday = document.getElementById("chart-val-today");
+    const chartFillToday = document.getElementById("chart-fill-today");
+    if (chartValToday) chartValToday.textContent = `${pct}%`;
+    if (chartFillToday) {
+      chartFillToday.style.height = `${pct}%`;
+      chartFillToday.className = "chart-bar-fill " + (pct === 100 ? "perfect" : (pct > 0 ? "missed" : ""));
+    }
+
+    // Update time-of-day donut metrics
+    const donutTotal = document.getElementById("donut-total-meds");
+    if (donutTotal) donutTotal.textContent = totalCount;
+
+    const legMorn = document.getElementById("legend-count-morning");
+    const legAft = document.getElementById("legend-count-afternoon");
+    const legEve = document.getElementById("legend-count-evening");
+    const legNight = document.getElementById("legend-count-night");
+    if (legMorn) legMorn.textContent = morningCount;
+    if (legAft) legAft.textContent = afternoonCount;
+    if (legEve) legEve.textContent = eveningCount;
+    if (legNight) legNight.textContent = nightCount;
+
+    // Dynamically adjust SVG donut strokes if elements exist
+    const segMorn = document.getElementById("donut-seg-morning");
+    const segAft = document.getElementById("donut-seg-afternoon");
+    const segNight = document.getElementById("donut-seg-night");
+    if (totalCount > 0 && segMorn && segAft) {
+      const mRatio = Math.round((morningCount / totalCount) * 100);
+      const aRatio = Math.round((afternoonCount / totalCount) * 100);
+      const nRatio = 100 - mRatio - aRatio;
+      segMorn.setAttribute("stroke-dasharray", `${mRatio} ${100 - mRatio}`);
+      segAft.setAttribute("stroke-dasharray", `${aRatio} ${100 - aRatio}`);
+      segAft.setAttribute("stroke-dashoffset", `${100 - mRatio + 25}`);
+      if (segNight) {
+        segNight.setAttribute("stroke-dasharray", `${Math.max(0, nRatio)} ${100 - Math.max(0, nRatio)}`);
+      }
+    }
 
     if (meds.length === 0) {
       container.innerHTML = `
