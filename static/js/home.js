@@ -15,7 +15,8 @@ function initHomeFaqAccordion() {
 
   faqButtons.forEach((btn) => {
     btn.addEventListener("click", () => {
-      const item = btn.parentElement;
+      const item = btn.closest(".faq-accordion-item");
+      if (!item) return;
       const isActive = item.classList.contains("active");
 
       document.querySelectorAll(".faq-accordion-item").forEach((el) => {

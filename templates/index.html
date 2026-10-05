@@ -555,6 +555,10 @@
     <!-- Interactive Collapsible FAQ Section -->
     <section id="faq-section" class="faq-section-wrapper">
       <div class="section-header-center">
+        <div class="faq-badge-header">
+          <span class="faq-badge-dot"></span>
+          <span>Clinical & Caregiver Inquiries</span>
+        </div>
         <h2 class="section-title">Frequently Asked Questions</h2>
         <p class="section-subtitle">
           Answers to common questions regarding elder safety, alarm verification, and family access.
@@ -562,59 +566,152 @@
       </div>
 
       <div class="faq-accordion-container">
+        <!-- Question 1: Math Verification -->
         <div class="faq-accordion-item">
           <button type="button" class="faq-accordion-btn">
-            <span>Why is arithmetic math verification required to dismiss medication alarms?</span>
-            <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
+            <div class="faq-question-wrap">
+              <div class="faq-cat-badge faq-cat-math">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="4" y="2" width="16" height="20" rx="2"></rect>
+                  <line x1="8" y1="6" x2="16" y2="6"></line>
+                  <line x1="16" y1="14" x2="16" y2="18"></line>
+                  <path d="M16 10h.01"></path>
+                  <path d="M12 10h.01"></path>
+                  <path d="M8 10h.01"></path>
+                  <path d="M12 14h.01"></path>
+                  <path d="M8 14h.01"></path>
+                  <path d="M12 18h.01"></path>
+                  <path d="M8 18h.01"></path>
+                </svg>
+              </div>
+              <span class="faq-question-text">Why is arithmetic math verification required to dismiss medication alarms?</span>
+            </div>
+            <div class="faq-chevron-circle">
+              <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
           </button>
           <div class="faq-accordion-body">
             <p>
               Elderly individuals frequently silence alarms in a semi-conscious or distracted state, intending to take their medication later and subsequently forgetting. Requiring the solution of two simple arithmetic problems (such as 24 + 17 or 6 x 8) confirms genuine cognitive alertness before the alarm is dismissed.
             </p>
+            <div class="faq-highlight-pill">
+              <strong>Clinical Safeguard:</strong> Eliminates accidental reflex taps while half-asleep or resting.
+            </div>
           </div>
         </div>
 
+        <!-- Question 2: Family Visibility -->
         <div class="faq-accordion-item">
           <button type="button" class="faq-accordion-btn">
-            <span>Can all family members see medications taken by other family members?</span>
-            <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
+            <div class="faq-question-wrap">
+              <div class="faq-cat-badge faq-cat-family">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+              </div>
+              <span class="faq-question-text">Can all family members see medications taken by other family members?</span>
+            </div>
+            <div class="faq-chevron-circle">
+              <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
           </button>
           <div class="faq-accordion-body">
             <p>
               Yes. DoseTrack features a dedicated "All Family Medications" view accessible to all authenticated household members. While each member manages their personal dashboard, complete transparency allows adult children to verify if parents or grandparents took their scheduled morning or evening tablets.
             </p>
+            <div class="faq-highlight-pill">
+              <strong>Caregiver Benefit:</strong> Adult children can audit elder compliance from any browser in real time.
+            </div>
           </div>
         </div>
 
+        <!-- Question 3: Forgotten Passwords & Admin Oversight -->
         <div class="faq-accordion-item">
           <button type="button" class="faq-accordion-btn">
-            <span>What happens if an elderly relative cannot remember their password?</span>
-            <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
+            <div class="faq-question-wrap">
+              <div class="faq-cat-badge faq-cat-admin">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                  <path d="m9 12 2 2 4-4"></path>
+                </svg>
+              </div>
+              <span class="faq-question-text">What happens if an elderly relative cannot remember their password?</span>
+            </div>
+            <div class="faq-chevron-circle">
+              <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
           </button>
           <div class="faq-accordion-body">
             <p>
-              The designated Primary Family Admin has administrative oversight to manage profiles and update schedules on behalf of any relative. Additionally, demo buttons are provided on the sign-in page for immediate testing.
+              The designated Primary Family Admin has administrative oversight to manage profiles, reset passwords, and update schedules on behalf of any relative. Additionally, rapid one-click demo credentials are provided on the sign-in page for immediate testing.
             </p>
+            <div class="faq-highlight-pill">
+              <strong>Administrative Control:</strong> The primary caregiver maintains full oversight without locking seniors out.
+            </div>
           </div>
         </div>
 
+        <!-- Question 4: Local Vault Security -->
         <div class="faq-accordion-item">
           <button type="button" class="faq-accordion-btn">
-            <span>Is our family clinical information stored on public AI servers?</span>
-            <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
+            <div class="faq-question-wrap">
+              <div class="faq-cat-badge faq-cat-security">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+              </div>
+              <span class="faq-question-text">Is our family clinical information stored on public AI servers?</span>
+            </div>
+            <div class="faq-chevron-circle">
+              <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
           </button>
           <div class="faq-accordion-body">
             <p>
               No. DoseTrack operates using local vault architecture. Prescriptions, biometric records, and medication timings remain under your control without reliance on third-party commercial data brokers.
             </p>
+            <div class="faq-highlight-pill">
+              <strong>Privacy Assurance:</strong> Zero third-party data tracking or unencrypted cloud transmission.
+            </div>
+          </div>
+        </div>
+
+        <!-- Question 5: Vitals and Adherence -->
+        <div class="faq-accordion-item">
+          <button type="button" class="faq-accordion-btn">
+            <div class="faq-question-wrap">
+              <div class="faq-cat-badge faq-cat-vitals">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                </svg>
+              </div>
+              <span class="faq-question-text">How do blood pressure and blood sugar logs connect with medication adherence?</span>
+            </div>
+            <div class="faq-chevron-circle">
+              <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
+          </button>
+          <div class="faq-accordion-body">
+            <p>
+              DoseTrack includes dedicated biometric tracking for Blood Pressure (systolic/diastolic) and Blood Sugar (fasting/post-prandial) with automated statistical metrics (highest, lowest, mean) and interactive trend charts. Caregivers can export records to CSV at any time for physician appointments.
+            </p>
+            <div class="faq-highlight-pill">
+              <strong>Clinical Tracking:</strong> Correlate medication timing directly with clinical biometric outcomes.
+            </div>
           </div>
         </div>
       </div>

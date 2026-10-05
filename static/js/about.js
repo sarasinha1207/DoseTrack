@@ -14,7 +14,8 @@ function initAboutFaqAccordion() {
 
   faqButtons.forEach((btn) => {
     btn.addEventListener("click", () => {
-      const item = btn.parentElement;
+      const item = btn.closest(".faq-accordion-item");
+      if (!item) return;
       const isActive = item.classList.contains("active");
 
       // Close all items

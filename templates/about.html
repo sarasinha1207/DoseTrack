@@ -211,6 +211,10 @@
     <!-- Collapsible FAQ Section for About Page -->
     <section class="faq-section-wrapper">
       <div class="section-header-center">
+        <div class="faq-badge-header">
+          <span class="faq-badge-dot"></span>
+          <span>Methodology & Technical Architecture</span>
+        </div>
         <h2 class="section-title">Detailed About & Methodology FAQs</h2>
         <p class="section-subtitle">
           In-depth technical and clinical inquiries regarding DoseTrack.
@@ -218,45 +222,91 @@
       </div>
 
       <div class="faq-accordion-container">
+        <!-- Question 1: Intake Parsing -->
         <div class="faq-accordion-item">
           <button type="button" class="faq-accordion-btn">
-            <span>How does DoseTrack handle prescription slips and doctor bills?</span>
-            <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
+            <div class="faq-question-wrap">
+              <div class="faq-cat-badge faq-cat-math">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                  <line x1="16" y1="13" x2="8" y2="13"></line>
+                  <line x1="16" y1="17" x2="8" y2="17"></line>
+                  <polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
+              </div>
+              <span class="faq-question-text">How does DoseTrack handle prescription slips and doctor bills?</span>
+            </div>
+            <div class="faq-chevron-circle">
+              <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
           </button>
           <div class="faq-accordion-body">
             <p>
               The AI intake parser accepts prescription text, discharge summaries, or doctor notes. It extracts medications, frequencies, and special food instructions, allowing caregivers to import regimens directly into their member profile with one click.
             </p>
+            <div class="faq-highlight-pill">
+              <strong>Intake Parser:</strong> Automatically structures unstructured prescription text into timed schedule items.
+            </div>
           </div>
         </div>
 
+        <!-- Question 2: Grouping -->
         <div class="faq-accordion-item">
           <button type="button" class="faq-accordion-btn">
-            <span>Can a family member have multiple medications scheduled at the same hour?</span>
-            <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
+            <div class="faq-question-wrap">
+              <div class="faq-cat-badge faq-cat-family">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+              </div>
+              <span class="faq-question-text">Can a family member have multiple medications scheduled at the same hour?</span>
+            </div>
+            <div class="faq-chevron-circle">
+              <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
           </button>
           <div class="faq-accordion-body">
             <p>
               Yes. DoseTrack groups multiple medicines by timing categories (Morning, Afternoon, Evening, Night). When an alarm sounds, all associated pills for that scheduled time window are displayed.
             </p>
+            <div class="faq-highlight-pill">
+              <strong>Polypharmacy Safety:</strong> Clustered intake displays prevent taking one pill while forgetting another at the same hour.
+            </div>
           </div>
         </div>
 
+        <!-- Question 3: Onboarding -->
         <div class="faq-accordion-item">
           <button type="button" class="faq-accordion-btn">
-            <span>What happens when a new family member registers?</span>
-            <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
+            <div class="faq-question-wrap">
+              <div class="faq-cat-badge faq-cat-admin">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <polyline points="16 11 18 13 22 9"></polyline>
+                </svg>
+              </div>
+              <span class="faq-question-text">What happens when a new family member registers?</span>
+            </div>
+            <div class="faq-chevron-circle">
+              <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
           </button>
           <div class="faq-accordion-body">
             <p>
               Registration requires basic identification (first name, second name, gender, age, username, and password). Immediately upon login, an onboarding modal collects secondary clinical indicators (weight, height, blood group, doctor, and initial medications).
             </p>
+            <div class="faq-highlight-pill">
+              <strong>Seamless Profile Setup:</strong> Establishes complete biometric baseline immediately upon initial entry.
+            </div>
           </div>
         </div>
       </div>
