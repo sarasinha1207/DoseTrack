@@ -1,3 +1,3 @@
 """
-Core module for DoseGuard application.
+Core module for DoseTrack application.
 """

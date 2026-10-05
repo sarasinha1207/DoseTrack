@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard - DoseGuard AI Family Portal</title>
+  <title>Dashboard - DoseTrack Family Portal</title>
+  <link rel="icon" type="image/png" href="/static/images/logo.png">
   <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body style="overflow: hidden; background: #f8fafc;">
@@ -16,14 +17,23 @@
       <!-- Sidebar Brand -->
       <div class="sidebar-brand-block" onclick="window.location.href='/'" style="cursor: pointer;">
         <div class="brand-symbol">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-            <path d="M9 12l2 2 4-4"></path>
-          </svg>
+          <img src="/static/images/logo.png" alt="DoseTrack" style="width: 56px; height: 56px; object-fit: contain; border-radius: 8px;">
         </div>
         <div>
-          <div class="sidebar-brand-title">DoseGuard AI</div>
+          <div class="sidebar-brand-title">DoseTrack</div>
           <div class="sidebar-brand-sub">Clinical Family Vault</div>
+        </div>
+      </div>
+
+      <!-- Active Member Profile Section (Immediately following Logo) -->
+      <div class="sidebar-user-card" id="sidebar-user-card">
+        <div class="sidebar-user-avatar" id="sidebar-profile-avatar">MO</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name" id="sidebar-profile-name">Sunita Sharma</div>
+          <div class="sidebar-user-role-line">
+            <span class="sidebar-user-role" id="sidebar-profile-role">Mother</span>
+            <span class="sidebar-admin-badge" id="sidebar-profile-admin-badge">Admin</span>
+          </div>
         </div>
       </div>
 
@@ -96,12 +106,7 @@
           <span>Help & FAQ</span>
         </a>
 
-        <div class="sidebar-bio-summary" style="margin-top: 6px; padding-top: 10px; border-top: 1px solid var(--slate-200);">
-          <div style="font-weight: 700; color: var(--slate-800);" id="sidebar-user-fullname">Member Name</div>
-          <div style="font-size: 0.75rem; color: var(--slate-500);" id="sidebar-user-role">Family Member</div>
-        </div>
-
-        <button type="button" class="btn btn-secondary btn-sidebar-logout" id="btn-sidebar-logout" style="width: 100%; justify-content: center;">
+        <button type="button" class="btn btn-secondary btn-sidebar-logout" id="btn-sidebar-logout" style="width: 100%; justify-content: center; margin-top: 10px;">
           Logout
         </button>
       </div>
@@ -458,13 +463,27 @@
         <section id="page-family" class="dash-page">
           <div class="dash-centered-container">
 
-            <div style="margin-bottom: 24px;">
+            <div style="margin-bottom: 20px;">
               <h2 style="font-size: 1.3rem; font-weight: 800; color: var(--slate-900); margin-bottom: 4px;">
                 Family-Wide Medication Transparency
               </h2>
               <p style="font-size: 0.88rem; color: var(--slate-600);">
                 Real-time schedule compliance across all connected parents, grandparents, and family members. Caregivers can review active prescriptions, intake adherence, and therapeutic distribution.
               </p>
+            </div>
+
+            <!-- Household Admin Connection Banner -->
+            <div class="family-admin-connection-banner">
+              <div class="admin-info">
+                <div class="admin-avatar">MO</div>
+                <div>
+                  <div class="admin-title">Sharma Household Caregiver Network</div>
+                  <div class="admin-sub">Centralized Primary Administrator: <strong>Sunita Sharma (Mother)</strong> &bull; All 6 family profiles interconnected</div>
+                </div>
+              </div>
+              <div class="admin-network-tag">
+                Admin Managed Vault
+              </div>
             </div>
 
             <!-- Family Adherence & Therapeutic Analytics Grid -->
@@ -497,33 +516,33 @@
                 <div>
                   <div style="display: flex; justify-content: space-between; font-size: 0.82rem; font-weight: 700; color: var(--slate-800); margin-bottom: 6px;">
                     <span>Total Family Prescriptions</span>
-                    <span id="total-family-meds-count">14 Active Regimens</span>
+                    <span id="total-family-meds-count">19 Active Regimens</span>
                   </div>
 
                   <!-- Multi-segment bar -->
                   <div class="category-dist-bar">
-                    <div class="cat-segment" style="width: 35%; background: #4f46e5;" title="Cardiovascular (35%)"></div>
-                    <div class="cat-segment" style="width: 28%; background: #059669;" title="Metabolic / Diabetes (28%)"></div>
-                    <div class="cat-segment" style="width: 22%; background: #d97706;" title="Bone / Vitamins (22%)"></div>
-                    <div class="cat-segment" style="width: 15%; background: #0284c7;" title="Eye / Ophthalmic (15%)"></div>
+                    <div class="cat-segment" style="width: 32%; background: #4f46e5;" title="Cardiovascular & Antihypertensive"></div>
+                    <div class="cat-segment" style="width: 28%; background: #059669;" title="Metabolic & Diabetes Care"></div>
+                    <div class="cat-segment" style="width: 22%; background: #d97706;" title="Bone Mineralization & Joint Support"></div>
+                    <div class="cat-segment" style="width: 18%; background: #0284c7;" title="Multivitamins & Ophthalmic"></div>
                   </div>
 
                   <div class="donut-legend-list" style="margin-top: 14px;">
                     <div class="donut-legend-item">
                       <span><span class="donut-dot" style="background: #4f46e5;"></span>Cardiovascular & Antihypertensive</span>
-                      <strong>5 Meds</strong>
+                      <strong id="cat-count-cardio">6 Meds</strong>
                     </div>
                     <div class="donut-legend-item">
                       <span><span class="donut-dot" style="background: #059669;"></span>Metabolic & Diabetes Care</span>
-                      <strong>4 Meds</strong>
+                      <strong id="cat-count-metabolic">5 Meds</strong>
                     </div>
                     <div class="donut-legend-item">
                       <span><span class="donut-dot" style="background: #d97706;"></span>Bone Mineralization & Joint Support</span>
-                      <strong>3 Meds</strong>
+                      <strong id="cat-count-bone">4 Meds</strong>
                     </div>
                     <div class="donut-legend-item">
-                      <span><span class="donut-dot" style="background: #0284c7;"></span>Ophthalmic & General Wellness</span>
-                      <strong>2 Meds</strong>
+                      <span><span class="donut-dot" style="background: #0284c7;"></span>Multivitamins & Ophthalmic</span>
+                      <strong id="cat-count-vitamins">4 Meds</strong>
                     </div>
                   </div>
                 </div>
@@ -531,51 +550,49 @@
 
             </div>
 
-            <!-- Household Medication Adherence Calendar -->
-            <div class="calendar-card" style="margin-bottom: 28px;">
-              <div class="calendar-top-bar">
-                <div class="calendar-title-box">
-                  <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--slate-900);">Household Medication Adherence Calendar</h3>
-                  <p style="font-size: 0.82rem; color: var(--slate-500);">Monthly compliance record with medicine taken and missed markings for October 2026</p>
+            <!-- Master Family Medications Schedule (Table View) -->
+            <div class="family-meds-table-card">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+                <div>
+                  <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--slate-900); margin-bottom: 2px;">
+                    Consolidated Family Medications Roster
+                  </h3>
+                  <p style="font-size: 0.82rem; color: var(--slate-500);">
+                    Complete listing of all prescribed medications for each household member connected to admin
+                  </p>
                 </div>
-
-                <div class="calendar-legend-bar">
-                  <div class="calendar-legend-item">
-                    <span class="cal-legend-dot" style="background: var(--success);"></span>
-                    <span>All Taken</span>
-                  </div>
-                  <div class="calendar-legend-item">
-                    <span class="cal-legend-dot" style="background: var(--accent-rose);"></span>
-                    <span>Missed / Delayed</span>
-                  </div>
-                  <div class="calendar-legend-item">
-                    <span class="cal-legend-dot" style="background: var(--slate-300);"></span>
-                    <span>Scheduled</span>
-                  </div>
+                <div class="family-member-pill-filter" id="family-table-filters">
+                  <!-- Populated by family.js -->
                 </div>
               </div>
 
-              <!-- Calendar Column Headers -->
-              <div class="calendar-grid-header">
-                <div class="cal-col-header">Thu</div>
-                <div class="cal-col-header">Fri</div>
-                <div class="cal-col-header">Sat</div>
-                <div class="cal-col-header">Sun</div>
-                <div class="cal-col-header">Mon</div>
-                <div class="cal-col-header">Tue</div>
-                <div class="cal-col-header">Wed</div>
-              </div>
-
-              <!-- Calendar Days Grid -->
-              <div class="calendar-days-grid" id="dash-family-calendar-days">
-                <!-- Rendered dynamically by family.js -->
+              <div style="overflow-x: auto;">
+                <table class="family-meds-table">
+                  <thead>
+                    <tr>
+                      <th>Family Member</th>
+                      <th>Medication Name</th>
+                      <th>Dosage</th>
+                      <th>Scheduled Time</th>
+                      <th>Intake Slot</th>
+                      <th>Food Instructions</th>
+                      <th>Purpose & Precautions</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="family-meds-master-tbody">
+                    <!-- Dynamically populated by family.js -->
+                  </tbody>
+                </table>
               </div>
             </div>
 
             <!-- Section Heading for Family Member Cards -->
-            <div style="margin-bottom: 16px;">
-              <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--slate-900);">Connected Household Profiles</h3>
-              <p style="font-size: 0.82rem; color: var(--slate-500);">Individual member dashboards and real-time regimen oversight</p>
+            <div style="margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+              <div>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--slate-900);">Connected Household Profiles</h3>
+                <p style="font-size: 0.82rem; color: var(--slate-500);">Individual member dashboards and real-time regimen oversight connected through Primary Admin</p>
+              </div>
             </div>
 
             <!-- Grid of All Family Members -->
@@ -715,7 +732,7 @@
                 </select>
 
                 <!-- CSV Export Button -->
-                <a href="/api/vitals/export-csv" class="btn btn-secondary btn-sm" id="btn-export-vitals-csv" download="doseguard_vitals_records.csv" style="display: flex; align-items: center; gap: 6px;">
+                <a href="/api/vitals/export-csv" class="btn btn-secondary btn-sm" id="btn-export-vitals-csv" download="dosetrack_vitals_records.csv" style="display: flex; align-items: center; gap: 6px;">
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                     <polyline points="7 10 12 15 17 10"></polyline>
@@ -1005,6 +1022,9 @@
               </div>
 
               <div class="card" style="padding: 30px;">
+                <div style="background: #f0f9ff; border: 1px solid #bae6fd; border-radius: var(--radius-md); padding: 12px 14px; margin-bottom: 20px; font-size: 0.82rem; color: #0369a1; line-height: 1.4;">
+                  <strong>Household Network:</strong> This profile will be automatically linked under <strong>Sunita Sharma (Primary Caregiver Admin)</strong>, ensuring immediate cross-family medication visibility and schedule coordination.
+                </div>
                 <form id="form-add-family-member" onsubmit="return false;">
                   <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
                     <div class="form-group">
@@ -1141,7 +1161,7 @@
                   Safety & Compliance Status
                 </h3>
                 <p style="font-size: 0.85rem; color: var(--slate-600); line-height: 1.6; margin-bottom: 20px;">
-                  DoseGuard AI cross-checks active regimens against geriatric safety recommendations. All verified entries require dual arithmetic puzzle solving to confirm conscious alertness before logging.
+                  DoseTrack cross-checks active regimens against geriatric safety recommendations. All verified entries require dual arithmetic puzzle solving to confirm conscious alertness before logging.
                 </p>
                 <div style="background: var(--success-light); border: 1px solid var(--success-border); border-radius: var(--radius-md); padding: 16px; margin-bottom: 16px;">
                   <div style="font-weight: 700; color: var(--success); font-size: 0.9rem; margin-bottom: 4px;">Local Vault Active</div>
@@ -1230,7 +1250,7 @@
       <!-- Full-Width Dashboard Footer -->
       <footer class="dashboard-footer" style="width: 100%; box-sizing: border-box;">
         <div>
-          DoseGuard AI - Clinical Family Medication Safety System
+          DoseTrack - Clinical Family Medication Safety System
         </div>
         <div style="display: flex; gap: 20px;">
           <a href="/" style="color: var(--slate-500); text-decoration: none;">Home Overview</a>
@@ -1254,7 +1274,7 @@
 
       <div class="modal-body">
         <div class="onboarding-intro-box">
-          <div class="onboarding-intro-title">Welcome to DoseGuard AI</div>
+          <div class="onboarding-intro-title">Welcome to DoseTrack</div>
           <div class="onboarding-intro-text">
             Your basic account is created. Please provide health biometrics and initial medication details to configure your daily schedule.
           </div>

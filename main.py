@@ -1,5 +1,5 @@
 """
-DoseGuard AI - FastAPI Application Server
+DoseTrack - FastAPI Application Server
 Provides RESTful API and serves the professional web interface.
 Features public landing, PIN authentication, personal member dashboards with biometric profiles,
 family-wide medication transparency, and audio alarms with math puzzle verification.
@@ -16,17 +16,17 @@ from pydantic import BaseModel
 import uvicorn
 
 from core.models import FamilyVault
-from core.ai_engine import DoseGuardAIEngine
+from core.ai_engine import DoseTrackAIEngine
 from core.sample_data import SAMPLE_PRESCRIPTIONS
 
 app = FastAPI(
-    title="DoseGuard AI API",
+    title="DoseTrack API",
     description="Privacy-focused family medication management platform",
     version="3.1.0"
 )
 
 vault = FamilyVault()
-ai_engine = DoseGuardAIEngine()
+ai_engine = DoseTrackAIEngine()
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_DIR = os.path.join(BASE_DIR, "static")
@@ -137,7 +137,7 @@ def get_index():
     index_path = os.path.join(TEMPLATES_DIR, "index.html")
     if os.path.exists(index_path):
         return FileResponse(index_path)
-    return JSONResponse({"status": "healthy", "service": "DoseGuard AI"})
+    return JSONResponse({"status": "healthy", "service": "DoseTrack"})
 
 
 @app.get("/about")
@@ -338,8 +338,15 @@ def update_profile(req: UpdateProfileRequest):
 @app.get("/api/family/all-medications")
 def get_all_family_medications():
     overview = vault.get_all_family_overview()
+    admin_p = next((p for p in vault.get_profiles() if p.get("is_admin")), vault.get_profiles()[0] if vault.get_profiles() else None)
     return {
+        "family": overview,
         "family_overview": overview,
+        "admin": {
+            "id": admin_p["id"] if admin_p else "mother",
+            "name": admin_p["name"] if admin_p else "Sunita Sharma",
+            "role": admin_p["role"] if admin_p else "Mother"
+        } if admin_p else None,
         "today": vault.get_today_str()
     }
 
@@ -431,7 +438,7 @@ def export_vitals_csv():
         vault._save_vitals_to_csv()
     return FileResponse(
         path=VITALS_CSV_FILE,
-        filename="doseguard_vitals_records.csv",
+        filename="dosetrack_vitals_records.csv",
         media_type="text/csv"
     )
 

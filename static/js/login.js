@@ -1,5 +1,5 @@
 /**
- * DoseGuard AI - Login & Registration Controller (login.js)
+ * DoseTrack - Login & Registration Controller (login.js)
  * Completely PIN-free authentication with Username and Password.
  * Streamlined registration (6 fields only) with automatic post-registration onboarding handover.
  * Strictly no emojis.
@@ -68,8 +68,8 @@ function setupSignInForm() {
 
     try {
       const res = await API.login(username, password);
-      sessionStorage.setItem("doseguard_active_user", res.profile.id);
-      sessionStorage.setItem("doseguard_active_profile", JSON.stringify(res.profile));
+      sessionStorage.setItem("dosetrack_active_user", res.profile.id);
+      sessionStorage.setItem("dosetrack_active_profile", JSON.stringify(res.profile));
       window.location.href = "/dashboard";
     } catch (err) {
       showSignInError(err.message || "Invalid username or password. Please verify your credentials.");
@@ -132,9 +132,9 @@ function setupRegisterForm() {
       });
 
       // Save active session & flag to trigger onboarding popup on dashboard
-      sessionStorage.setItem("doseguard_active_user", res.profile.id);
-      sessionStorage.setItem("doseguard_active_profile", JSON.stringify(res.profile));
-      sessionStorage.setItem("doseguard_trigger_onboarding", "true");
+      sessionStorage.setItem("dosetrack_active_user", res.profile.id);
+      sessionStorage.setItem("dosetrack_active_profile", JSON.stringify(res.profile));
+      sessionStorage.setItem("dosetrack_trigger_onboarding", "true");
 
       window.location.href = "/dashboard";
     } catch (err) {

@@ -1,5 +1,5 @@
 /**
- * DoseGuard AI - Add Medication Controller (add_medication.js)
+ * DoseTrack - Add Medication Controller (add_medication.js)
  * Manages medication prescription intake, target member selection,
  * and detailed active regimens inspection.
  * Strictly no emojis.

@@ -1,5 +1,5 @@
 /**
- * DoseGuard AI - Dashboard Add Member Controller (add_member.js)
+ * DoseTrack - Dashboard Add Member Controller (add_member.js)
  * Handles registration of additional family members into the household vault.
  * Strictly no emojis.
  */

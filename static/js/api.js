@@ -1,5 +1,5 @@
 /**
- * DoseGuard AI - API Client Layer
+ * DoseTrack - API Client Layer
  * Handles async communication with the FastAPI backend.
  * Zero emojis.
  */

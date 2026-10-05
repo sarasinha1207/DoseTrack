@@ -1,5 +1,5 @@
 """
-Family Data Layer for DoseGuard AI.
+Family Data Layer for DoseTrack.
 Stores family members, credentials (Username/PIN), biometrics, Admin/Primary roles,
 medication schedules, and daily intake verification logs.
 Strictly free of emojis. Clean professional medical data structure.
@@ -451,6 +451,9 @@ class FamilyVault:
             "blood_group": member_data.get("blood_group", "-"),
             "doctor": member_data.get("doctor", "Family Care Physician"),
             "is_admin": bool(member_data.get("is_admin", False)),
+            "admin_id": "mother",
+            "admin_name": "Sunita Sharma",
+            "connected_to_admin": True,
             "badge_color": chosen_color,
             "notes": member_data.get("notes", "New registered family profile."),
             "medications": [],
@@ -624,6 +627,9 @@ class FamilyVault:
                 "blood_group": p.get("blood_group", "O+"),
                 "doctor": p.get("doctor", "Family Care Physician"),
                 "is_admin": p.get("is_admin", False),
+                "admin_id": "mother",
+                "admin_name": "Sunita Sharma",
+                "connected_to_admin": True,
                 "notes": p.get("notes", ""),
                 "badge_color": p.get("badge_color", "#0284c7"),
                 "adherence": adh,

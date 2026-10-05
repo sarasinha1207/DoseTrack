@@ -1,5 +1,5 @@
 /**
- * DoseGuard AI - Dashboard Schedule Controller (schedule.js)
+ * DoseTrack - Dashboard Schedule Controller (schedule.js)
  * Manages daily medication schedule rendering, intake verification,
  * status retraction, medication deletion, and adherence tracking.
  * Strictly no emojis.
@@ -168,7 +168,7 @@ const ScheduleModule = {
         const name = btn.getAttribute("data-name");
         const time = btn.getAttribute("data-time");
         const id = btn.getAttribute("data-id");
-        DoseGuardAlarm.trigger(name, time, id);
+        DoseTrackAlarm.trigger(name, time, id);
       });
     });
 

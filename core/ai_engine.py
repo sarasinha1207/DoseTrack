@@ -1,5 +1,5 @@
 """
-Open-Source Clinical AI Engine for DoseGuard.
+Open-Source Clinical AI Engine for DoseTrack.
 Performs:
 1. Prescription and medical invoice parsing (entity extraction of drug names, dosages, timings, and dietary precautions).
 2. Grounded clinical consultation (missed dose triage, interaction checking, and regimen clarification).
@@ -69,9 +69,9 @@ CLINICAL_KNOWLEDGE_BASE = {
 }
 
 
-class DoseGuardAIEngine:
+class DoseTrackAIEngine:
     def __init__(self):
-        self.engine_version = "DoseGuard Clinical AI v2.4 (Open Clinical Taxonomy)"
+        self.engine_version = "DoseTrack Clinical AI v2.4 (Open Clinical Taxonomy)"
 
     def parse_prescription_text(self, text: str) -> List[Dict[str, Any]]:
         """
@@ -240,5 +240,5 @@ class DoseGuardAIEngine:
             f"Currently overseeing {len(medications)} active prescription items: {med_summary}.\n\n"
             f"- Administration Discipline: Ensure consistency in administration hours relative to meal times.\n"
             f"- Hydration: Ensure elderly family members ingest at least 150ml of room-temperature water with each solid oral dose.\n"
-            f"- Regulatory Disclaimer: DoseGuard operates on local deterministic clinical intelligence. For acute physiological symptoms or dosage adjustments, consult the attending physician."
+            f"- Regulatory Disclaimer: DoseTrack operates on local deterministic clinical intelligence. For acute physiological symptoms or dosage adjustments, consult the attending physician."
         )

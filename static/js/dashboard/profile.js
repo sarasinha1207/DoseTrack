@@ -1,5 +1,5 @@
 /**
- * DoseGuard AI - Dashboard Profile Controller (profile.js)
+ * DoseTrack - Dashboard Profile Controller (profile.js)
  * Manages biometric indicators, clinical notes, and profile editing.
  * Strictly no emojis.
  */

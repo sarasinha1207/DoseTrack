@@ -2,13 +2,27 @@
 <section id="page-family" class="dash-page">
   <div class="dash-centered-container">
 
-    <div style="margin-bottom: 24px;">
+    <div style="margin-bottom: 20px;">
       <h2 style="font-size: 1.3rem; font-weight: 800; color: var(--slate-900); margin-bottom: 4px;">
         Family-Wide Medication Transparency
       </h2>
       <p style="font-size: 0.88rem; color: var(--slate-600);">
         Real-time schedule compliance across all connected parents, grandparents, and family members. Caregivers can review active prescriptions, intake adherence, and therapeutic distribution.
       </p>
+    </div>
+
+    <!-- Household Admin Connection Banner -->
+    <div class="family-admin-connection-banner">
+      <div class="admin-info">
+        <div class="admin-avatar">MO</div>
+        <div>
+          <div class="admin-title">Sharma Household Caregiver Network</div>
+          <div class="admin-sub">Centralized Primary Administrator: <strong>Sunita Sharma (Mother)</strong> &bull; All 6 family profiles interconnected</div>
+        </div>
+      </div>
+      <div class="admin-network-tag">
+        Admin Managed Vault
+      </div>
     </div>
 
     <!-- Family Adherence & Therapeutic Analytics Grid -->
@@ -41,33 +55,33 @@
         <div>
           <div style="display: flex; justify-content: space-between; font-size: 0.82rem; font-weight: 700; color: var(--slate-800); margin-bottom: 6px;">
             <span>Total Family Prescriptions</span>
-            <span id="total-family-meds-count">14 Active Regimens</span>
+            <span id="total-family-meds-count">19 Active Regimens</span>
           </div>
 
           <!-- Multi-segment bar -->
           <div class="category-dist-bar">
-            <div class="cat-segment" style="width: 35%; background: #4f46e5;" title="Cardiovascular (35%)"></div>
-            <div class="cat-segment" style="width: 28%; background: #059669;" title="Metabolic / Diabetes (28%)"></div>
-            <div class="cat-segment" style="width: 22%; background: #d97706;" title="Bone / Vitamins (22%)"></div>
-            <div class="cat-segment" style="width: 15%; background: #0284c7;" title="Eye / Ophthalmic (15%)"></div>
+            <div class="cat-segment" style="width: 32%; background: #4f46e5;" title="Cardiovascular & Antihypertensive"></div>
+            <div class="cat-segment" style="width: 28%; background: #059669;" title="Metabolic & Diabetes Care"></div>
+            <div class="cat-segment" style="width: 22%; background: #d97706;" title="Bone Mineralization & Joint Support"></div>
+            <div class="cat-segment" style="width: 18%; background: #0284c7;" title="Multivitamins & Ophthalmic"></div>
           </div>
 
           <div class="donut-legend-list" style="margin-top: 14px;">
             <div class="donut-legend-item">
               <span><span class="donut-dot" style="background: #4f46e5;"></span>Cardiovascular & Antihypertensive</span>
-              <strong>5 Meds</strong>
+              <strong id="cat-count-cardio">6 Meds</strong>
             </div>
             <div class="donut-legend-item">
               <span><span class="donut-dot" style="background: #059669;"></span>Metabolic & Diabetes Care</span>
-              <strong>4 Meds</strong>
+              <strong id="cat-count-metabolic">5 Meds</strong>
             </div>
             <div class="donut-legend-item">
               <span><span class="donut-dot" style="background: #d97706;"></span>Bone Mineralization & Joint Support</span>
-              <strong>3 Meds</strong>
+              <strong id="cat-count-bone">4 Meds</strong>
             </div>
             <div class="donut-legend-item">
-              <span><span class="donut-dot" style="background: #0284c7;"></span>Ophthalmic & General Wellness</span>
-              <strong>2 Meds</strong>
+              <span><span class="donut-dot" style="background: #0284c7;"></span>Multivitamins & Ophthalmic</span>
+              <strong id="cat-count-vitamins">4 Meds</strong>
             </div>
           </div>
         </div>
@@ -75,51 +89,49 @@
 
     </div>
 
-    <!-- Household Medication Adherence Calendar -->
-    <div class="calendar-card" style="margin-bottom: 28px;">
-      <div class="calendar-top-bar">
-        <div class="calendar-title-box">
-          <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--slate-900);">Household Medication Adherence Calendar</h3>
-          <p style="font-size: 0.82rem; color: var(--slate-500);">Monthly compliance record with medicine taken and missed markings for October 2026</p>
+    <!-- Master Family Medications Schedule (Table View) -->
+    <div class="family-meds-table-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+        <div>
+          <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--slate-900); margin-bottom: 2px;">
+            Consolidated Family Medications Roster
+          </h3>
+          <p style="font-size: 0.82rem; color: var(--slate-500);">
+            Complete listing of all prescribed medications for each household member connected to admin
+          </p>
         </div>
-
-        <div class="calendar-legend-bar">
-          <div class="calendar-legend-item">
-            <span class="cal-legend-dot" style="background: var(--success);"></span>
-            <span>All Taken</span>
-          </div>
-          <div class="calendar-legend-item">
-            <span class="cal-legend-dot" style="background: var(--accent-rose);"></span>
-            <span>Missed / Delayed</span>
-          </div>
-          <div class="calendar-legend-item">
-            <span class="cal-legend-dot" style="background: var(--slate-300);"></span>
-            <span>Scheduled</span>
-          </div>
+        <div class="family-member-pill-filter" id="family-table-filters">
+          <!-- Populated by family.js -->
         </div>
       </div>
 
-      <!-- Calendar Column Headers -->
-      <div class="calendar-grid-header">
-        <div class="cal-col-header">Thu</div>
-        <div class="cal-col-header">Fri</div>
-        <div class="cal-col-header">Sat</div>
-        <div class="cal-col-header">Sun</div>
-        <div class="cal-col-header">Mon</div>
-        <div class="cal-col-header">Tue</div>
-        <div class="cal-col-header">Wed</div>
-      </div>
-
-      <!-- Calendar Days Grid -->
-      <div class="calendar-days-grid" id="dash-family-calendar-days">
-        <!-- Rendered dynamically by family.js -->
+      <div style="overflow-x: auto;">
+        <table class="family-meds-table">
+          <thead>
+            <tr>
+              <th>Family Member</th>
+              <th>Medication Name</th>
+              <th>Dosage</th>
+              <th>Scheduled Time</th>
+              <th>Intake Slot</th>
+              <th>Food Instructions</th>
+              <th>Purpose & Precautions</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="family-meds-master-tbody">
+            <!-- Dynamically populated by family.js -->
+          </tbody>
+        </table>
       </div>
     </div>
 
     <!-- Section Heading for Family Member Cards -->
-    <div style="margin-bottom: 16px;">
-      <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--slate-900);">Connected Household Profiles</h3>
-      <p style="font-size: 0.82rem; color: var(--slate-500);">Individual member dashboards and real-time regimen oversight</p>
+    <div style="margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+      <div>
+        <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--slate-900);">Connected Household Profiles</h3>
+        <p style="font-size: 0.82rem; color: var(--slate-500);">Individual member dashboards and real-time regimen oversight connected through Primary Admin</p>
+      </div>
     </div>
 
     <!-- Grid of All Family Members -->

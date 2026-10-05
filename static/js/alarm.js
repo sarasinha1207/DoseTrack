@@ -1,11 +1,11 @@
 /**
- * DoseGuard AI - Alarm & Cognitive Verification System
+ * DoseTrack - Alarm & Cognitive Verification System
  * Generates continuous Web Audio alerts and requires 2 arithmetic math puzzles
  * to verify user alertness before the alarm can be dismissed.
  * Strictly no emojis.
  */
 
-const DoseGuardAlarm = {
+const DoseTrackAlarm = {
   audioContext: null,
   alarmInterval: null,
   currentPuzzles: { p1: null, p2: null },

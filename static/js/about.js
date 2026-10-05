@@ -1,5 +1,5 @@
 /**
- * DoseGuard AI - About Page Script (about.js)
+ * DoseTrack - About Page Script (about.js)
  * Controls FAQ interactions and session status on the about page.
  * Strictly no emojis.
  */
@@ -31,7 +31,7 @@ function initAboutFaqAccordion() {
 }
 
 function checkExistingSession() {
-  const activeUser = sessionStorage.getItem("doseguard_active_user");
+  const activeUser = sessionStorage.getItem("dosetrack_active_user");
   const navLoginBtn = document.getElementById("btn-nav-login");
 
   if (activeUser && navLoginBtn) {

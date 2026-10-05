@@ -1,5 +1,5 @@
 /**
- * DoseGuard AI - Public Homepage Script (home.js)
+ * DoseTrack - Public Homepage Script (home.js)
  * Controls collapsible FAQ interactions, smooth navigation, session status,
  * and renders the All Family Medication Adherence Calendar with taken/missed markings.
  * Strictly no emojis.
@@ -8,7 +8,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   initHomeFaqAccordion();
   checkExistingSession();
-  loadHomeCalendar();
 });
 
 function initHomeFaqAccordion() {
@@ -31,7 +30,7 @@ function initHomeFaqAccordion() {
 }
 
 function checkExistingSession() {
-  const activeUser = sessionStorage.getItem("doseguard_active_user");
+  const activeUser = sessionStorage.getItem("dosetrack_active_user");
   const navLoginBtn = document.getElementById("btn-nav-login");
 
   if (activeUser && navLoginBtn) {

@@ -1,5 +1,5 @@
 """
-Sample Prescriptions and Pharmacy Invoices for DoseGuard AI.
+Sample Prescriptions and Pharmacy Invoices for DoseTrack.
 Provides realistic clinical records for immediate demonstration without physical documents.
 Zero emojis used throughout.
 """

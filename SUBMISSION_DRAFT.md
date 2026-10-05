@@ -1,5 +1,5 @@
 ---
-title: "DoseGuard AI: Built for Parents and Grandparents - The 100% Private Medication Guardian"
+title: "DoseTrack: Built for Parents and Grandparents - The 100% Private Medication Guardian"
 published: true
 tags: devchallenge, weekendchallenge, hf26challenge, opensource, python
 ---
@@ -16,7 +16,7 @@ Every single day, millions of aging parents, grandparents, and family caregivers
 
 This daily uncertainty has severe clinical consequences: elderly loved ones either omit doses out of caution (triggering cardiovascular or glycemic crises) or accidentally ingest double doses of critical agents like antihypertensives, oral hypoglycemics, or thyroid hormones. Concurrently, traditional phone alarms are often reflexively dismissed or snoozed while half-asleep without the patient actually getting out of bed or taking their medication.
 
-I engineered **DoseGuard AI** specifically for a multi-generational family (**Mother Sunita, Father Rajesh, Grandfather Ramesh, Grandmother Kamla, Daughter Alina, and custom family members**).
+I engineered **DoseTrack** specifically for a multi-generational family (**Mother Sunita, Father Rajesh, Grandfather Ramesh, Grandmother Kamla, Daughter Alina, and custom family members**).
 
 ### Problems Solved
 1. **Full-Width Edge-to-Edge System Headers & Footers:** Modern, professional full-width header and footer spanning 100% of viewport width across all pages (Home, About, Login, and Dashboard).
@@ -37,7 +37,7 @@ I engineered **DoseGuard AI** specifically for a multi-generational family (**Mo
 
 ## Demo
 
-- **Live Service URL:** [Provide your deployed Render URL here, e.g., https://doseguard-ai.onrender.com]
+- **Live Service URL:** [Provide your deployed Render URL here, e.g., https://dosetrack-ai.onrender.com]
 - **Local Port:** Accessible at `http://localhost:8000`
 - **Source Code Repository:** [Provide your GitHub Repository URL here]
 
@@ -53,7 +53,7 @@ I engineered **DoseGuard AI** specifically for a multi-generational family (**Mo
 
 The complete source code is hosted on GitHub:
 ```
-https://github.com/your-username/doseguard-ai
+https://github.com/your-username/dosetrack-ai
 ```
 
 ### Stack Breakdown
@@ -67,7 +67,7 @@ https://github.com/your-username/doseguard-ai
 
 ## How I Built It
 
-DoseGuard AI was built during the Hacktoberfest weekend challenge within a 4-hour sprint, adhering to lightweight software engineering principles:
+DoseTrack was built during the Hacktoberfest weekend challenge within a 4-hour sprint, adhering to lightweight software engineering principles:
 
 1. **Lightweight and Reliable Tech Stack:** Instead of relying on heavyweight frameworks or complex browser runtimes, the application uses pure Python (FastAPI) and clean web standards (HTML5/CSS3/Vanilla JS). Memory utilization remains under 45MB RAM, ensuring seamless deployment on cloud free-tiers such as Render.
 2. **Cognitive Alarm Dismissal Mechanism:** Built using native browser audio synthesis coupled with dynamic math verification logic. The alarm forces mental engagement through two random arithmetic challenges, ensuring the patient is awake before taking their prescription.
@@ -81,13 +81,13 @@ In personal healthcare and elder family care, **open-source innovation is the on
 
 ### 1. Absolute Health Privacy and Zero Telemetry
 Prescription regimens expose intimate clinical vulnerabilities, including cardiovascular disease, psychiatric therapies, metabolic disorders, and cognitive decline. Submitting a family's health profile to closed commercial cloud APIs exposes sensitive medical data to corporate server logging, retention policies, model training pipelines, and commercial tracking.
-With DoseGuard AI, **all data persistence and clinical parsing execute 100% locally on the host device.** Private family health records never leave the household.
+With DoseTrack, **all data persistence and clinical parsing execute 100% locally on the host device.** Private family health records never leave the household.
 
 ### 2. High Reliability and Local Portability
-A parent's blood pressure reminder cannot be dependent on third-party cloud outages, subscription paywalls, or broadband drops. DoseGuard AI runs offline on a household laptop or local home server, continuing to trigger audio reminders and evaluate arithmetic puzzle solutions without external connectivity.
+A parent's blood pressure reminder cannot be dependent on third-party cloud outages, subscription paywalls, or broadband drops. DoseTrack runs offline on a household laptop or local home server, continuing to trigger audio reminders and evaluate arithmetic puzzle solutions without external connectivity.
 
 ### 3. Infinite Extensibility and Zero SaaS Lock-In
-Commercial medical apps frequently enforce arbitrary paywalls for adding multiple family members or exporting records. By publishing DoseGuard AI under an open-source license, any developer or caregiver can adapt the scheduling logic, translate interface strings into regional languages, or integrate with hardware pill dispensers.
+Commercial medical apps frequently enforce arbitrary paywalls for adding multiple family members or exporting records. By publishing DoseTrack under an open-source license, any developer or caregiver can adapt the scheduling logic, translate interface strings into regional languages, or integrate with hardware pill dispensers.
 
 ---
 

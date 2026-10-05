@@ -1,5 +1,5 @@
 /**
- * DoseGuard AI - Master Dashboard Coordinator (dashboard/dashboard.js)
+ * DoseTrack - Master Dashboard Coordinator (dashboard/dashboard.js)
  * Coordinates modular controllers, session lifecycle, navigation,
  * header popovers (Notifications & Profile card with Logout),
  * and onboarding modal triggers.
@@ -16,14 +16,14 @@ let dashState = {
 const DashboardCore = {
   async init() {
     // Validate or default session for seamless inspection
-    dashState.currentUserId = sessionStorage.getItem("doseguard_active_user");
+    dashState.currentUserId = sessionStorage.getItem("dosetrack_active_user");
     if (!dashState.currentUserId) {
       dashState.currentUserId = "mother";
-      sessionStorage.setItem("doseguard_active_user", "mother");
+      sessionStorage.setItem("dosetrack_active_user", "mother");
     }
 
     // Initialize Audio & Math Alarm System
-    DoseGuardAlarm.init((medId) => {
+    DoseTrackAlarm.init((medId) => {
       this.handleAlarmDismissed(medId);
     });
 
@@ -52,7 +52,8 @@ const DashboardCore = {
       dashState.currentProfile = profileRes.profile;
 
       const famRes = await API.getAllFamilyMedications();
-      dashState.allProfiles = famRes.family || [];
+      dashState.allProfiles = famRes.family_overview || famRes.family || [];
+      dashState.familyAdmin = famRes.admin || null;
 
       this.updateHeaderAndSidebarUser();
       this.renderActivePage();
@@ -72,11 +73,21 @@ const DashboardCore = {
     const fullName = p.name || `${p.first_name || ""} ${p.last_name || ""}`.trim() || p.username;
     const role = p.role || "Family Member";
 
-    // Sidebar elements
-    const sideName = document.getElementById("sidebar-user-fullname");
-    const sideRole = document.getElementById("sidebar-user-role");
+    // Sidebar active user card (directly below logo)
+    const sideAvatar = document.getElementById("sidebar-profile-avatar");
+    const sideName = document.getElementById("sidebar-profile-name");
+    const sideRole = document.getElementById("sidebar-profile-role");
+    const sideAdminBadge = document.getElementById("sidebar-profile-admin-badge");
+
+    if (sideAvatar) {
+      sideAvatar.textContent = initials;
+      if (p.badge_color) sideAvatar.style.background = p.badge_color;
+    }
     if (sideName) sideName.textContent = fullName;
-    if (sideRole) sideRole.textContent = role + (p.is_admin ? " (Admin)" : "");
+    if (sideRole) sideRole.textContent = role;
+    if (sideAdminBadge) {
+      sideAdminBadge.style.display = p.is_admin ? "inline-block" : "none";
+    }
 
     // Header avatar & meta
     const headerInitials = document.getElementById("header-avatar-initials");
@@ -141,7 +152,7 @@ const DashboardCore = {
   },
 
   checkOnboardingTrigger() {
-    const trigger = sessionStorage.getItem("doseguard_trigger_onboarding");
+    const trigger = sessionStorage.getItem("dosetrack_trigger_onboarding");
     if (trigger === "true") {
       const modal = document.getElementById("modal-onboarding");
       const welcomeTitle = document.getElementById("onboarding-welcome-title");
@@ -222,9 +233,9 @@ const DashboardCore = {
 
     // Logout Handlers
     const handleLogout = () => {
-      sessionStorage.removeItem("doseguard_active_user");
-      sessionStorage.removeItem("doseguard_active_profile");
-      sessionStorage.removeItem("doseguard_trigger_onboarding");
+      sessionStorage.removeItem("dosetrack_active_user");
+      sessionStorage.removeItem("dosetrack_active_profile");
+      sessionStorage.removeItem("dosetrack_trigger_onboarding");
       window.location.href = "/login";
     };
 
@@ -244,7 +255,7 @@ const DashboardCore = {
     // Simulate Alarm
     if (btnSimulateAlarm) {
       btnSimulateAlarm.addEventListener("click", () => {
-        DoseGuardAlarm.trigger("Amlodipine 5 mg (Prescribed Intake)", "08:00 AM", null);
+        DoseTrackAlarm.trigger("Amlodipine 5 mg (Prescribed Intake)", "08:00 AM", null);
       });
     }
 
@@ -371,7 +382,7 @@ const DashboardCore = {
     const formOnboard = document.getElementById("form-onboarding");
 
     const closeOnboard = () => {
-      sessionStorage.removeItem("doseguard_trigger_onboarding");
+      sessionStorage.removeItem("dosetrack_trigger_onboarding");
       if (modalOnboard) modalOnboard.classList.remove("active");
     };
     if (btnCloseOnboard) btnCloseOnboard.addEventListener("click", closeOnboard);

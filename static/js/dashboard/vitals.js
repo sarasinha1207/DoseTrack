@@ -1,5 +1,5 @@
 /**
- * DoseGuard AI - Health Vitals Controller (vitals.js)
+ * DoseTrack - Health Vitals Controller (vitals.js)
  * Manages Blood Pressure (BP) & Blood Sugar records,
  * computes Mean, Highest, Lowest statistical metrics,
  * renders native interactive SVG trend graphs, and exports CSV.

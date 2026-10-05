@@ -1,5 +1,5 @@
 /**
- * DoseGuard AI - Dashboard Help & FAQ Controller (help.js)
+ * DoseTrack - Dashboard Help & FAQ Controller (help.js)
  * Manages interactive FAQ accordion in the dashboard.
  * Strictly no emojis.
  */
